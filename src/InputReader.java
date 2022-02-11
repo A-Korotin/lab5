@@ -10,18 +10,7 @@ public abstract class InputReader {
     public void addProperties(String prop) {
         additionalProperties.add(prop);
     }
-
-    public static void main(String[] args){
-        InputReader reader = new FileReader();
-        reader.addProperties("test.txt");
-
-        List<List<String>> input = reader.getInput();
-        for (List<String> l: input) {
-            for (String s : l)
-                System.out.print(s);
-        }
     }
-}
 
 class ConsoleReader extends InputReader {
     public List<List<String>> getInput() {
@@ -83,7 +72,6 @@ class FileReader extends InputReader {
             } catch (IOException e) {
                 throw new RuntimeException("Input stream not closed successfully at " + filePath);
             }
-
         }
     }
 }
