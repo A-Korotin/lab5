@@ -1,24 +1,24 @@
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import javax.json.*;
 
 interface DAO {
-    int create(Dragon dragon);
+    void create(Dragon dragon);
     void update(Dragon dragon);
     void delete(int id);
     Dragon get(int id);
     List<Dragon> getAll();
     void clear();
+    //JsonObject getJSONDescription();
 }
 
 class DragonDAO implements DAO {
-    private static int availableId = 1;
     private final List<Dragon> collection = new LinkedList<>();
 
     @Override
-    public int create(Dragon dragon) {
+    public void create(Dragon dragon) {
         collection.add(new Dragon(dragon.getName(), dragon.getCoordinates(), dragon.getCreationDate(), dragon.getAge(), dragon.getColor(), dragon.getType(), dragon.getCharacter(), dragon.getCave()));
-        return availableId++;
     }
 
     @Override

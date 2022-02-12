@@ -62,7 +62,7 @@ class Add extends Command {
     @Override
     public int execute(DAO dao) {
         //dao.create(new Dragon(args.get(0), );
-
+        return 0;
     }
 }
 
