@@ -8,11 +8,9 @@ interface DAO {
     void delete(int id);
     Dragon get(int id);
     List<Dragon> getAll();
-
-
 }
 
-class DragonDAO implements DAO{
+class DragonDAO implements DAO {
     private static int availableId = 1;
     private final List<Dragon> collection = new LinkedList<>();
 
