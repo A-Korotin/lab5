@@ -1,4 +1,6 @@
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import javax.json.*;
 
 public class Dragon {
 
@@ -95,32 +97,108 @@ public class Dragon {
     public void setCave(DragonCave cave) {
         this.cave = cave;
     }
+
+    public JsonObject getJSONDescription() {
+        JsonObject dragon = Json.createObjectBuilder().
+                add("id", id).
+                add("name", name).
+                add("coordinates", Json.createObjectBuilder().
+                        add("x", coordinates.getX()).
+                        add("y", coordinates.getY())).
+                add("creationDate", creationDate.toString()).
+                add("age", age).
+                add("color", color.getDescription()).
+                add("type", type.getDescription()).
+                add("character", character.getDescription()).
+                add("cave", Json.createObjectBuilder().
+                        add("depth", cave.getDepth()).
+                        add("numberOfTreasures", cave.getNumberOfTreasures())).build();
+        return dragon;
+    }
+
 }
 
 class Coordinates {
+    public Coordinates(Float x, Integer y) {
+        this.x = x;
+        this.y = y;
+    }
+
     private Float x; //Поле не может быть null
     private Integer y; //Максимальное значение поля: 998, Поле не может быть null
+
+    public Float getX() {
+        return x;
+    }
+
+    public Integer getY() {
+        return y;
+    }
 }
 class DragonCave {
+
+    public DragonCave(double depth, Integer numberOfTreasures) {
+        this.depth = depth;
+        this.numberOfTreasures = numberOfTreasures;
+    }
+
     private double depth;
     private Integer numberOfTreasures; //Поле может быть null, Значение поля должно быть больше 0
+
+    public double getDepth() {
+        return depth;
+    }
+
+    public Integer getNumberOfTreasures() {
+        return numberOfTreasures;
+    }
 }
 enum Color {
-    BLACK,
-    BLUE,
-    WHITE,
-    BROWN;
+    BLACK("BLACK"),
+    BLUE("BLUE"),
+    WHITE("WHITE"),
+    BROWN("BROWN");
+
+    private final String description;
+
+    Color(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
 enum DragonType {
-    UNDERGROUND,
-    AIR,
-    FIRE;
+    UNDERGROUND("UNDERGROUND"),
+    AIR("AIR"),
+    FIRE("FIRE");
+
+    private final String description;
+
+    DragonType(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
 enum DragonCharacter {
-    CUNNING,
-    GOOD,
-    CHAOTIC,
-    CHAOTIC_EVIL,
-    FICKLE;
+    CUNNING("CUNNING"),
+    GOOD("GOOD"),
+    CHAOTIC("CHAOTIC"),
+    CHAOTIC_EVIL("CHAOTIC_EVIL"),
+    FICKLE("FICKLE");
+
+    private final String description;
+
+    DragonCharacter(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
 
