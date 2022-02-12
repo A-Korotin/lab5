@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.json.*;
 
@@ -25,6 +26,18 @@ public class Dragon {
         this.type = type;
         this.character = character;
         this.cave = cave;
+    }
+
+    public Dragon(DragonProperties properties) {
+        id = availableId++;
+        name = properties.name;
+        coordinates = new Coordinates(properties.xCoord, properties.yCoord);
+        creationDate = LocalDate.now();
+        age = properties.age;
+        color = properties.color;
+        type = properties.type;
+        character = properties.character;
+        cave = new DragonCave(properties.depth, properties.numberOfTreasures);
     }
 
     public int getId() {
@@ -113,6 +126,12 @@ public class Dragon {
         return dragon;
     }
 
+    public static void main(String[] args) {
+        DAO dao = new DragonDAO();
+        dao.create(new Dragon("a", new Coordinates(1.F, 1), LocalDate.now(), 10L, Color.BROWN, DragonType.AIR, DragonCharacter.CHAOTIC, new DragonCave(10.0, 1)));
+        dao.create(new Dragon("a", new Coordinates(1.F, 1), LocalDate.now(), 10L, Color.BROWN, DragonType.AIR, DragonCharacter.CHAOTIC, new DragonCave(10.0, 1)));
+        System.out.println(dao.getJSONDescription());
+    }
 }
 
 class Coordinates {
@@ -165,10 +184,6 @@ enum Color {
     public String getDescription() {
         return description;
     }
-
-//    public static Color getFromDescription(String description) {
-//
-//    }
 }
 enum DragonType {
     UNDERGROUND("UNDERGROUND"),

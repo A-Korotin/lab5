@@ -2,6 +2,11 @@ import java.util.*;
 import java.io.*;
 
 public abstract class InputReader {
+    protected boolean askForInput;
+
+    public boolean getAskForInput() {
+        return askForInput;
+    }
 
     protected List<String> additionalProperties = new ArrayList<>();
 
@@ -13,6 +18,11 @@ public abstract class InputReader {
     }
 
 class ConsoleReader extends InputReader {
+
+    {
+        askForInput = true;
+    }
+
     public List<List<String>> getInput() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
@@ -29,6 +39,9 @@ class ConsoleReader extends InputReader {
 
 class FileReader extends InputReader {
 
+    {
+        askForInput = false;
+    }
     public List<List<String>> getInput() {
         String filePath = additionalProperties.get(0);
         File file;
