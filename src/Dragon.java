@@ -1,8 +1,10 @@
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.json.*;
 
 public class Dragon {
+    private static int availableId = 1;
 
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -14,7 +16,8 @@ public class Dragon {
     private DragonCharacter character; //Поле может быть null
     private DragonCave cave; //Поле не может быть null
 
-    public Dragon(String name, Coordinates coordinates, java.time.LocalDate creationDate, Long age, Color color, DragonType type, DragonCharacter character, DragonCave cave) {
+    public Dragon(String name, Coordinates coordinates, LocalDate creationDate, Long age, Color color, DragonType type, DragonCharacter character, DragonCave cave) {
+        this.id = availableId++;
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = creationDate;
@@ -23,6 +26,18 @@ public class Dragon {
         this.type = type;
         this.character = character;
         this.cave = cave;
+    }
+
+    public Dragon(DragonProperties properties) {
+        id = availableId++;
+        name = properties.name;
+        coordinates = new Coordinates(properties.xCoord, properties.yCoord);
+        creationDate = LocalDate.now();
+        age = properties.age;
+        color = properties.color;
+        type = properties.type;
+        character = properties.character;
+        cave = new DragonCave(properties.depth, properties.numberOfTreasures);
     }
 
     public int getId() {
@@ -59,10 +74,6 @@ public class Dragon {
 
     public DragonCave getCave() {
         return cave;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public void setName(String name) {
@@ -103,7 +114,7 @@ public class Dragon {
                 add("name", name).
                 add("coordinates", Json.createObjectBuilder().
                         add("x", coordinates.getX()).
-                        add("y", coordinates.getY())).
+                        add("y", coordinates.getY()).build()).
                 add("creationDate", creationDate.toString()).
                 add("age", age).
                 add("color", color.getDescription()).
@@ -115,6 +126,12 @@ public class Dragon {
         return dragon;
     }
 
+    public static void main(String[] args) {
+        DAO dao = new DragonDAO();
+        dao.create(new Dragon("a", new Coordinates(1.F, 1), LocalDate.now(), 10L, Color.BROWN, DragonType.AIR, DragonCharacter.CHAOTIC, new DragonCave(10.0, 1)));
+        dao.create(new Dragon("a", new Coordinates(1.F, 1), LocalDate.now(), 10L, Color.BROWN, DragonType.AIR, DragonCharacter.CHAOTIC, new DragonCave(10.0, 1)));
+        System.out.println(dao.getJSONDescription());
+    }
 }
 
 class Coordinates {

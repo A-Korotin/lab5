@@ -30,9 +30,10 @@ public class CommandCreator {
         List<Command> output = new ArrayList<>();
         List<List<String>> input = source.getInput();
         for (List<String> args: input) {
-            String command = args.get(0);
+            String commandName = args.get(0);
             args.remove(0);
-            output.add(availableCommands.get(command).construct(args));
+            Command command = availableCommands.get(commandName).construct(args);
+            command.setAskForInput(source.getAskForInput());
         }
         return output;
     }

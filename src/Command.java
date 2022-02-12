@@ -2,6 +2,11 @@ import java.util.*;
 
 public abstract class Command {
     protected List<String> args;
+    protected boolean askForInput;
+
+    public void setAskForInput(boolean ask) {
+        askForInput = ask;
+    }
 
     public Command(List<String> args) {
         this.args=args;
@@ -61,7 +66,10 @@ class Add extends Command {
 
     @Override
     public int execute(DAO dao) {
-        //dao.create(new Dragon(args.get(0), );
+        if (askForInput)
+            dao.create(new Dragon(new ConsoleRequester().request()));
+        return 0;
+
 
     }
 }
