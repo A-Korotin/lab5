@@ -8,6 +8,7 @@ interface DAO {
     void delete(int id);
     Dragon get(int id);
     List<Dragon> getAll();
+    void clear();
 }
 
 class DragonDAO implements DAO {
@@ -16,7 +17,7 @@ class DragonDAO implements DAO {
 
     @Override
     public int create(Dragon dragon) {
-        collection.add(new Dragon(availableId, dragon.getName(), dragon.getCoordinates(), dragon.getCreationDate(), dragon.getAge(), dragon.getColor(), dragon.getType(), dragon.getCharacter(), dragon.getCave()));
+        collection.add(new Dragon(dragon.getName(), dragon.getCoordinates(), dragon.getCreationDate(), dragon.getAge(), dragon.getColor(), dragon.getType(), dragon.getCharacter(), dragon.getCave()));
         return availableId++;
     }
 
@@ -58,4 +59,7 @@ class DragonDAO implements DAO {
         return outputCollection;
     }
 
+    public void clear() {
+        collection.clear();
+    }
 }
