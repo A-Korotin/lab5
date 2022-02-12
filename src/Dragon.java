@@ -14,8 +14,7 @@ public class Dragon {
     private DragonCharacter character; //Поле может быть null
     private DragonCave cave; //Поле не может быть null
 
-    public Dragon(int id, String name, Coordinates coordinates, java.time.LocalDate creationDate, Long age, Color color, DragonType type, DragonCharacter character, DragonCave cave) {
-        this.id = id;
+    public Dragon(String name, Coordinates coordinates, java.time.LocalDate creationDate, Long age, Color color, DragonType type, DragonCharacter character, DragonCave cave) {
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = creationDate;

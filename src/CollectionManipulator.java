@@ -7,7 +7,7 @@ class FileManipulator implements CollectionManipulator {
 
     @Override
     public void save() {
-
+        
     }
 
     @Override

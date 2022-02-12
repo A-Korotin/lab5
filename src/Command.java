@@ -61,8 +61,8 @@ class Add extends Command {
 
     @Override
     public int execute(DAO dao) {
-        // TODO dragon constructor
-        return 0;
+        //dao.create(new Dragon(args.get(0), );
+
     }
 }
 
@@ -102,7 +102,7 @@ class Clear extends Command {
 
     @Override
     public int execute(DAO dao) {
-        // TODO dao.clear()
+        dao.clear();
         return 0;
     }
 }
@@ -202,8 +202,6 @@ class MinById extends Command {
 
     @Override
     public int execute(DAO dao) {
-
-        //TODO Dragon.getId()
         int minId = Integer.MAX_VALUE;
         for(Dragon d: dao.getAll())
             minId = d.getId() < minId? d.getId(): minId;
@@ -222,13 +220,15 @@ class CountByAge extends Command {
     @Override
     public int execute(DAO dao) {
         int age = Integer.getInteger(args.get(0));
-        int amount = dao.getFilter(() -> d.getAge() == age).size();
-
-        System.out.println(amount);
-        return 0;
+        int ageCount = 0;
+        for (Dragon dragon : dao.getAll()) {
+            if (dragon.getAge() == age) {
+                ageCount++;
+            }
+        }
+        return ageCount;
     }
 }
-
 class FilterGreaterThanCharacter extends Command {
 
     public FilterGreaterThanCharacter(List<String> args) {
