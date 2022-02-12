@@ -1,12 +1,63 @@
-import java.util.Collection;
-import java.util.function.Predicate;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
-public interface DAO {
-    // TODO info
+interface DAO {
     int create(Dragon dragon);
     void update(Dragon dragon);
     void delete(int id);
     Dragon get(int id);
-    Collection<Dragon> getAll();
-    Collection<Dragon> getFilter(Predicate<Dragon> condition);
+    List<Dragon> getAll();
+
+
+}
+
+class DragonDAO implements DAO{
+    private static int availableId = 1;
+    private final List<Dragon> collection = new LinkedList<>();
+
+    @Override
+    public int create(Dragon dragon) {
+        collection.add(new Dragon(availableId, dragon.getName(), dragon.getCoordinates(), dragon.getCreationDate(), dragon.getAge(), dragon.getColor(), dragon.getType(), dragon.getCharacter(), dragon.getCave()));
+        return availableId++;
+    }
+
+    @Override
+    public void update(Dragon dragon) {
+        for(Dragon dragon1 : collection){
+            if (dragon.getId() == dragon1.getId()) {
+                dragon1.setName(dragon.getName());
+                dragon1.setCoordinates(dragon.getCoordinates());
+                dragon1.setCreationDate(dragon.getCreationDate());
+                dragon1.setAge(dragon.getAge());
+                dragon1.setColor(dragon.getColor());
+                dragon1.setType(dragon.getType());
+                dragon1.setCharacter(dragon.getCharacter());
+                dragon1.setCave(dragon.getCave());
+
+            }
+        }
+    }
+
+    @Override
+    public void delete(int id) {
+        collection.removeIf(dragon -> dragon.getId() == id);
+    }
+
+    @Override
+    public Dragon get(int id) {
+        for(Dragon dragon : collection){
+            if (dragon.getId() == id) {
+                return dragon;
+            }
+        }
+        return null;
+    }
+
+    public List<Dragon> getAll(){
+        List<Dragon> outputCollection = new LinkedList<>();
+        Collections.copy(outputCollection,collection);
+        return outputCollection;
+    }
+
 }
