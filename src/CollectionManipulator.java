@@ -15,27 +15,13 @@ class FileManipulator implements CollectionManipulator {
         String filepath = env.get("DAO_COLLECTION_FILEPATH");
 
         File file = new File(filepath);
-        FileOutputStream stream = null;
-        OutputStreamWriter writer = null;
-        try {
-            stream = new FileOutputStream(file);
-             writer = new OutputStreamWriter(stream);
+        try (FileOutputStream stream = new FileOutputStream(file); OutputStreamWriter writer = new OutputStreamWriter(stream)) {
             JsonObject description = collection.getJSONDescription();
             writer.write(description.toString());
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
 
-        }
-        finally {
-            try {
-                writer.close();
-                stream.close();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-            catch (NullPointerException e) {
-            }
         }
     }
 
@@ -45,14 +31,12 @@ class FileManipulator implements CollectionManipulator {
         String filepath = env.get("DAO_COLLECTION_FILEPATH");
 
         File file = new File(filepath);
-        FileInputStream fileInputStream = null;
-        BufferedInputStream inputStream = null;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try {
-            fileInputStream = new FileInputStream(file);
-            inputStream = new BufferedInputStream(fileInputStream);
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+             FileInputStream fileInputStream = new FileInputStream(file);
+             BufferedInputStream inputStream = new BufferedInputStream(fileInputStream)) {
+
             int nextByte;
-            while((nextByte = inputStream.read()) != -1)
+            while ((nextByte = inputStream.read()) != -1)
                 bos.write((char) nextByte);
 
             String input = bos.toString();
@@ -61,13 +45,10 @@ class FileManipulator implements CollectionManipulator {
             return new DragonDAO(daoJson);
 
         } catch (IOException e) {
-
-
-        } finally {
-
-
+            // ...
         }
-        return null;
+        // ...
+        return new DragonDAO();
     }
 
 }
