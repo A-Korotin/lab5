@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Logger {
-    private static List<String> history = new ArrayList<>();
+    private static final List<String> history = new ArrayList<>();
     public static void log(String command){
         history.add(0,command);
         if (history.size() > 6) {
