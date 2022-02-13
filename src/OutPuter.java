@@ -10,7 +10,7 @@ class ConsoleOutPut implements OutPuter {
 
     @Override
     public void outPut(Dragon dragon) {
-        System.out.println(dragon);
+        System.out.println(dragon.getJSONDescription().toString());
     }
 }
 

@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.*;
 
 public abstract class Command {
@@ -24,7 +25,6 @@ class Help extends Command {
 
     @Override
     public int execute(DAO dao, OutPuter outPuter) {
-        /* TODO commands description */
         outPuter.outPut("""
                 help : вывести справку по доступным командам
                 info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)
@@ -55,7 +55,7 @@ class Info extends Command {
 
     @Override
     public int execute(DAO dao, OutPuter outPuter) {
-        // TODO info
+        outPuter.outPut(dao.getJSONDescription().toString());
         return 0;
     }
 }
@@ -68,8 +68,7 @@ class Show extends Command {
 
     public int execute(DAO dao, OutPuter outPuter) {
         for (Dragon d: dao.getAll())
-            System.out.println(d);
-
+            outPuter.outPut(d);
         return 0;
     }
 }
@@ -84,9 +83,20 @@ class Add extends Command {
     public int execute(DAO dao, OutPuter outPuter) {
         if (askForInput)
             dao.create(new Dragon(new ConsoleRequester().request()));
+        else
+            dao.create(new Dragon(
+                    args.get(0), // name
+                    new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
+                    LocalDate.now(), // creation date
+                    Long.parseLong(args.get(3)), // age
+                    Color.valueOf(args.get(4)), // color
+                    DragonType.valueOf(args.get(5)), // type
+                    DragonCharacter.valueOf(args.get(6)), // character
+                    new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
+                    ));
+
+            outPuter.outPut("Элемент успешно добавлен");
         return 0;
-
-
     }
 }
 
@@ -98,8 +108,8 @@ class Update extends Command {
 
     @Override
     public int execute(DAO dao, OutPuter outPuter) {
-        // TODO
-        int id = Integer.getInteger(this.args.get(0));
+    // TODO update
+        int id = Integer.parseInt(args.get(0));
         dao.update(null);
         return 0;
     }
@@ -113,8 +123,12 @@ class RemoveById extends Command {
 
     @Override
     public int execute(DAO dao, OutPuter outPuter) {
-        dao.delete(Integer.getInteger(args.get(0)));
-        return 0;
+        int exitCode;
+        if((exitCode = dao.delete(Integer.getInteger(args.get(0)))) == 1)
+            outPuter.outPut("Элемент успешно удален");
+        else
+            outPuter.outPut("Элемент не найден.");
+        return exitCode;
     }
 }
 
@@ -127,6 +141,7 @@ class Clear extends Command {
     @Override
     public int execute(DAO dao, OutPuter outPuter) {
         dao.clear();
+        outPuter.outPut("Коллекция успешно очищена");
         return 0;
     }
 }
@@ -139,8 +154,15 @@ class Save extends Command {
 
     @Override
     public int execute(DAO dao, OutPuter outPuter) {
-        // TODO CollectionManipulator
-        return 0;
+        try {
+            new FileManipulator().save(dao);
+            outPuter.outPut("Коллекция успешно сохранена");
+            return 0;
+        } catch (RuntimeException e) {
+            outPuter.outPut("Не удалось сохранить коллекцию (" + e.getMessage() + ")");
+        }
+        return -1;
+
     }
 }
 
@@ -213,7 +235,8 @@ class History extends Command {
 
     @Override
     public int execute(DAO dao, OutPuter outPuter) {
-        //TODO ...
+        for (String msg: Logger.getAll())
+            outPuter.outPut(msg);
         return 0;
     }
 }

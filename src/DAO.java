@@ -7,12 +7,12 @@ import javax.json.*;
 
 
 interface DAO {
-    void create(Dragon dragon);
-    void update(Dragon dragon);
-    void delete(int id);
+    int create(Dragon dragon);
+    int update(Dragon dragon);
+    int delete(int id);
     Dragon get(int id);
     List<Dragon> getAll();
-    void clear();
+    int clear();
     JsonObject getJSONDescription();
 }
 
@@ -38,12 +38,13 @@ class DragonDAO implements DAO {
 
     }
     @Override
-    public void create(Dragon dragon) {
+    public int create(Dragon dragon) {
         collection.add(dragon);
+        return 0;
     }
 
     @Override
-    public void update(Dragon dragon) {
+    public int update(Dragon dragon) {
         for(Dragon dragon1 : collection){
             if (dragon.getId() == dragon1.getId()) {
                 dragon1.setName(dragon.getName());
@@ -54,14 +55,17 @@ class DragonDAO implements DAO {
                 dragon1.setType(dragon.getType());
                 dragon1.setCharacter(dragon.getCharacter());
                 dragon1.setCave(dragon.getCave());
-
+                return 0;
             }
         }
+        return -1;
     }
 
     @Override
-    public void delete(int id) {
-        collection.removeIf(dragon -> dragon.getId() == id);
+    public int delete(int id) {
+        if (collection.removeIf(dragon -> dragon.getId() == id))
+            return 0;
+        return -1;
     }
 
     @Override
@@ -82,8 +86,9 @@ class DragonDAO implements DAO {
     }
 
     @Override
-    public void clear() {
+    public int clear() {
         collection.clear();
+        return 0;
     }
 
     @Override

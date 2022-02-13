@@ -20,8 +20,7 @@ class FileManipulator implements CollectionManipulator {
             writer.write(description.toString());
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -45,9 +44,9 @@ class FileManipulator implements CollectionManipulator {
             return new DragonDAO(daoJson);
 
         } catch (IOException e) {
-            // ...
+            // ..
         }
-        // ...
+
         return new DragonDAO();
     }
 

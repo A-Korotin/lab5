@@ -35,6 +35,7 @@ public class CommandCreator {
             Command command = availableCommands.get(commandName).construct(args);
             command.setAskForInput(source.getAskForInput());
             output.add(command);
+            Logger.log(commandName);
         }
         return output;
     }
