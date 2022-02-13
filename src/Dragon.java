@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.json.*;
 
 public class Dragon {
@@ -124,13 +125,6 @@ public class Dragon {
                         add("depth", cave.getDepth()).
                         add("numberOfTreasures", cave.getNumberOfTreasures())).build();
         return dragon;
-    }
-
-    public static void main(String[] args) {
-        DAO dao = new DragonDAO();
-        dao.create(new Dragon("a", new Coordinates(1.F, 1), LocalDate.now(), 10L, Color.BROWN, DragonType.AIR, DragonCharacter.CHAOTIC, new DragonCave(10.0, 1)));
-        dao.create(new Dragon("a", new Coordinates(1.F, 1), LocalDate.now(), 10L, Color.BROWN, DragonType.AIR, DragonCharacter.CHAOTIC, new DragonCave(10.0, 1)));
-        System.out.println(dao.getJSONDescription());
     }
 }
 

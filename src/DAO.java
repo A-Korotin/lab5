@@ -1,10 +1,10 @@
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import javax.json.*;
+
 
 interface DAO {
     void create(Dragon dragon);
@@ -22,6 +22,9 @@ class DragonDAO implements DAO {
 
     public DragonDAO() {
         initDateTime = LocalDateTime.now();
+    }
+    public DragonDAO(JsonObject description) {
+
     }
     @Override
     public void create(Dragon dragon) {

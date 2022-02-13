@@ -23,102 +23,104 @@ class ConsoleRequester implements PropertiesRequester {
         Scanner scanner = new Scanner(System.in);
         DragonProperties output = new DragonProperties();
 
+        System.out.println("Введите имя дракона, не может быть пустым");
         while (true) {
             try {
-                System.out.println("Введите имя дракона, не может быть пустым");
                 output.name = scanner.nextLine();
-                if (output.name.isEmpty())
+                if (output.name.isEmpty()) {
+                    System.out.println("Неверный ввод.");
                     continue;
+                }
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
             }
         }
 
-        while (true) {
-            try {
-                System.out.println("Введите координату X пещеры дракона, Float");
+        System.out.println("Введите координату X пещеры дракона, Float");
+        while(true) {
+            try{
                 output.xCoord = scanner.nextFloat();
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
+                scanner.nextLine();
             }
         }
 
+        System.out.println("Введите координату Y пещеры дракона, Integer, не больше 998");
         while (true) {
             try {
-                System.out.println("Введите координату Y пещеры дракона, Integer, не больше 998");
-                int y = scanner.nextInt();
-                if (y > 998) {
+                output.yCoord = scanner.nextInt();
+                if (output.yCoord > 998){
                     System.out.println("Неверный ввод.");
                     continue;
                 }
-                output.yCoord = y;
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
+                scanner.nextLine();
             }
         }
-
+        System.out.println("Введите возраст дракона, Long, >0");
         while (true) {
             try {
-                System.out.println("Введите возраст дракона, Long, >0");
-                long age = scanner.nextLong();
-                if(age <= 0) {
+                output.age = scanner.nextLong();
+                if (output.age <= 0) {
                     System.out.println("Неверный ввод.");
                     continue;
                 }
-                output.age = age;
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
+                scanner.nextLine();
             }
         }
-
+        System.out.println("Введите цвет дракона: BLACK, BLUE, WHITE, BROWN");
+        scanner.nextLine();
         while (true) {
             try {
-                System.out.println("Введите цвет дракона: BLACK, BLUE, WHITE, BROWN");
                 output.color = Color.valueOf(scanner.nextLine());
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
+                scanner.nextLine();
             }
         }
-
+        System.out.println("Введите тип дракона: UNDERGROUND, AIR, FIRE");
         while (true) {
             try {
-                System.out.println("Введите тип дракона: UNDERGROUND, AIR, FIRE");
                 output.type = DragonType.valueOf(scanner.nextLine());
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
+                scanner.nextLine();
             }
         }
-
+        System.out.println("Введите характер дракона: CUNNING, GOOD, CHAOTIC, CHAOTIC_EVIL, FICKLE;");
         while (true) {
             try {
-                System.out.println("Введите характер дракона: CUNNING, GOOD, CHAOTIC, CHAOTIC_EVIL, FICKLE;");
                 output.character = DragonCharacter.valueOf(scanner.nextLine());
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
+                scanner.nextLine();
             }
         }
 
-
+        System.out.println("Введите глубину пещеры дракона, double");
         while (true) {
             try {
-                System.out.println("Введите глубину пещеры дракона, double");
                 output.depth = scanner.nextDouble();
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
+                scanner.nextLine();
             }
         }
-
+        System.out.println("Введите количество сокровищ в пещере дракона, Integer, >0");
         while (true) {
             try {
-                System.out.println("Введите количество сокровищ в пещере дракона, Integer, >0");
                 output.numberOfTreasures = scanner.nextInt();
                 if (output.numberOfTreasures <= 0) {
                     System.out.println("Неверный ввод.");
@@ -127,6 +129,7 @@ class ConsoleRequester implements PropertiesRequester {
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
+                scanner.nextLine();
             }
         }
         return output;
