@@ -23,7 +23,18 @@ class DragonDAO implements DAO {
     public DragonDAO() {
         initDateTime = LocalDateTime.now();
     }
+
     public DragonDAO(JsonObject description) {
+        String initTime = description.getString("init date");
+        if (initTime == null)
+            initDateTime = LocalDateTime.now();
+        else
+            initDateTime = LocalDateTime.parse(initTime, DateTimeFormatter.ofPattern("dd.MM.uuuu: HH:mm:ss"));
+
+        JsonArray dragons = description.getJsonArray("elements");
+
+        for (int i = 0; i < description.getInt("size"); ++i)
+            collection.add(new Dragon(dragons.getJsonObject(i)));
 
     }
     @Override

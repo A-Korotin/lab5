@@ -41,6 +41,20 @@ public class Dragon {
         cave = new DragonCave(properties.depth, properties.numberOfTreasures);
     }
 
+    public Dragon(JsonObject description) {
+        id = description.getInt("id");
+        name = description.getString("name");
+        JsonObject coord = description.getJsonObject("coordinates");
+        coordinates = new Coordinates((float)coord.getJsonNumber("x").doubleValue(), coord.getInt("y"));
+        creationDate = LocalDate.parse(description.getString("creationDate"));
+        age = description.getJsonNumber("age").longValue();
+        color = Color.valueOf(description.getString("color"));
+        type = DragonType.valueOf(description.getString("type"));
+        character = DragonCharacter.valueOf(description.getString("character"));
+        JsonObject cave = description.getJsonObject("cave");
+        this.cave = new DragonCave(cave.getJsonNumber("depth").doubleValue(), cave.getInt("numberOfTreasures"));
+    }
+
     public int getId() {
         return id;
     }
