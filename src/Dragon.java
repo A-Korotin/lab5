@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.json.*;
 
-public class Dragon {
+public class Dragon implements Comparable<Dragon> {
     private static int availableId = 1;
 
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
@@ -139,6 +139,11 @@ public class Dragon {
                         add("depth", cave.getDepth()).
                         add("numberOfTreasures", cave.getNumberOfTreasures())).build();
         return dragon;
+    }
+
+    @Override
+    public int compareTo(Dragon dragon) {
+        return Long.compare(age, dragon.age);
     }
 }
 

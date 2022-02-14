@@ -14,6 +14,7 @@ interface DAO {
     List<Dragon> getAll();
     int clear();
     JsonObject getJSONDescription();
+    void sort();
 }
 
 class DragonDAO implements DAO {
@@ -105,5 +106,10 @@ class DragonDAO implements DAO {
                 add("elements", dragons.build()).build();
 
         return output;
+    }
+
+    @Override
+    public void sort() {
+        Collections.sort(collection);
     }
 }
