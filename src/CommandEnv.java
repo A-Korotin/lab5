@@ -139,23 +139,22 @@ public class CommandEnv {
 
     @Override
     public int execute(DAO dao) {
-        outPuter.outPut("""
-                help : вывести справку по доступным командам
-                info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)
-                show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении
-                add {element} : добавить новый элемент в коллекцию
-                update id {element} : обновить значение элемента коллекции, id которого равен заданному
-                remove_by_id id : удалить элемент из коллекции по его id
-                clear : очистить коллекцию
-                save : сохранить коллекцию в файл
-                execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.
-                exit : завершить программу (без сохранения в файл)
-                add_if_max {element} : добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции
-                sort : отсортировать коллекцию в естественном порядке
-                history : вывести последние 6 команд (без их аргументов)
-                min_by_id : вывести любой объект из коллекции, значение поля id которого является минимальным
-                count_by_age age : вывести количество элементов, значение поля age которых равно заданному
-                filter_greater_than_character character : вывести элементы, значение поля character которых больше заданного""");
+        outPuter.outPut("help : вывести справку по доступным командам\n" +
+                "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\n" +
+                "show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении\n" +
+                "add {element} : добавить новый элемент в коллекцию\n" +
+                "update id {element} : обновить значение элемента коллекции, id которого равен заданному\n" +
+                "remove_by_id id : удалить элемент из коллекции по его id\n" +
+                "clear : очистить коллекцию\n" +
+                "save : сохранить коллекцию в файл\n" +
+                "execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.\n" +
+                "exit : завершить программу (без сохранения в файл)\n" +
+                "add_if_max {element} : добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции\n" +
+                "sort : отсортировать коллекцию в естественном порядке\n" +
+                "history : вывести последние 6 команд (без их аргументов)\n" +
+                "min_by_id : вывести любой объект из коллекции, значение поля id которого является минимальным\n" +
+                "count_by_age age : вывести количество элементов, значение поля age которых равно заданному\n" +
+                "filter_greater_than_character character : вывести элементы, значение поля character которых больше заданного");
         return 0;
     }
 
@@ -222,9 +221,22 @@ public class CommandEnv {
 
         @Override
         public int execute(DAO dao) {
-            // TODO update
             int id = Integer.parseInt(args.get(0));
-            dao.update(null);
+            if (askForInput)
+                dao.update(Integer.getInteger(args.get(0)), new ConsoleRequester().request());
+            else{
+                DragonProperties dragonProperties = new DragonProperties();
+                dragonProperties.name = args.get(1);
+                dragonProperties.xCoord = Float.parseFloat(args.get(2));
+                dragonProperties.yCoord = Integer.parseInt(args.get(3));
+                dragonProperties.age = Long.parseLong(args.get(4));
+                dragonProperties.color = Color.valueOf(args.get(5));
+                dragonProperties.type = DragonType.valueOf(args.get(6));
+                dragonProperties.character = DragonCharacter.valueOf(args.get(7));
+                dragonProperties.depth = Double.parseDouble(args.get(8));
+                dragonProperties.numberOfTreasures = Integer.parseInt(args.get(9));
+                dao.update(id,dragonProperties);
+            }
             return 0;
         }
     }
@@ -323,7 +335,31 @@ public class CommandEnv {
 
         @Override
         public int execute(DAO dao) {
-            //TODO ...
+            Long ageMax = -1L;
+            for (Dragon dragon : dao.getAll()) {
+                if (dragon.getAge() > ageMax) {
+                    ageMax = dragon.getAge();
+                }
+            }
+            if (Long.parseLong(args.get(3)) > ageMax){
+                if (askForInput)
+                    dao.create(new Dragon(requester.request()));
+                else
+                    dao.create(new Dragon(
+                            args.get(0), // name
+                            new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
+                            LocalDate.now(), // creation date
+                            Long.parseLong(args.get(3)), // age
+                            Color.valueOf(args.get(4)), // color
+                            DragonType.valueOf(args.get(5)), // type
+                            DragonCharacter.valueOf(args.get(6)), // character
+                            new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
+                    ));
+                outPuter.outPut("Элемент успешно добавлен");
+            }
+            else {
+                outPuter.outPut("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
+            }
             return 0;
         }
     }
@@ -336,7 +372,8 @@ public class CommandEnv {
 
     @Override
     public int execute(DAO dao) {
-        // TODO dao.sort()
+        dao.sort();
+        outPuter.outPut("Коллекция успешно отсортирована");
         return 0;
     }
 }
@@ -386,7 +423,8 @@ public class CommandEnv {
                     ageCount++;
                 }
             }
-            return ageCount;
+            outPuter.outPut(ageCount);
+            return 0;
         }
     }
 
@@ -398,7 +436,12 @@ public class CommandEnv {
 
         @Override
         public int execute(DAO dao) {
-            //TODO ...
+            DragonCharacter character = DragonCharacter.valueOf(args.get(0));
+            for (Dragon dragon: dao.getAll()){
+                if (dragon.getCharacter().compareCharacter(character)){
+                    outPuter.outPut(dragon);
+                }
+            }
             return 0;
         }
     }

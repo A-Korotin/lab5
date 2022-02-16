@@ -145,6 +145,18 @@ public class Dragon implements Comparable<Dragon> {
     public int compareTo(Dragon dragon) {
         return Long.compare(age, dragon.age);
     }
+
+    public void update(DragonProperties properties){
+        name = properties.name;
+        coordinates = new Coordinates(properties.xCoord, properties.yCoord);
+        age = properties.age;
+        color = properties.color;
+        type = properties.type;
+        character = properties.character;
+        cave = new DragonCave(properties.depth, properties.numberOfTreasures);
+
+    }
+
 }
 
 class Coordinates {
@@ -229,5 +241,9 @@ enum DragonCharacter {
     public String getDescription() {
         return description;
     }
+    public boolean compareCharacter(DragonCharacter character){
+        return description.length() > character.getDescription().length();
+    }
+
 }
 

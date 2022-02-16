@@ -8,7 +8,7 @@ import javax.json.*;
 
 interface DAO {
     int create(Dragon dragon);
-    int update(Dragon dragon);
+    int update(int id, DragonProperties properties);
     int delete(int id);
     Dragon get(int id);
     List<Dragon> getAll();
@@ -45,17 +45,10 @@ class DragonDAO implements DAO {
     }
 
     @Override
-    public int update(Dragon dragon) {
+    public int update(int id, DragonProperties properties) {
         for(Dragon dragon1 : collection){
-            if (dragon.getId() == dragon1.getId()) {
-                dragon1.setName(dragon.getName());
-                dragon1.setCoordinates(dragon.getCoordinates());
-                dragon1.setCreationDate(dragon.getCreationDate());
-                dragon1.setAge(dragon.getAge());
-                dragon1.setColor(dragon.getColor());
-                dragon1.setType(dragon.getType());
-                dragon1.setCharacter(dragon.getCharacter());
-                dragon1.setCave(dragon.getCave());
+            if (id == dragon1.getId()) {
+                dragon1.update(properties);
                 return 0;
             }
         }
@@ -83,7 +76,8 @@ class DragonDAO implements DAO {
     @Override
     public List<Dragon> getAll(){
         List<Dragon> outputCollection = new LinkedList<>();
-        Collections.copy(outputCollection, collection);
+        outputCollection.addAll(collection);
+        //Collections.copy(outputCollection, collection);
         return outputCollection;
     }
 
