@@ -190,6 +190,14 @@ class Coordinates {
     public Integer getY() {
         return y;
     }
+
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
 class DragonCave {
 
@@ -207,6 +215,14 @@ class DragonCave {
 
     public Integer getNumberOfTreasures() {
         return numberOfTreasures;
+    }
+
+    @Override
+    public String toString() {
+        return "DragonCave{" +
+                "depth=" + depth +
+                ", numberOfTreasures=" + numberOfTreasures +
+                '}';
     }
 }
 enum Color {
