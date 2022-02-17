@@ -74,12 +74,10 @@ class DragonDAO implements DAO {
         return null;
     }
 
-    // TODO не работает
     @Override
     public List<Dragon> getAll(){
         List<Dragon> outputCollection = new LinkedList<>();
         outputCollection.addAll(collection);
-        //Collections.copy(outputCollection, collection);
         return outputCollection;
     }
 

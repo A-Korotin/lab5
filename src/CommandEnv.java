@@ -141,14 +141,17 @@ public class CommandEnv {
                 help : вывести справку по доступным командам
                 info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)
                 show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении
-                add {element} : добавить новый элемент в коллекцию
-                update id {element} : обновить значение элемента коллекции, id которого равен заданному
+                add {element} : добавить новый элемент в коллекцию (при вводе в консоль не передавать аргументы,
+                при считывании из файла данные вводить в порядке: ИМЯ КООРДИНАТА_X КООРДИНАТА_Y ВОЗРАСТ ЦВЕТ ТИП ХАРАКТЕР ГЛУБИНА_ПЕЩЕРЫ КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ)
+                update id {element} : обновить значение элемента коллекции, id которого равен заданному (при вводе в консоль не передавать аргументы,
+                при считывании из файла данные вводить в порядке: ИМЯ КООРДИНАТА_X КООРДИНАТА_Y ВОЗРАСТ ЦВЕТ ТИП ХАРАКТЕР ГЛУБИНА_ПЕЩЕРЫ КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ)
                 remove_by_id id : удалить элемент из коллекции по его id
                 clear : очистить коллекцию
                 save : сохранить коллекцию в файл
                 execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.
                 exit : завершить программу (без сохранения в файл)
-                add_if_max {element} : добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции
+                add_if_max {element} : добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции (при вводе в консоль не передавать аргументы,
+                при считывании из файла данные вводить в порядке: ИМЯ КООРДИНАТА_X КООРДИНАТА_Y ВОЗРАСТ ЦВЕТ ТИП ХАРАКТЕР ГЛУБИНА_ПЕЩЕРЫ КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ)
                 sort : отсортировать коллекцию в естественном порядке
                 history : вывести последние 6 команд (без их аргументов)
                 min_by_id : вывести любой объект из коллекции, значение поля id которого является минимальным
@@ -210,12 +213,24 @@ public class CommandEnv {
                     properties.name = args.get(0);
                     properties.xCoord = Float.parseFloat(args.get(1));
                     properties.yCoord = Integer.parseInt(args.get(2));
+                    if (properties.yCoord > 998){
+                        outPuter.outPut("Значение КООРДИНАТА_Y недопустимо");
+                        return -1;
+                    }
                     properties.age = Long.parseLong(args.get(3));
+                    if (properties.age <= 0){
+                        outPuter.outPut("Значение ВОЗРАСТ недопустимо");
+                        return -1;
+                    }
                     properties.color = Color.valueOf(args.get(4));
                     properties.type = DragonType.valueOf(args.get(5));
                     properties.character = DragonCharacter.valueOf(args.get(6));
                     properties.depth = Double.parseDouble(args.get(7));
                     properties.numberOfTreasures = Integer.parseInt(args.get(8));
+                    if (properties.numberOfTreasures <=0){
+                        outPuter.outPut("Значение КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ недопустимо");
+                        return -1;
+                    }
                     dao.create(properties);
                 } catch (RuntimeException e) {
                     outPuter.outPut("Типы данных не совпадают");
@@ -268,12 +283,24 @@ public class CommandEnv {
                     dragonProperties.name = args.get(1);
                     dragonProperties.xCoord = Float.parseFloat(args.get(2));
                     dragonProperties.yCoord = Integer.parseInt(args.get(3));
+                    if (dragonProperties.yCoord > 998){
+                        outPuter.outPut("Значение КООРДИНАТА_Y недопустимо");
+                        return -1;
+                    }
                     dragonProperties.age = Long.parseLong(args.get(4));
+                    if (dragonProperties.age <= 0){
+                        outPuter.outPut("Значение ВОЗРАСТ недопустимо");
+                        return -1;
+                    }
                     dragonProperties.color = Color.valueOf(args.get(5));
                     dragonProperties.type = DragonType.valueOf(args.get(6));
                     dragonProperties.character = DragonCharacter.valueOf(args.get(7));
                     dragonProperties.depth = Double.parseDouble(args.get(8));
                     dragonProperties.numberOfTreasures = Integer.parseInt(args.get(9));
+                    if (dragonProperties.numberOfTreasures <=0){
+                        outPuter.outPut("Значение КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ недопустимо");
+                        return -1;
+                    }
                     exitCode = dao.update(id,dragonProperties);
                 }
                 catch (RuntimeException e){
@@ -373,7 +400,7 @@ public class CommandEnv {
 
             for (Command c : commands)
                 exitCode += c.execute(dao);
-
+            outPuter.outPut("Скрипт выполнен");
             return exitCode;
         }
     }
@@ -414,12 +441,24 @@ public class CommandEnv {
                     properties.name = args.get(0);
                     properties.xCoord = Float.parseFloat(args.get(1));
                     properties.yCoord = Integer.parseInt(args.get(2));
+                    if (properties.yCoord > 998){
+                        outPuter.outPut("Значение КООРДИНАТА_Y недопустимо");
+                        return -1;
+                    }
                     properties.age = Long.parseLong(args.get(3));
+                    if (properties.age <= 0){
+                        outPuter.outPut("Значение ВОЗРАСТ недопустимо");
+                        return -1;
+                    }
                     properties.color = Color.valueOf(args.get(4));
                     properties.type = DragonType.valueOf(args.get(5));
                     properties.character = DragonCharacter.valueOf(args.get(6));
                     properties.depth = Double.parseDouble(args.get(7));
                     properties.numberOfTreasures = Integer.parseInt(args.get(8));
+                    if (properties.numberOfTreasures <=0){
+                        outPuter.outPut("Значение КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ недопустимо");
+                        return -1;
+                    }
                 }
                 catch (RuntimeException e){
                     outPuter.outPut("Типы данных не совпадают");
