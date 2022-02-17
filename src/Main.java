@@ -2,6 +2,11 @@ public class Main {
 
     public static void main(String[] args) {
         CommandEnv.defaultInit();
-        CommandEnv.mainLoop();
+        try{
+            CommandEnv.mainLoop();
+        }
+        catch (RuntimeException runtimeException){
+            System.out.print("Не совпадают типы данных");
+        }
     }
 }

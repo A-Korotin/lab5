@@ -341,20 +341,22 @@ public class CommandEnv {
                     ageMax = dragon.getAge();
                 }
             }
-            if (Long.parseLong(args.get(3)) > ageMax){
-                if (askForInput)
-                    dao.create(new Dragon(requester.request()));
-                else
-                    dao.create(new Dragon(
-                            args.get(0), // name
-                            new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
-                            LocalDate.now(), // creation date
-                            Long.parseLong(args.get(3)), // age
-                            Color.valueOf(args.get(4)), // color
-                            DragonType.valueOf(args.get(5)), // type
-                            DragonCharacter.valueOf(args.get(6)), // character
-                            new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
-                    ));
+            Dragon dragon;
+            if (askForInput)
+                dragon = new Dragon(requester.request());
+            else
+                dragon = new Dragon(
+                        args.get(0), // name
+                        new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
+                        LocalDate.now(), // creation date
+                        Long.parseLong(args.get(3)), // age
+                        Color.valueOf(args.get(4)), // color
+                        DragonType.valueOf(args.get(5)), // type
+                        DragonCharacter.valueOf(args.get(6)), // character
+                        new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
+                );
+            if (dragon.getAge() > ageMax){
+                dao.create(dragon);
                 outPuter.outPut("Элемент успешно добавлен");
             }
             else {
