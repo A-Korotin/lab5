@@ -27,11 +27,14 @@ public class CommandEnv {
                 continue;
             }
             for(Command c: commands) {
-
-                if ((exitCode = c.execute(dao)) != 0)
-                    outPuter.outPut("Команда %s не была успешно выполнена. Код выхода: %d".formatted(c.name, exitCode));
+                try{
+                    if ((exitCode = c.execute(dao)) != 0)
+                        outPuter.outPut("Команда %s не была успешно выполнена. Код выхода: %d".formatted(c.name, exitCode));
+                }
+                catch (RuntimeException e){
+                    outPuter.outPut("");
+                }
             }
-
         }
     }
 
@@ -197,16 +200,26 @@ public class CommandEnv {
             if (askForInput)
                 dao.create(new Dragon(requester.request()));
             else
-                dao.create(new Dragon(
-                        args.get(0), // name
-                        new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
-                        LocalDate.now(), // creation date
-                        Long.parseLong(args.get(3)), // age
-                        Color.valueOf(args.get(4)), // color
-                        DragonType.valueOf(args.get(5)), // type
-                        DragonCharacter.valueOf(args.get(6)), // character
-                        new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
-                ));
+                if (args.size() != 9){
+                    outPuter.outPut("Недостаточно введённых данных");
+                    return -1;
+                }
+                try{
+                    dao.create(new Dragon(
+                            args.get(0), // name
+                            new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
+                            LocalDate.now(), // creation date
+                            Long.parseLong(args.get(3)), // age
+                            Color.valueOf(args.get(4)), // color
+                            DragonType.valueOf(args.get(5)), // type
+                            DragonCharacter.valueOf(args.get(6)), // character
+                            new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
+                    ));
+                }
+                catch (RuntimeException e){
+                    outPuter.outPut("Типы данных не совпадают");
+                    return -1;
+                }
 
             outPuter.outPut("Элемент успешно добавлен");
             return 0;
@@ -221,21 +234,39 @@ public class CommandEnv {
 
         @Override
         public int execute(DAO dao) {
-            int id = Integer.parseInt(args.get(0));
+            int id;
+            try{
+                id = Integer.parseInt(args.get(0));
+            }
+            catch (RuntimeException e){
+                outPuter.outPut("Нецелочисленный тип данных id");
+                return -1;
+            }
             if (askForInput)
                 dao.update(Integer.getInteger(args.get(0)), new ConsoleRequester().request());
             else{
-                DragonProperties dragonProperties = new DragonProperties();
-                dragonProperties.name = args.get(1);
-                dragonProperties.xCoord = Float.parseFloat(args.get(2));
-                dragonProperties.yCoord = Integer.parseInt(args.get(3));
-                dragonProperties.age = Long.parseLong(args.get(4));
-                dragonProperties.color = Color.valueOf(args.get(5));
-                dragonProperties.type = DragonType.valueOf(args.get(6));
-                dragonProperties.character = DragonCharacter.valueOf(args.get(7));
-                dragonProperties.depth = Double.parseDouble(args.get(8));
-                dragonProperties.numberOfTreasures = Integer.parseInt(args.get(9));
-                dao.update(id,dragonProperties);
+                if (args.size() != 10){
+                    outPuter.outPut("Недостаточно введённых данных");
+                    return -1;
+                }
+                try{
+                    DragonProperties dragonProperties = new DragonProperties();
+                    dragonProperties.name = args.get(1);
+                    dragonProperties.xCoord = Float.parseFloat(args.get(2));
+                    dragonProperties.yCoord = Integer.parseInt(args.get(3));
+                    dragonProperties.age = Long.parseLong(args.get(4));
+                    dragonProperties.color = Color.valueOf(args.get(5));
+                    dragonProperties.type = DragonType.valueOf(args.get(6));
+                    dragonProperties.character = DragonCharacter.valueOf(args.get(7));
+                    dragonProperties.depth = Double.parseDouble(args.get(8));
+                    dragonProperties.numberOfTreasures = Integer.parseInt(args.get(9));
+                    dao.update(id,dragonProperties);
+                }
+                catch (RuntimeException e){
+                    outPuter.outPut("Типы данных не совпали");
+                    return -1;
+                }
+
             }
             return 0;
         }
@@ -250,11 +281,17 @@ public class CommandEnv {
         @Override
         public int execute(DAO dao) {
             int exitCode;
-            if ((exitCode = dao.delete(Integer.getInteger(args.get(0)))) == 1)
-                outPuter.outPut("Элемент успешно удален");
-            else
-                outPuter.outPut("Элемент не найден.");
-            return exitCode;
+            try{
+                if ((exitCode = dao.delete(Integer.getInteger(args.get(0)))) == 0)
+                    outPuter.outPut("Элемент успешно удален");
+                else
+                    outPuter.outPut("Элемент не найден.");
+                return exitCode;
+            }
+            catch (RuntimeException e){
+                outPuter.outPut("Нецелочисленный тип данных id");
+                return -1;
+            }
         }
     }
 
@@ -299,11 +336,23 @@ public class CommandEnv {
 
         @Override
         public int execute(DAO dao) {
+            if (args.size() == 0){
+                outPuter.outPut("Недостаточно аргументов");
+                return -1;
+            }
+
             String filePath = args.get(0);
             InputReader reader = new FileReader();
             reader.addProperties(filePath);
+            List<Command> commands;
 
-            List<Command> commands = CommandCreator.getCommands(reader);
+            try{
+                commands = CommandCreator.getCommands(reader);
+            }
+            catch(RuntimeException e){
+                outPuter.outPut(e.getMessage());
+                return -1;
+            }
 
             int exitCode = 0;
 
@@ -345,16 +394,24 @@ public class CommandEnv {
             if (askForInput)
                 dragon = new Dragon(requester.request());
             else
-                dragon = new Dragon(
-                        args.get(0), // name
-                        new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
-                        LocalDate.now(), // creation date
-                        Long.parseLong(args.get(3)), // age
-                        Color.valueOf(args.get(4)), // color
-                        DragonType.valueOf(args.get(5)), // type
-                        DragonCharacter.valueOf(args.get(6)), // character
-                        new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
-                );
+                try{
+                    dragon = new Dragon(
+                            args.get(0), // name
+                            new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
+                            LocalDate.now(), // creation date
+                            Long.parseLong(args.get(3)), // age
+                            Color.valueOf(args.get(4)), // color
+                            DragonType.valueOf(args.get(5)), // type
+                            DragonCharacter.valueOf(args.get(6)), // character
+                            new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
+                    );
+
+                }
+                catch (RuntimeException e){
+                    outPuter.outPut("Типы данных не совпадают");
+                    return -1;
+                }
+
             if (dragon.getAge() > ageMax){
                 dao.create(dragon);
                 outPuter.outPut("Элемент успешно добавлен");
@@ -405,6 +462,10 @@ public class CommandEnv {
             int minId = Integer.MAX_VALUE;
             for (Dragon d : dao.getAll())
                 minId = d.getId() < minId ? d.getId() : minId;
+            if (minId == Integer.MAX_VALUE){
+                outPuter.outPut("Коллекция пуста");
+                return -1;
+            }
             outPuter.outPut(dao.get(minId));
             return 0;
         }
@@ -418,7 +479,19 @@ public class CommandEnv {
 
         @Override
         public int execute(DAO dao) {
-            int age = Integer.getInteger(args.get(0));
+            if (args.size() == 0){
+                outPuter.outPut("Не хватает аргументов");
+                return -1;
+            }
+            int age;
+            try{
+                age = Integer.getInteger(args.get(0));
+            }
+            catch(RuntimeException e){
+                outPuter.outPut("Типы данных не совпали");
+                return -54646;
+            }
+
             int ageCount = 0;
             for (Dragon dragon : dao.getAll()) {
                 if (dragon.getAge() == age) {
@@ -438,7 +511,19 @@ public class CommandEnv {
 
         @Override
         public int execute(DAO dao) {
-            DragonCharacter character = DragonCharacter.valueOf(args.get(0));
+            DragonCharacter character;
+            if (args.size() == 0){
+                outPuter.outPut("Не хватает аргументов");
+                return -1;
+            }
+
+            try{
+                character = DragonCharacter.valueOf(args.get(0));
+            }
+            catch (RuntimeException e){
+                outPuter.outPut("Характер не определён");
+                return -1;
+            }
             for (Dragon dragon: dao.getAll()){
                 if (dragon.getCharacter().compareCharacter(character)){
                     outPuter.outPut(dragon);
