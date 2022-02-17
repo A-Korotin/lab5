@@ -365,7 +365,7 @@ public class CommandEnv {
                 commands = CommandCreator.getCommands(reader);
             }
             catch(RuntimeException e){
-                outPuter.outPut("Команда не найдена");
+                outPuter.outPut("Одна или несколько команд не были распознаны. Скрипт не выполнен");
                 return -1;
             }
 
