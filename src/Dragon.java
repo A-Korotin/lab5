@@ -142,6 +142,21 @@ public class Dragon implements Comparable<Dragon> {
     }
 
     @Override
+    public String toString() {
+        return "Dragon{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", coordinates=" + coordinates +
+                ", creationDate=" + creationDate +
+                ", age=" + age +
+                ", color=" + color +
+                ", type=" + type +
+                ", character=" + character +
+                ", cave=" + cave +
+                '}';
+    }
+
+    @Override
     public int compareTo(Dragon dragon) {
         return Long.compare(age, dragon.age);
     }

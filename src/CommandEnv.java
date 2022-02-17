@@ -6,7 +6,6 @@ enum Destination {
 }
 
 
-// TODO обработка исключений
 public class CommandEnv {
 
     public static void mainLoop() {
@@ -27,13 +26,8 @@ public class CommandEnv {
                 continue;
             }
             for(Command c: commands) {
-                try{
-                    if ((exitCode = c.execute(dao)) != 0)
-                        outPuter.outPut("Команда %s не была успешно выполнена. Код выхода: %d".formatted(c.name, exitCode));
-                }
-                catch (RuntimeException e){
-                    outPuter.outPut("");
-                }
+                if ((exitCode = c.execute(dao)) != 0)
+                    outPuter.outPut("Команда %s не была успешно выполнена. Код выхода: %d".formatted(c.name, exitCode));
             }
         }
     }
@@ -199,12 +193,12 @@ public class CommandEnv {
         public int execute(DAO dao) {
             if (askForInput)
                 dao.create(new Dragon(requester.request()));
-            else
-                if (args.size() != 9){
+            else {
+                if (args.size() != 9) {
                     outPuter.outPut("Недостаточно введённых данных");
                     return -1;
                 }
-                try{
+                try {
                     dao.create(new Dragon(
                             args.get(0), // name
                             new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
@@ -215,11 +209,11 @@ public class CommandEnv {
                             DragonCharacter.valueOf(args.get(6)), // character
                             new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
                     ));
-                }
-                catch (RuntimeException e){
+                } catch (RuntimeException e) {
                     outPuter.outPut("Типы данных не совпадают");
                     return -1;
                 }
+            }
 
             outPuter.outPut("Элемент успешно добавлен");
             return 0;
