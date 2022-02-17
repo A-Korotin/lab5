@@ -28,7 +28,7 @@ public class CommandEnv {
             for(Command c: commands) {
 
                 if ((exitCode = c.execute(dao)) != 0)
-                    outPuter.outPut("Команда %s не была успешно выполнена. Код выхода: %d".formatted(c.name, exitCode));
+                    outPuter.outPut(String.format("Команда %s не была успешно выполнена. Код выхода: %d",c.name,exitCode));
             }
         }
     }
@@ -282,7 +282,7 @@ public class CommandEnv {
                 }
 
             }
-            outPuter.outPut("Элемент успешно обновлен");
+            outPuter.outPut("Элемент успешно обновлён");
             return exitCode;
         }
     }
@@ -497,9 +497,9 @@ public class CommandEnv {
                 outPuter.outPut("Не хватает аргументов");
                 return -1;
             }
-            int age;
+            Long age;
             try{
-                age = Integer.parseInt(args.get(0));
+                age = Long.parseLong(args.get(0));
             }
             catch(RuntimeException e){
                 outPuter.outPut("Типы данных не совпали");
