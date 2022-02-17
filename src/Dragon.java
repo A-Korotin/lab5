@@ -143,16 +143,16 @@ public class Dragon implements Comparable<Dragon> {
 
     @Override
     public String toString() {
-        return "Dragon{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", coordinates=" + coordinates +
-                ", creationDate=" + creationDate +
-                ", age=" + age +
-                ", color=" + color +
-                ", type=" + type +
-                ", character=" + character +
-                ", cave=" + cave +
+        return "Dragon{" + System.lineSeparator() +
+                "id=" + id + System.lineSeparator() +
+                "name='" + name + '\'' + System.lineSeparator() +
+                "coordinates=" + coordinates + System.lineSeparator() +
+                "creationDate=" + creationDate + System.lineSeparator() +
+                "age=" + age + System.lineSeparator() +
+                "color=" + color + System.lineSeparator() +
+                "type=" + type + System.lineSeparator() +
+                "character=" + character + System.lineSeparator() +
+                "cave=" + cave + System.lineSeparator() +
                 '}';
     }
 
