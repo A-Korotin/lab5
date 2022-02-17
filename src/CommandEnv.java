@@ -363,7 +363,7 @@ public class CommandEnv {
                 commands = CommandCreator.getCommands(reader);
             }
             catch(RuntimeException e){
-                outPuter.outPut(e.getMessage());
+                outPuter.outPut("Команда не найдена");
                 return -1;
             }
 

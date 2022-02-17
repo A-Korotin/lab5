@@ -70,6 +70,7 @@ class ConsoleRequester implements PropertiesRequester {
                     System.out.println("Неверный ввод.");
                     continue;
                 }
+                scanner.nextLine();
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
@@ -77,7 +78,6 @@ class ConsoleRequester implements PropertiesRequester {
             }
         }
         System.out.println("Введите цвет дракона: BLACK, BLUE, WHITE, BROWN");
-        scanner.nextLine();
         while (true) {
             try {
                 output.color = Color.valueOf(scanner.nextLine());
