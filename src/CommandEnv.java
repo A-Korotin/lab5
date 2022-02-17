@@ -213,12 +213,24 @@ public class CommandEnv {
                     properties.name = args.get(0);
                     properties.xCoord = Float.parseFloat(args.get(1));
                     properties.yCoord = Integer.parseInt(args.get(2));
+                    if (properties.yCoord > 998){
+                        outPuter.outPut("Значение КООРДИНАТА_Y недопустимо");
+                        return -1;
+                    }
                     properties.age = Long.parseLong(args.get(3));
+                    if (properties.age <= 0){
+                        outPuter.outPut("Значение ВОЗРАСТ недопустимо");
+                        return -1;
+                    }
                     properties.color = Color.valueOf(args.get(4));
                     properties.type = DragonType.valueOf(args.get(5));
                     properties.character = DragonCharacter.valueOf(args.get(6));
                     properties.depth = Double.parseDouble(args.get(7));
                     properties.numberOfTreasures = Integer.parseInt(args.get(8));
+                    if (properties.numberOfTreasures <=0){
+                        outPuter.outPut("Значение КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ недопустимо");
+                        return -1;
+                    }
                     dao.create(properties);
                 } catch (RuntimeException e) {
                     outPuter.outPut("Типы данных не совпадают");
@@ -271,12 +283,24 @@ public class CommandEnv {
                     dragonProperties.name = args.get(1);
                     dragonProperties.xCoord = Float.parseFloat(args.get(2));
                     dragonProperties.yCoord = Integer.parseInt(args.get(3));
+                    if (dragonProperties.yCoord > 998){
+                        outPuter.outPut("Значение КООРДИНАТА_Y недопустимо");
+                        return -1;
+                    }
                     dragonProperties.age = Long.parseLong(args.get(4));
+                    if (dragonProperties.age <= 0){
+                        outPuter.outPut("Значение ВОЗРАСТ недопустимо");
+                        return -1;
+                    }
                     dragonProperties.color = Color.valueOf(args.get(5));
                     dragonProperties.type = DragonType.valueOf(args.get(6));
                     dragonProperties.character = DragonCharacter.valueOf(args.get(7));
                     dragonProperties.depth = Double.parseDouble(args.get(8));
                     dragonProperties.numberOfTreasures = Integer.parseInt(args.get(9));
+                    if (dragonProperties.numberOfTreasures <=0){
+                        outPuter.outPut("Значение КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ недопустимо");
+                        return -1;
+                    }
                     exitCode = dao.update(id,dragonProperties);
                 }
                 catch (RuntimeException e){
@@ -417,12 +441,24 @@ public class CommandEnv {
                     properties.name = args.get(0);
                     properties.xCoord = Float.parseFloat(args.get(1));
                     properties.yCoord = Integer.parseInt(args.get(2));
+                    if (properties.yCoord > 998){
+                        outPuter.outPut("Значение КООРДИНАТА_Y недопустимо");
+                        return -1;
+                    }
                     properties.age = Long.parseLong(args.get(3));
+                    if (properties.age <= 0){
+                        outPuter.outPut("Значение ВОЗРАСТ недопустимо");
+                        return -1;
+                    }
                     properties.color = Color.valueOf(args.get(4));
                     properties.type = DragonType.valueOf(args.get(5));
                     properties.character = DragonCharacter.valueOf(args.get(6));
                     properties.depth = Double.parseDouble(args.get(7));
                     properties.numberOfTreasures = Integer.parseInt(args.get(8));
+                    if (properties.numberOfTreasures <=0){
+                        outPuter.outPut("Значение КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ недопустимо");
+                        return -1;
+                    }
                 }
                 catch (RuntimeException e){
                     outPuter.outPut("Типы данных не совпадают");
