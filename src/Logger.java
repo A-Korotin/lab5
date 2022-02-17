@@ -12,9 +12,7 @@ public class Logger {
         }
     }
     public static List<String> getAll(){
-        List<String> historyCopy = new ArrayList<>();
-        Collections.copy(historyCopy, history);
-        return historyCopy;
+        return new ArrayList<>(history);
     }
 
     public static void setCapacity(int capacity) {

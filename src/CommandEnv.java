@@ -282,6 +282,7 @@ public class CommandEnv {
                 }
 
             }
+            outPuter.outPut("Элемент успешно обновлен");
             return exitCode;
         }
     }
@@ -296,7 +297,7 @@ public class CommandEnv {
         public int execute(DAO dao) {
             int exitCode;
             try{
-                if ((exitCode = dao.delete(Integer.getInteger(args.get(0)))) == 0)
+                if ((exitCode = dao.delete(Integer.parseInt(args.get(0)))) == 0)
                     outPuter.outPut("Элемент успешно удален");
                 else
                     outPuter.outPut("Элемент не найден.");
@@ -498,11 +499,11 @@ public class CommandEnv {
             }
             int age;
             try{
-                age = Integer.getInteger(args.get(0));
+                age = Integer.parseInt(args.get(0));
             }
             catch(RuntimeException e){
                 outPuter.outPut("Типы данных не совпали");
-                return -54646;
+                return -1;
             }
 
             int ageCount = 0;
