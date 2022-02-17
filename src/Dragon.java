@@ -2,11 +2,9 @@ import java.time.LocalDate;
 import javax.json.*;
 
 /**
- 
+
  */
 public class Dragon implements Comparable<Dragon> {
-    private static int availableId = 1;
-
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -17,8 +15,8 @@ public class Dragon implements Comparable<Dragon> {
     private DragonCharacter character; //Поле может быть null
     private DragonCave cave; //Поле не может быть null
 
-    public Dragon(String name, Coordinates coordinates, LocalDate creationDate, Long age, Color color, DragonType type, DragonCharacter character, DragonCave cave) {
-        this.id = availableId++;
+    public Dragon(int id, String name, Coordinates coordinates, LocalDate creationDate, Long age, Color color, DragonType type, DragonCharacter character, DragonCave cave) {
+        this.id = id;
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = creationDate;
@@ -29,8 +27,8 @@ public class Dragon implements Comparable<Dragon> {
         this.cave = cave;
     }
 
-    public Dragon(DragonProperties properties) {
-        id = availableId++;
+    public Dragon(int id, DragonProperties properties) {
+        this.id = id;
         name = properties.name;
         coordinates = new Coordinates(properties.xCoord, properties.yCoord);
         creationDate = LocalDate.now();

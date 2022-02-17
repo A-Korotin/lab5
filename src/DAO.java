@@ -7,7 +7,7 @@ import javax.json.*;
 
 
 interface DAO {
-    int create(Dragon dragon);
+    int create(DragonProperties properties);
     int update(int id, DragonProperties properties);
     int delete(int id);
     Dragon get(int id);
@@ -19,6 +19,7 @@ interface DAO {
 
 class DragonDAO implements DAO {
     private LocalDateTime initDateTime;
+    private int availableId = 1;
     private final List<Dragon> collection = new LinkedList<>();
 
     public DragonDAO() {
@@ -27,6 +28,7 @@ class DragonDAO implements DAO {
 
     public DragonDAO(JsonObject description) {
         String initTime = description.getString("init date");
+        availableId = description.getInt("availableId");
         if (initTime == null)
             initDateTime = LocalDateTime.now();
         else
@@ -39,8 +41,8 @@ class DragonDAO implements DAO {
 
     }
     @Override
-    public int create(Dragon dragon) {
-        collection.add(dragon);
+    public int create(DragonProperties properties) {
+        collection.add(new Dragon(availableId++, properties));
         return 0;
     }
 
@@ -98,6 +100,7 @@ class DragonDAO implements DAO {
                 add("type", collection.getClass().getSimpleName()).
                 add("size", collection.size()).
                 add("init date", initDateTime.format(DateTimeFormatter.ofPattern("dd.MM.uuuu: HH:mm:ss"))).
+                add("availableId", availableId).
                 add("elements", dragons.build()).build();
 
         return output;

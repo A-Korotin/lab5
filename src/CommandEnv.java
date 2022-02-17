@@ -199,23 +199,24 @@ public class CommandEnv {
         @Override
         public int execute(DAO dao) {
             if (askForInput)
-                dao.create(new Dragon(requester.request()));
+                dao.create(requester.request());
             else {
                 if (args.size() != 9) {
                     outPuter.outPut("Недостаточно введённых данных");
                     return -1;
                 }
                 try {
-                    dao.create(new Dragon(
-                            args.get(0), // name
-                            new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
-                            LocalDate.now(), // creation date
-                            Long.parseLong(args.get(3)), // age
-                            Color.valueOf(args.get(4)), // color
-                            DragonType.valueOf(args.get(5)), // type
-                            DragonCharacter.valueOf(args.get(6)), // character
-                            new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
-                    ));
+                    DragonProperties properties = new DragonProperties();
+                    properties.name = args.get(0);
+                    properties.xCoord = Float.parseFloat(args.get(1));
+                    properties.yCoord = Integer.parseInt(args.get(2));
+                    properties.age = Long.parseLong(args.get(3));
+                    properties.color = Color.valueOf(args.get(4));
+                    properties.type = DragonType.valueOf(args.get(5));
+                    properties.character = DragonCharacter.valueOf(args.get(6));
+                    properties.depth = Double.parseDouble(args.get(7));
+                    properties.numberOfTreasures = Integer.parseInt(args.get(8));
+                    dao.create(properties);
                 } catch (RuntimeException e) {
                     outPuter.outPut("Типы данных не совпадают");
                     return -1;
@@ -256,13 +257,13 @@ public class CommandEnv {
 
             int exitCode;
             if (askForInput)
-                exitCode = dao.update(id, new ConsoleRequester().request());
+                exitCode = dao.update(id, requester.request());
             else {
                 if (args.size() != 10){
                     outPuter.outPut("Недостаточно введённых данных");
                     return -1;
                 }
-                try{
+                try {
                     DragonProperties dragonProperties = new DragonProperties();
                     dragonProperties.name = args.get(1);
                     dragonProperties.xCoord = Float.parseFloat(args.get(2));
@@ -403,30 +404,29 @@ public class CommandEnv {
                     ageMax = dragon.getAge();
                 }
             }
-            Dragon dragon;
+            DragonProperties properties;
             if (askForInput)
-                dragon = new Dragon(requester.request());
+                properties = requester.request();
             else
                 try{
-                    dragon = new Dragon(
-                            args.get(0), // name
-                            new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
-                            LocalDate.now(), // creation date
-                            Long.parseLong(args.get(3)), // age
-                            Color.valueOf(args.get(4)), // color
-                            DragonType.valueOf(args.get(5)), // type
-                            DragonCharacter.valueOf(args.get(6)), // character
-                            new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
-                    );
-
+                    properties = new DragonProperties();
+                    properties.name = args.get(0);
+                    properties.xCoord = Float.parseFloat(args.get(1));
+                    properties.yCoord = Integer.parseInt(args.get(2));
+                    properties.age = Long.parseLong(args.get(3));
+                    properties.color = Color.valueOf(args.get(4));
+                    properties.type = DragonType.valueOf(args.get(5));
+                    properties.character = DragonCharacter.valueOf(args.get(6));
+                    properties.depth = Double.parseDouble(args.get(7));
+                    properties.numberOfTreasures = Integer.parseInt(args.get(8));
                 }
                 catch (RuntimeException e){
                     outPuter.outPut("Типы данных не совпадают");
                     return -1;
                 }
 
-            if (dragon.getAge() > ageMax){
-                dao.create(dragon);
+            if (properties.age > ageMax){
+                dao.create(properties);
                 outPuter.outPut("Элемент успешно добавлен");
             }
             else {
