@@ -69,10 +69,10 @@ class FileReader extends InputReader {
             return output;
         }
         catch (FileNotFoundException e) {
-            throw new RuntimeException("File not found!");
+            throw new RuntimeException("Файл не найден");
         }
         catch (IOException e) {
-            throw new RuntimeException("File not successfully read at " + filePath);
+            throw new RuntimeException("Файл не был успешно прочитан на " + filePath);
         }
         finally {
             try {
@@ -83,7 +83,7 @@ class FileReader extends InputReader {
                     fileInputStream.close();
 
             } catch (IOException e) {
-                throw new RuntimeException("Input stream not closed successfully at " + filePath);
+                throw new RuntimeException("Input stream не был успешно закрыт на " + filePath);
             }
         }
     }

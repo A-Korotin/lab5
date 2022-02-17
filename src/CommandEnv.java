@@ -6,7 +6,6 @@ enum Destination {
 }
 
 
-// TODO обработка исключений
 public class CommandEnv {
 
     public static void mainLoop() {
@@ -27,14 +26,11 @@ public class CommandEnv {
                 continue;
             }
             for(Command c: commands) {
-                try{
-                    if ((exitCode = c.execute(dao)) != 0)
-                        outPuter.outPut("Команда %s не была успешно выполнена. Код выхода: %d".formatted(c.name, exitCode));
-                }
-                catch (RuntimeException e){
-                    outPuter.outPut("");
-                }
+
+                if ((exitCode = c.execute(dao)) != 0)
+                    outPuter.outPut("Команда %s не была успешно выполнена. Код выхода: %d".formatted(c.name, exitCode));
             }
+
         }
     }
 
@@ -142,22 +138,23 @@ public class CommandEnv {
 
     @Override
     public int execute(DAO dao) {
-        outPuter.outPut("help : вывести справку по доступным командам\n" +
-                "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\n" +
-                "show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении\n" +
-                "add {element} : добавить новый элемент в коллекцию\n" +
-                "update id {element} : обновить значение элемента коллекции, id которого равен заданному\n" +
-                "remove_by_id id : удалить элемент из коллекции по его id\n" +
-                "clear : очистить коллекцию\n" +
-                "save : сохранить коллекцию в файл\n" +
-                "execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.\n" +
-                "exit : завершить программу (без сохранения в файл)\n" +
-                "add_if_max {element} : добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции\n" +
-                "sort : отсортировать коллекцию в естественном порядке\n" +
-                "history : вывести последние 6 команд (без их аргументов)\n" +
-                "min_by_id : вывести любой объект из коллекции, значение поля id которого является минимальным\n" +
-                "count_by_age age : вывести количество элементов, значение поля age которых равно заданному\n" +
-                "filter_greater_than_character character : вывести элементы, значение поля character которых больше заданного");
+        outPuter.outPut("""
+                help : вывести справку по доступным командам
+                info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)
+                show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении
+                add {element} : добавить новый элемент в коллекцию
+                update id {element} : обновить значение элемента коллекции, id которого равен заданному
+                remove_by_id id : удалить элемент из коллекции по его id
+                clear : очистить коллекцию
+                save : сохранить коллекцию в файл
+                execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.
+                exit : завершить программу (без сохранения в файл)
+                add_if_max {element} : добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции
+                sort : отсортировать коллекцию в естественном порядке
+                history : вывести последние 6 команд (без их аргументов)
+                min_by_id : вывести любой объект из коллекции, значение поля id которого является минимальным
+                count_by_age age : вывести количество элементов, значение поля age которых равно заданному
+                filter_greater_than_character character : вывести элементы, значение поля character которых больше заданного""");
         return 0;
     }
 
@@ -183,7 +180,12 @@ public class CommandEnv {
         }
 
         public int execute(DAO dao) {
-            for (Dragon d : dao.getAll())
+            List<Dragon> dragons = dao.getAll();
+            if (dragons.size() == 0) {
+                outPuter.outPut("пусто");
+                return 0;
+            }
+            for (Dragon d : dragons)
                 outPuter.outPut(d);
             return 0;
         }
@@ -199,12 +201,12 @@ public class CommandEnv {
         public int execute(DAO dao) {
             if (askForInput)
                 dao.create(new Dragon(requester.request()));
-            else
-                if (args.size() != 9){
+            else {
+                if (args.size() != 9) {
                     outPuter.outPut("Недостаточно введённых данных");
                     return -1;
                 }
-                try{
+                try {
                     dao.create(new Dragon(
                             args.get(0), // name
                             new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
@@ -215,12 +217,11 @@ public class CommandEnv {
                             DragonCharacter.valueOf(args.get(6)), // character
                             new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
                     ));
-                }
-                catch (RuntimeException e){
+                } catch (RuntimeException e) {
                     outPuter.outPut("Типы данных не совпадают");
                     return -1;
                 }
-
+            }
             outPuter.outPut("Элемент успешно добавлен");
             return 0;
         }
@@ -242,9 +243,22 @@ public class CommandEnv {
                 outPuter.outPut("Нецелочисленный тип данных id");
                 return -1;
             }
+            boolean found = false;
+            for(Dragon d: dao.getAll()) {
+                if(d.getId() == id) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found){
+                outPuter.outPut("Элемент с id %d не существует".formatted(id));
+                return -1;
+            }
+
+            int exitCode;
             if (askForInput)
-                dao.update(Integer.getInteger(args.get(0)), new ConsoleRequester().request());
-            else{
+                exitCode = dao.update(id, new ConsoleRequester().request());
+            else {
                 if (args.size() != 10){
                     outPuter.outPut("Недостаточно введённых данных");
                     return -1;
@@ -260,15 +274,14 @@ public class CommandEnv {
                     dragonProperties.character = DragonCharacter.valueOf(args.get(7));
                     dragonProperties.depth = Double.parseDouble(args.get(8));
                     dragonProperties.numberOfTreasures = Integer.parseInt(args.get(9));
-                    dao.update(id,dragonProperties);
+                    exitCode = dao.update(id,dragonProperties);
                 }
                 catch (RuntimeException e){
                     outPuter.outPut("Типы данных не совпали");
                     return -1;
                 }
-
             }
-            return 0;
+            return exitCode;
         }
     }
 
@@ -282,7 +295,7 @@ public class CommandEnv {
         public int execute(DAO dao) {
             int exitCode;
             try{
-                if ((exitCode = dao.delete(Integer.getInteger(args.get(0)))) == 0)
+                if ((exitCode = dao.delete(Integer.parseInt(args.get(0)))) == 0)
                     outPuter.outPut("Элемент успешно удален");
                 else
                     outPuter.outPut("Элемент не найден.");
@@ -393,8 +406,8 @@ public class CommandEnv {
             Dragon dragon;
             if (askForInput)
                 dragon = new Dragon(requester.request());
-            else
-                try{
+            else {
+                try {
                     dragon = new Dragon(
                             args.get(0), // name
                             new Coordinates(Float.parseFloat(args.get(1)), Integer.parseInt(args.get(2))), // Coordinates
@@ -406,11 +419,11 @@ public class CommandEnv {
                             new DragonCave(Double.parseDouble(args.get(7)), Integer.parseInt(args.get(8))) // cave
                     );
 
-                }
-                catch (RuntimeException e){
+                } catch (RuntimeException e) {
                     outPuter.outPut("Типы данных не совпадают");
                     return -1;
                 }
+            }
 
             if (dragon.getAge() > ageMax){
                 dao.create(dragon);
