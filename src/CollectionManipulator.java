@@ -1,5 +1,5 @@
 import javax.json.*;
-import java.util.Map;
+import java.util.*;
 import java.io.*;
 
 interface CollectionManipulator {
@@ -44,9 +44,8 @@ class FileManipulator implements CollectionManipulator {
             return new DragonDAO(daoJson);
 
         } catch (IOException e) {
-            // ..
+            // пропустить и вернуть новую коллекцию
         }
-
         return new DragonDAO();
     }
 

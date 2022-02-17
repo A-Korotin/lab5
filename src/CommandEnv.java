@@ -65,7 +65,7 @@ public class CommandEnv {
         setSaveAndLoadDestination(Destination.file);
     }
 
-    public static class CommandCreator {
+    private static class CommandCreator {
 
         private interface ConstructorReference {
             Command construct(List<String> args);
@@ -110,7 +110,7 @@ public class CommandEnv {
     }
 
 
-    public static abstract class Command {
+    private static abstract class Command {
         protected List<String> args;
         protected boolean askForInput;
         protected String name;
@@ -129,7 +129,7 @@ public class CommandEnv {
 
     }
 
-    public static class Help extends Command {
+    private static class Help extends Command {
 
         public Help(List<String> args) {
             super(args);
@@ -159,7 +159,7 @@ public class CommandEnv {
 
     }
 
-    public static class Info extends Command {
+    private static class Info extends Command {
 
         public Info(List<String> args) {
             super(args);
@@ -172,7 +172,7 @@ public class CommandEnv {
         }
     }
 
-    public static class Show extends Command {
+    private static class Show extends Command {
 
         public Show(List<String> args) {
             super(args);
@@ -190,7 +190,7 @@ public class CommandEnv {
         }
     }
 
-    public static class Add extends Command {
+    private static class Add extends Command {
 
         public Add(List<String> args) {
             super(args);
@@ -226,7 +226,7 @@ public class CommandEnv {
         }
     }
 
-    public static class Update extends Command {
+    private static class Update extends Command {
 
         public Update(List<String> args) {
             super(args);
@@ -273,7 +273,7 @@ public class CommandEnv {
                     dragonProperties.character = DragonCharacter.valueOf(args.get(7));
                     dragonProperties.depth = Double.parseDouble(args.get(8));
                     dragonProperties.numberOfTreasures = Integer.parseInt(args.get(9));
-                    dao.update(id,dragonProperties);
+                    exitCode = dao.update(id,dragonProperties);
                 }
                 catch (RuntimeException e){
                     outPuter.outPut("Типы данных не совпали");
@@ -281,11 +281,11 @@ public class CommandEnv {
                 }
 
             }
-            return 0;
+            return exitCode;
         }
     }
 
-    public static class RemoveById extends Command {
+    private static class RemoveById extends Command {
 
         public RemoveById(List<String> args) {
             super(args);
@@ -308,7 +308,7 @@ public class CommandEnv {
         }
     }
 
-    public static class Clear extends Command {
+    private static class Clear extends Command {
 
         public Clear(List<String> args) {
             super(args);
@@ -322,7 +322,7 @@ public class CommandEnv {
         }
     }
 
-    public static class Save extends Command {
+    private static class Save extends Command {
 
         public Save(List<String> args) {
             super(args);
@@ -342,7 +342,7 @@ public class CommandEnv {
         }
     }
 
-    public static class ExecuteScript extends Command {
+    private static class ExecuteScript extends Command {
         public ExecuteScript(List<String> args) {
             super(args);
         }
@@ -376,7 +376,7 @@ public class CommandEnv {
         }
     }
 
-    public static class Exit extends Command {
+    private static class Exit extends Command {
 
         public Exit(List<String> args) {
             super(args);
@@ -389,7 +389,7 @@ public class CommandEnv {
         }
     }
 
-    public static class AddIfMax extends Command {
+    private static class AddIfMax extends Command {
 
         public AddIfMax(List<String> args) {
             super(args);
@@ -436,7 +436,7 @@ public class CommandEnv {
         }
     }
 
-    public static class Sort extends Command {
+    private static class Sort extends Command {
 
         public Sort(List<String> args) {
             super(args);
@@ -450,7 +450,7 @@ public class CommandEnv {
     }
 }
 
-    public static class History extends Command {
+    private static class History extends Command {
 
         public History(List<String> args) {
             super(args);
@@ -464,7 +464,7 @@ public class CommandEnv {
         }
     }
 
-    public static class MinById extends Command {
+    private static class MinById extends Command {
 
         public MinById(List<String> args) {
             super(args);
@@ -484,7 +484,7 @@ public class CommandEnv {
         }
     }
 
-    public static class CountByAge extends Command {
+    private static class CountByAge extends Command {
 
         public CountByAge(List<String> args) {
             super(args);
@@ -516,7 +516,7 @@ public class CommandEnv {
         }
     }
 
-    public static class FilterGreaterThanCharacter extends Command {
+    private static class FilterGreaterThanCharacter extends Command {
 
         public FilterGreaterThanCharacter(List<String> args) {
             super(args);

@@ -95,7 +95,7 @@ class DragonDAO implements DAO {
             dragons.add(d.getJSONDescription());
 
         JsonObject output = Json.createObjectBuilder().
-                add("type", "LinkedList").
+                add("type", collection.getClass().getSimpleName()).
                 add("size", collection.size()).
                 add("init date", initDateTime.format(DateTimeFormatter.ofPattern("dd.MM.uuuu: HH:mm:ss"))).
                 add("elements", dragons.build()).build();
