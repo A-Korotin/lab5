@@ -342,7 +342,7 @@ public class CommandEnv {
                 commands = CommandCreator.getCommands(reader);
             }
             catch(RuntimeException e){
-                outPuter.outPut("Одна или несколько команд не были распознаны. Скрипт не выполнен");
+                outPuter.outPut(e.getMessage());
                 return -1;
             }
             outPuter.outPut("Все команды были распознаны и поданы на выполнение");

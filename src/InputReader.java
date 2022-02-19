@@ -69,7 +69,7 @@ class FileReader extends InputReader {
             return output;
         }
         catch (FileNotFoundException e) {
-            throw new RuntimeException("Файл не найден");
+            throw new RuntimeException("Файл не найден и\\или нет прав на чтение");
         }
         catch (IOException e) {
             throw new RuntimeException("Файл не был успешно прочитан на " + filePath);
