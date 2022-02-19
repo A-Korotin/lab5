@@ -128,7 +128,6 @@ class ConsoleRequester implements PropertiesRequester {
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
-                scanner.nextLine();
             }
         }
 
