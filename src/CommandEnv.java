@@ -534,17 +534,18 @@ public class CommandEnv {
                     this.getContentPane().setLayout(new FlowLayout());
                     JLabel label1 = new JLabel("Поставь максималочку,пожалуйста");
                     ImageIcon icon = new ImageIcon(getClass().getResource("Privet_Alex.png"));
+
                     JLabel label2 = new JLabel(icon);
 
                     add(label1);
                     add(label2);
                 }
 
-                public static void createAndShowGUI() {
+                public void createAndShowGUI() {
                     JFrame frame = new AlexEgoshinPostavMaxBall();
                     frame.pack();
                     frame.setVisible(true);
-                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                 }
             }
             AlexEgoshinPostavMaxBall alexEgoshinPostavMaxBall = new AlexEgoshinPostavMaxBall();
@@ -554,24 +555,3 @@ public class CommandEnv {
 
     }
 }
-
-//class AlexEgoshinPostavMaxBall extends JFrame {
-//
-//    public AlexEgoshinPostavMaxBall() {
-//
-//        this.getContentPane().setLayout(new FlowLayout());
-//        JLabel label1 = new JLabel("Поставь максималочку,пожалуйста");
-//        ImageIcon icon = new ImageIcon(getClass().getResource("Privet_Alex.png"));
-//        JLabel label2 = new JLabel(icon);
-//
-//        add(label1);
-//        add(label2);
-//    }
-//
-//    public static void createAndShowGUI() {
-//        JFrame frame = new AlexEgoshinPostavMaxBall();
-//        frame.pack();
-//        frame.setVisible(true);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//    }
-//}

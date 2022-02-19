@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.json.*;
 
 /**
@@ -44,7 +45,8 @@ public class Dragon implements Comparable<Dragon> {
         name = description.getString("name");
         JsonObject coord = description.getJsonObject("coordinates");
         coordinates = new Coordinates((float)coord.getJsonNumber("x").doubleValue(), coord.getInt("y"));
-        creationDate = LocalDate.parse(description.getString("creationDate"));
+        //creationDate = LocalDate.parse(description.getString("creationDate"));
+        creationDate = LocalDate.parse(description.getString("creationDate"), DateTimeFormatter.ofPattern("dd.MM.uuuu"));
         age = description.getJsonNumber("age").longValue();
         color = Color.valueOf(description.getString("color"));
         type = DragonType.valueOf(description.getString("type"));
@@ -128,7 +130,7 @@ public class Dragon implements Comparable<Dragon> {
                 add("coordinates", Json.createObjectBuilder().
                         add("x", coordinates.getX()).
                         add("y", coordinates.getY()).build()).
-                add("creationDate", creationDate.toString()).
+                add("creationDate", creationDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu"))).
                 add("age", age).
                 add("color", color.getDescription()).
                 add("type", type.getDescription()).
@@ -145,7 +147,7 @@ public class Dragon implements Comparable<Dragon> {
                 "id=" + id + System.lineSeparator() +
                 "name='" + name + '\'' + System.lineSeparator() +
                 "coordinates=" + coordinates + System.lineSeparator() +
-                "creationDate=" + creationDate + System.lineSeparator() +
+                "creationDate=" + creationDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu")) + System.lineSeparator() +
                 "age=" + age + System.lineSeparator() +
                 "color=" + color + System.lineSeparator() +
                 "type=" + type + System.lineSeparator() +
