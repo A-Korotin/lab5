@@ -97,7 +97,7 @@ public class CommandEnv {
             availableCommands.put("min_by_id", MinById::new);
             availableCommands.put("count_by_age", CountByAge::new);
             availableCommands.put("filter_greater_than_character", FilterGreaterThanCharacter::new);
-            availableCommands.put("ya_alex_egoshin",AlexEgoshin::new);
+            availableCommands.put("ya_alex_egoshin_postavlu_12_balov",AlexEgoshin::new);
 
         }
 
@@ -164,7 +164,8 @@ public class CommandEnv {
                 history : вывести последние 6 команд (без их аргументов)
                 min_by_id : вывести любой объект из коллекции, значение поля id которого является минимальным
                 count_by_age age : вывести количество элементов, значение поля age которых равно заданному
-                filter_greater_than_character character : вывести элементы, значение поля character которых больше заданного""");
+                filter_greater_than_character character : вывести элементы, значение поля character которых больше заданного
+                ya_alex_egoshin_postavlu_12_balov : вывести прекрасную пасхалку""");
         return 0;
     }
 
@@ -532,13 +533,18 @@ public class CommandEnv {
                 public AlexEgoshinPostavMaxBall() {
 
                     this.getContentPane().setLayout(new FlowLayout());
-                    JLabel label1 = new JLabel("Поставь максималочку,пожалуйста");
-                    ImageIcon icon = new ImageIcon(getClass().getResource("Privet_Alex.png"));
+                    try {
+                        JLabel label1 = new JLabel("Поставь максималочку,пожалуйста");
+                        ImageIcon icon = new ImageIcon(getClass().getResource("Privet_Alex.png"));
 
-                    JLabel label2 = new JLabel(icon);
+                        JLabel label2 = new JLabel(icon);
 
-                    add(label1);
-                    add(label2);
+                        add(label1);
+                        add(label2);
+                    }
+                    catch (NullPointerException e){
+                        outPuter.outPut("Неверно указан путь до файла");
+                    }
                 }
 
                 public void createAndShowGUI() {
@@ -550,6 +556,7 @@ public class CommandEnv {
             }
             AlexEgoshinPostavMaxBall alexEgoshinPostavMaxBall = new AlexEgoshinPostavMaxBall();
             alexEgoshinPostavMaxBall.createAndShowGUI();
+            outPuter.outPut("Команда успешно выполнена -> надо максимальный балл для Алексея Коротина и Дуль Яна");
             return 0;
         }
 
