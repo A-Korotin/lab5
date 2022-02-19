@@ -1,5 +1,12 @@
+import javax.swing.*;
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.List;
+import java.awt.FlowLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 enum Destination {
     file, console, // server, etc...
@@ -36,7 +43,7 @@ public class CommandEnv {
     private CommandEnv() {}
 
     private static OutPuter outPuter;
-    private static CollectionManipulator manipulator ;
+    private static CollectionManipulator manipulator;
     private static PropertiesRequester requester;
 
 
@@ -90,6 +97,7 @@ public class CommandEnv {
             availableCommands.put("min_by_id", MinById::new);
             availableCommands.put("count_by_age", CountByAge::new);
             availableCommands.put("filter_greater_than_character", FilterGreaterThanCharacter::new);
+            availableCommands.put("ya_alex_egoshin",AlexEgoshin::new);
 
         }
 
@@ -514,4 +522,56 @@ public class CommandEnv {
             return 0;
         }
     }
+    private static class AlexEgoshin extends Command{
+        public AlexEgoshin(List<String> args) { super(args); }
+
+        @Override
+        public int execute(DAO dao) {
+            class AlexEgoshinPostavMaxBall extends JFrame {
+
+                public AlexEgoshinPostavMaxBall() {
+
+                    this.getContentPane().setLayout(new FlowLayout());
+                    JLabel label1 = new JLabel("Поставь максималочку,пожалуйста");
+                    ImageIcon icon = new ImageIcon(getClass().getResource("Privet_Alex.png"));
+                    JLabel label2 = new JLabel(icon);
+
+                    add(label1);
+                    add(label2);
+                }
+
+                public static void createAndShowGUI() {
+                    JFrame frame = new AlexEgoshinPostavMaxBall();
+                    frame.pack();
+                    frame.setVisible(true);
+                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                }
+            }
+            AlexEgoshinPostavMaxBall alexEgoshinPostavMaxBall = new AlexEgoshinPostavMaxBall();
+            alexEgoshinPostavMaxBall.createAndShowGUI();
+            return 0;
+        }
+
+    }
 }
+
+//class AlexEgoshinPostavMaxBall extends JFrame {
+//
+//    public AlexEgoshinPostavMaxBall() {
+//
+//        this.getContentPane().setLayout(new FlowLayout());
+//        JLabel label1 = new JLabel("Поставь максималочку,пожалуйста");
+//        ImageIcon icon = new ImageIcon(getClass().getResource("Privet_Alex.png"));
+//        JLabel label2 = new JLabel(icon);
+//
+//        add(label1);
+//        add(label2);
+//    }
+//
+//    public static void createAndShowGUI() {
+//        JFrame frame = new AlexEgoshinPostavMaxBall();
+//        frame.pack();
+//        frame.setVisible(true);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    }
+//}
