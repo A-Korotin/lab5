@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Scanner;
 
 public interface PropertiesRequester {
@@ -14,6 +15,28 @@ class DragonProperties {
     DragonCharacter character;
     double depth;
     Integer numberOfTreasures;
+    public int DragonProperties(String name, String xCoord, String yCoord, String age, String color, String type, String character, String depth, String numberOfTreasures){
+        int exitCode = 0;
+        this.name = name;
+        this.xCoord = Float.parseFloat(xCoord);
+        this.yCoord = Integer.parseInt(yCoord);
+        if (this.yCoord > 998){
+            exitCode = -1;
+        }
+        this.age = Long.parseLong(age);
+        if (this.age <= 0){
+            exitCode = -1;
+        }
+        this.color = Color.valueOf(color);
+        this.type = DragonType.valueOf(type);
+        this.character = DragonCharacter.valueOf(character);
+        this.depth = Double.parseDouble(depth);
+        this.numberOfTreasures = Integer.parseInt(numberOfTreasures);
+        if (this.numberOfTreasures <=0){
+            exitCode = -1;
+        }
+        return exitCode;
+    }
 }
 
 class ConsoleRequester implements PropertiesRequester {
@@ -81,6 +104,7 @@ class ConsoleRequester implements PropertiesRequester {
         while (true) {
             try {
                 output.color = Color.valueOf(scanner.nextLine());
+                scanner.nextLine();
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
@@ -91,6 +115,7 @@ class ConsoleRequester implements PropertiesRequester {
         while (true) {
             try {
                 output.type = DragonType.valueOf(scanner.nextLine());
+                scanner.nextLine();
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
@@ -101,6 +126,7 @@ class ConsoleRequester implements PropertiesRequester {
         while (true) {
             try {
                 output.character = DragonCharacter.valueOf(scanner.nextLine());
+                scanner.nextLine();
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");

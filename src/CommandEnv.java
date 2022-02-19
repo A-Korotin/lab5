@@ -438,27 +438,7 @@ public class CommandEnv {
             else
                 try{
                     properties = new DragonProperties();
-                    properties.name = args.get(0);
-                    properties.xCoord = Float.parseFloat(args.get(1));
-                    properties.yCoord = Integer.parseInt(args.get(2));
-                    if (properties.yCoord > 998){
-                        outPuter.outPut("Значение КООРДИНАТА_Y недопустимо");
-                        return -1;
-                    }
-                    properties.age = Long.parseLong(args.get(3));
-                    if (properties.age <= 0){
-                        outPuter.outPut("Значение ВОЗРАСТ недопустимо");
-                        return -1;
-                    }
-                    properties.color = Color.valueOf(args.get(4));
-                    properties.type = DragonType.valueOf(args.get(5));
-                    properties.character = DragonCharacter.valueOf(args.get(6));
-                    properties.depth = Double.parseDouble(args.get(7));
-                    properties.numberOfTreasures = Integer.parseInt(args.get(8));
-                    if (properties.numberOfTreasures <=0){
-                        outPuter.outPut("Значение КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ недопустимо");
-                        return -1;
-                    }
+                    return properties.DragonProperties(args.get(0), args.get(1), args.get(2), args.get(3), args.get(4), args.get(5), args.get(6), args.get(7), args.get(8));
                 }
                 catch (RuntimeException e){
                     outPuter.outPut("Типы данных не совпадают");
