@@ -54,7 +54,7 @@ public class CommandEnv {
 
     public static void setOutputDestination(Destination destination) {
         switch (destination) {
-            case file -> outPuter = new FileOutPut();
+            case console -> outPuter = new ConsoleOutPut();
         }
     }
 
