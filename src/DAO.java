@@ -4,7 +4,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import javax.json.*;
-
+/*
+* Интерфейс для работы с коллекцией*/
 
 interface DAO {
     int create(DragonProperties properties);
@@ -17,6 +18,8 @@ interface DAO {
     void sort();
 }
 
+/*
+*Класс, который имплементируется от DAO. В нём мы реализуем методы для работы с коллекцией и инициализируем саму коллекцию */
 class DragonDAO implements DAO {
     private LocalDateTime initDateTime;
     private int availableId = 1;
@@ -40,12 +43,20 @@ class DragonDAO implements DAO {
             collection.add(new Dragon(dragons.getJsonObject(i)));
 
     }
+    /*
+    * Метод добавления элемента в коллекцию
+    * @param properties - свойства элемента
+    * */
     @Override
     public int create(DragonProperties properties) {
         collection.add(new Dragon(availableId++, properties));
         return 0;
     }
-
+    /*
+     * Метод обновления элемента в коллекции по его id
+     * @param properties - свойства элемента
+     * @param id - id элемента, который пользователь хочет обновить
+     * */
     @Override
     public int update(int id, DragonProperties properties) {
         for(Dragon dragon1 : collection){
@@ -56,14 +67,21 @@ class DragonDAO implements DAO {
         }
         return -1;
     }
-
+    /*
+     * Метод удаления элемента из коллекции по его id
+     * @param id - id элемента, который пользователь хочет удалить
+     * */
     @Override
     public int delete(int id) {
         if (collection.removeIf(dragon -> dragon.getId() == id))
             return 0;
         return -1;
     }
-
+    /*
+     * Метод получения элемента из коллекции по его id
+     * @param id - id элемента, который пользователь хочет получить
+     * @return dragon - элемент коллекции
+     * */
     @Override
     public Dragon get(int id) {
         for(Dragon dragon : collection){
@@ -73,20 +91,28 @@ class DragonDAO implements DAO {
         }
         return null;
     }
-
+    /*
+     * Метод получения всей коллекции
+     * @return outputCollection - копия коллекции
+     * */
     @Override
     public List<Dragon> getAll(){
         List<Dragon> outputCollection = new LinkedList<>();
         outputCollection.addAll(collection);
         return outputCollection;
     }
-
+    /*
+     * Метод очистки всей коллекции
+     * */
     @Override
     public int clear() {
         collection.clear();
         return 0;
     }
-
+    /*
+     * Метод возвращения информации о коллекции
+     * @return output - информация о коллекции
+     * */
     @Override
     public JsonObject getJSONDescription() {
 
@@ -103,7 +129,9 @@ class DragonDAO implements DAO {
 
         return output;
     }
-
+    /*
+     * Метод сортировки коллекции
+     * */
     @Override
     public void sort() {
         Collections.sort(collection);
