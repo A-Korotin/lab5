@@ -1,6 +1,3 @@
-import javax.swing.*;
-import java.awt.*;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 import java.awt.FlowLayout;
@@ -8,13 +5,21 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+/**
+ * Перечисление выходных назначений
+ **/
 enum Destination {
     file, console, // server, etc...
 }
 
-
+/**
+ * Класс командной среды. Имеет только статические методы и поля
+ * Содержит в себе поля, общие для всех команд. Инициализация этих полей необходима перед запуском основного цикла программы
+ */
 public class CommandEnv {
-
+    /**
+     * Основной цикл программы. Чтение пользовательского ввода, создание команд и их выполнение
+     */
     public static void mainLoop() {
         if (outPuter == null || manipulator == null || requester == null) {
             new ConsoleOutPut().outPut("Командная среда не инициализирована.");
@@ -49,7 +54,6 @@ public class CommandEnv {
 
     public static void setOutputDestination(Destination destination) {
         switch (destination) {
-            case file -> outPuter = new FileOutPut();
             case console -> outPuter = new ConsoleOutPut();
         }
     }
@@ -72,6 +76,9 @@ public class CommandEnv {
         setSaveAndLoadDestination(Destination.file);
     }
 
+    /**
+     * Класс, создающий команды из пользовательского ввода
+     */
     private static class CommandCreator {
 
         private interface ConstructorReference {
@@ -101,6 +108,11 @@ public class CommandEnv {
 
         }
 
+        /**
+         * Метод для получения команд из пользовательского ввода
+         * @param source Объект, считывающий пользовательский ввод
+         * @return Последовательность команд, распознанных из пользовательского ввода
+         */
         public static List<Command> getCommands(InputReader source) {
             List<Command> output = new ArrayList<>();
             List<List<String>> input = source.getInput();
@@ -117,7 +129,9 @@ public class CommandEnv {
         private CommandCreator() {}
     }
 
-
+    /**
+     * Абстрактный надкласс всех команд
+     */
     private static abstract class Command {
         protected List<String> args;
         protected boolean askForInput;
@@ -133,10 +147,23 @@ public class CommandEnv {
             args.remove(0);
         }
 
+        /**
+         *
+         * @param dao Коллекция, которой управляет пользователь
+         * @return Код выхода команды.
+         * <table align="left">
+         *     <tr><b>0</b>  - команда завершена <i>без ошибок</i></tr>
+         *     <tr><b>-1</b> - команда завершена <i>c ошибками</i></tr>
+         * </table>
+         *
+         */
         public abstract int execute(DAO dao);
 
     }
 
+    /**
+     * Класс, предназначенный для выведения всех возможных команд и их аргументов в ранее заданный поток вывода
+     */
     private static class Help extends Command {
 
         public Help(List<String> args) {
@@ -171,6 +198,18 @@ public class CommandEnv {
 
     }
 
+    /**
+     * Класс, предназначенный для вывода информации о коллекции в ранее заданный поток вывода в формате <b>JSON</b>
+     *
+     * <table align="left" border="1">
+     *     <thead>Формат вывода информации:</thead>
+     *     <tr><i>Тип коллекции</i></tr>
+     *     <tr><i>Количество элементов в коллекции</i></tr>
+     *     <tr><i>Дата инициализации коллекции (с точностью до секунд)</i></tr>
+     *     <tr><i>Последний доступный id для элементов коллекции</i></tr>
+     *     <tr><i>Элементы коллекции</i></tr>
+     * </table>
+     */
     private static class Info extends Command {
 
         public Info(List<String> args) {
@@ -184,6 +223,22 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для вывода информации о всех элементах коллекции в формате <b>JSON</b><br>
+     *
+     * <table align="left" border="1">
+     *     <thead>Формат вывода элемента:</thead>
+     *     <tr><i>ID</i></tr>
+     *     <tr><i>Имя</i></tr>
+     *     <tr><i>Координаты</i></tr>
+     *     <tr><i>Дата инициализации(с точностью до дней)</i></tr>
+     *     <tr><i>Возраст</i></tr>
+     *     <tr><i>Цвет</i></tr>
+     *     <tr><i>Тип</i></tr>
+     *     <tr><i>Характер</i></tr>
+     *     <tr><i>Информация о пещере</i></tr>
+     * </table>
+     */
     private static class Show extends Command {
 
         public Show(List<String> args) {
@@ -202,6 +257,11 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для добавления элемента в коллекцию<br>
+     * При вводе данных в консоль пользователю будет показываться приглашение к вводу<br>
+     * При вводе данных в файл все характеристики элемента нужно вводить последовательно через пробел
+     */
     private static class Add extends Command {
 
         public Add(List<String> args) {
@@ -227,6 +287,11 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для обновления существующего элемента по его <b>ID</b> (<i>обязательный аргумент команды</i>)<br>
+     * При вводе данных в консоль пользователю будет показываться приглашение к вводу<br>
+     * При вводе данных в файл все характеристики элемента нужно вводить последовательно через пробел
+     */
     private static class Update extends Command {
 
         public Update(List<String> args) {
@@ -273,6 +338,9 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для удаления элемента коллекции по его <b>ID</b> (<i>обязательный аргумент команды</i>)
+     */
     private static class RemoveById extends Command {
 
         public RemoveById(List<String> args) {
@@ -296,6 +364,9 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для очищения коллекции (<i>безвозвратного удаления всех элементов</i>)
+     */
     private static class Clear extends Command {
 
         public Clear(List<String> args) {
@@ -310,6 +381,10 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для сохранения информации о коллекции в файл формата <b>JSON</b><br>
+     * Путь до искомого файла передается через <i>переменную окружения</i> <b>DAO_COLLECTION_FILEPATH</b>
+     */
     private static class Save extends Command {
 
         public Save(List<String> args) {
@@ -330,6 +405,10 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для выполнения скрипта (<i>последовательности команд</i>) из файла <br>
+     * Путь до искомого файла является обязательным аргументом команды
+     */
     private static class ExecuteScript extends Command {
         public ExecuteScript(List<String> args) {
             super(args);
@@ -363,6 +442,10 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для завершения работы программы в штатном режиме (<i>без сохранения изменений в коллекции</i>)
+     *
+     */
     private static class Exit extends Command {
 
         public Exit(List<String> args) {
@@ -376,6 +459,11 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для добавления элемента в коллекцию, если <b>возраст</b> нового элемента больше возраста всех существующих элементов<br>
+     * При вводе данных в консоль пользователю будет показываться приглашение к вводу<br>
+     * При вводе данных в файл все характеристики элемента нужно вводить последовательно через пробел
+     */
     private static class AddIfMax extends Command {
 
         public AddIfMax(List<String> args) {
@@ -414,6 +502,9 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для сортировки коллекции. Сортировка производится по <i>возрастанию</i> поля <b>"возраст"</b>
+     */
     private static class Sort extends Command {
 
         public Sort(List<String> args) {
@@ -442,6 +533,22 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для вывода элемента с наименьшим <b>ID</b> в заранее заданный поток вывода
+     * <table align="left" border="1">
+     *     <thead>Формат вывода элемента:</thead>
+     *     <tr><i>ID</i></tr>
+     *     <tr><i>Имя</i></tr>
+     *     <tr><i>Координаты</i></tr>
+     *     <tr><i>Дата инициализации(с точностью до дней)</i></tr>
+     *     <tr><i>Возраст</i></tr>
+     *     <tr><i>Цвет</i></tr>
+     *     <tr><i>Тип</i></tr>
+     *     <tr><i>Характер</i></tr>
+     *     <tr><i>Информация о пещере</i></tr>
+     * </table>
+     *
+     */
     private static class MinById extends Command {
 
         public MinById(List<String> args) {
@@ -462,6 +569,9 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для вывода количества элементов с заданным <b>возрастом</b> (<i>обязательный аргумент команды</i>)
+     */
     private static class CountByAge extends Command {
 
         public CountByAge(List<String> args) {
@@ -494,6 +604,11 @@ public class CommandEnv {
         }
     }
 
+    /**
+     * Класс, предназначенный для вывода элементов, значение поля <b>характер</b> которых больше заданного (<i>обязательный агрумент команды</i>)<br>
+     * Сравнение характеров происходит по <b>длине названия</b> характера
+     *
+     */
     private static class FilterGreaterThanCharacter extends Command {
 
         public FilterGreaterThanCharacter(List<String> args) {
@@ -523,6 +638,10 @@ public class CommandEnv {
             return 0;
         }
     }
+
+    /**
+     * Класс, предназначенный для <i>секретной команды</i> от Дуль Я. С. и Коротина А. М.
+     */
     private static class AlexEgoshin extends Command{
         public AlexEgoshin(List<String> args) { super(args); }
 

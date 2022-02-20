@@ -31,7 +31,7 @@ class DragonDAO implements DAO {
 
     public DragonDAO(JsonObject description) {
         String initTime = description.getString("init date");
-        availableId = description.getInt("availableId");
+
         if (initTime == null)
             initDateTime = LocalDateTime.now();
         else
@@ -42,6 +42,11 @@ class DragonDAO implements DAO {
         for (int i = 0; i < description.getInt("size"); ++i)
             collection.add(new Dragon(dragons.getJsonObject(i)));
 
+        int maxId = -1;
+        for(Dragon d: collection)
+            maxId = d.getId() > maxId?d.getId():maxId;
+
+        availableId = maxId > description.getInt("availableId")? maxId + 1: description.getInt("availableId");
     }
     /*
     * Метод добавления элемента в коллекцию
