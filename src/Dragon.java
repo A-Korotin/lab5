@@ -3,7 +3,7 @@ import java.time.format.DateTimeFormatter;
 import javax.json.*;
 
 /**
-
+Класс элементов коллекции
  */
 public class Dragon implements Comparable<Dragon> {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
@@ -173,6 +173,8 @@ public class Dragon implements Comparable<Dragon> {
     }
 
 }
+/*
+* Класс координат элементов коллекции*/
 
 class Coordinates {
     public Coordinates(Float x, Integer y) {
@@ -199,6 +201,8 @@ class Coordinates {
                 '}';
     }
 }
+
+/*Класс пещеры элементов коллекции*/
 class DragonCave {
 
     public DragonCave(double depth, Integer numberOfTreasures) {
@@ -225,6 +229,9 @@ class DragonCave {
                 '}';
     }
 }
+/*
+* enum цветов элементов коллекции*/
+
 enum Color {
     BLACK("BLACK"),
     BLUE("BLUE"),
@@ -241,6 +248,7 @@ enum Color {
         return description;
     }
 }
+/*Enum типов элементов коллекции*/
 enum DragonType {
     UNDERGROUND("UNDERGROUND"),
     AIR("AIR"),
@@ -256,6 +264,8 @@ enum DragonType {
         return description;
     }
 }
+/*
+* Enum типов характера элементов коллекции*/
 enum DragonCharacter {
     CUNNING("CUNNING"),
     GOOD("GOOD"),

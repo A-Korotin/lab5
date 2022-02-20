@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-
+/*Абстрактный класс чтения введённой или записанной в файле информации*/
 public abstract class InputReader {
     protected boolean askForInput;
 
@@ -16,13 +16,17 @@ public abstract class InputReader {
         additionalProperties.add(prop);
     }
     }
-
+/*
+* Класс для чтения ввода с консоли, наследуется от абстрактного класса InputReader*/
 class ConsoleReader extends InputReader {
 
     {
         askForInput = true;
     }
-
+    /*
+     * Метод получения данных с консоли
+     * @return out - Список списков, считанный с консоли
+     * */
     public List<List<String>> getInput() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
@@ -36,12 +40,17 @@ class ConsoleReader extends InputReader {
         return out;
     }
 }
-
+/*
+ * Класс для чтения информации из файла, наследуется от абстрактного класса InputReader*/
 class FileReader extends InputReader {
 
     {
         askForInput = false;
     }
+    /*
+     * Метод получения данных из файла
+     * @return output - список списков, считанный из файла
+     * */
     public List<List<String>> getInput() {
         String filePath = additionalProperties.get(0);
         File file;
