@@ -1,13 +1,13 @@
 import javax.management.relation.RoleInfoNotFoundException;
 import java.util.List;
 import java.util.Scanner;
-/*
+/**
 * Интерфейс для запроса информации у пользователя*/
 
 public interface PropertiesRequester {
     DragonProperties request();
 }
-/*Класс присваивания полям элементов значений, полученных с консоли или из файла */
+/**Класс присваивания полям элементов значений, полученных с консоли или из файла */
 class DragonProperties {
     String name;
     Float xCoord;
@@ -18,7 +18,7 @@ class DragonProperties {
     DragonCharacter character;
     double depth;
     Integer numberOfTreasures;
-    /*
+    /**
      * Метод, который присваивает полям объекта типа DragonProperties значения, преобразованные из строк в нужный тип данных
      * @param input - список полученных данных
      * @param indexShift - параметр, нужный для корректного присвоения элементов по индексам
@@ -52,10 +52,10 @@ class DragonProperties {
         return properties;
     }
 }
-/*
+/**
 * Класс, который имплементируется от PropertiesRequester, запрашивающий данные от пользователя с консоли */
 class ConsoleRequester implements PropertiesRequester {
-    /*
+    /**
      * Метод, который присваивает полям объекта типа DragonProperties значения, считанные с консоли, преобразованные из строк в нужный тип данных
      * @return output - параметры элементов коллекции
      * */

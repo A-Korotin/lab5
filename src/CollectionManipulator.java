@@ -1,15 +1,15 @@
 import javax.json.*;
 import java.util.*;
 import java.io.*;
-/*
+/**
 * Интерфейс для взаимодействия с коллекцией */
 interface CollectionManipulator {
     void save(DAO collection);
     DAO get();
 }
-/*Класс, реализующий методы сохранения данных в файл и получение данных из файла для дальнейшего взаимодействия с ними*/
+/**Класс, реализующий методы сохранения данных в файл и получение данных из файла для дальнейшего взаимодействия с ними*/
 class FileManipulator implements CollectionManipulator {
-    /*
+    /**
      * Метод сохранения коллекции в файл
      * @param collection - коллекция
      * */
@@ -27,7 +27,7 @@ class FileManipulator implements CollectionManipulator {
             throw new RuntimeException(e.getMessage());
         }
     }
-    /*
+    /**
      * Метод возвращения коллекции, считанной из файла
      * @return new DragonDAO() - коллекция, считанная из файла
      * */

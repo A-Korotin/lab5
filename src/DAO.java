@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import javax.json.*;
-/*
+/**
 * Интерфейс для работы с коллекцией*/
 
 interface DAO {
@@ -18,7 +18,7 @@ interface DAO {
     void sort();
 }
 
-/*
+/**
 *Класс, который имплементируется от DAO. В нём мы реализуем методы для работы с коллекцией и инициализируем саму коллекцию */
 class DragonDAO implements DAO {
     private LocalDateTime initDateTime;
@@ -48,7 +48,7 @@ class DragonDAO implements DAO {
 
         availableId = maxId > description.getInt("availableId")? maxId + 1: description.getInt("availableId");
     }
-    /*
+    /**
     * Метод добавления элемента в коллекцию
     * @param properties - свойства элемента
     * */
@@ -57,7 +57,7 @@ class DragonDAO implements DAO {
         collection.add(new Dragon(availableId++, properties));
         return 0;
     }
-    /*
+    /**
      * Метод обновления элемента в коллекции по его id
      * @param properties - свойства элемента
      * @param id - id элемента, который пользователь хочет обновить
@@ -72,7 +72,7 @@ class DragonDAO implements DAO {
         }
         return -1;
     }
-    /*
+    /**
      * Метод удаления элемента из коллекции по его id
      * @param id - id элемента, который пользователь хочет удалить
      * */
@@ -82,7 +82,7 @@ class DragonDAO implements DAO {
             return 0;
         return -1;
     }
-    /*
+    /**
      * Метод получения элемента из коллекции по его id
      * @param id - id элемента, который пользователь хочет получить
      * @return dragon - элемент коллекции
@@ -96,7 +96,7 @@ class DragonDAO implements DAO {
         }
         return null;
     }
-    /*
+    /**
      * Метод получения всей коллекции
      * @return outputCollection - копия коллекции
      * */
@@ -106,7 +106,7 @@ class DragonDAO implements DAO {
         outputCollection.addAll(collection);
         return outputCollection;
     }
-    /*
+    /**
      * Метод очистки всей коллекции
      * */
     @Override
@@ -114,7 +114,7 @@ class DragonDAO implements DAO {
         collection.clear();
         return 0;
     }
-    /*
+    /**
      * Метод возвращения информации о коллекции
      * @return output - информация о коллекции
      * */
@@ -134,7 +134,7 @@ class DragonDAO implements DAO {
 
         return output;
     }
-    /*
+    /**
      * Метод сортировки коллекции
      * */
     @Override

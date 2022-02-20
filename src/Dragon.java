@@ -173,7 +173,7 @@ public class Dragon implements Comparable<Dragon> {
     }
 
 }
-/*
+/**
 * Класс координат элементов коллекции*/
 
 class Coordinates {
@@ -202,7 +202,8 @@ class Coordinates {
     }
 }
 
-/*Класс пещеры элементов коллекции*/
+/**
+ * Класс пещеры элементов коллекции*/
 class DragonCave {
 
     public DragonCave(double depth, Integer numberOfTreasures) {
@@ -229,7 +230,7 @@ class DragonCave {
                 '}';
     }
 }
-/*
+/**
 * enum цветов элементов коллекции*/
 
 enum Color {
@@ -248,7 +249,8 @@ enum Color {
         return description;
     }
 }
-/*Enum типов элементов коллекции*/
+/**
+ * Enum типов элементов коллекции*/
 enum DragonType {
     UNDERGROUND("UNDERGROUND"),
     AIR("AIR"),
@@ -264,7 +266,7 @@ enum DragonType {
         return description;
     }
 }
-/*
+/**
 * Enum типов характера элементов коллекции*/
 enum DragonCharacter {
     CUNNING("CUNNING"),

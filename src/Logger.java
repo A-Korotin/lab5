@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-/*
+/**
 * Класс для записи запросов команд в массив (создан для команды history)*/
 public class Logger {
     private static int capacity = 6;
     private static final List<String> history = new ArrayList<>();
-    /*
+    /**
     * Метод добавления имени команды в массив
     * @param command - имя команды
     * */
@@ -16,7 +16,7 @@ public class Logger {
             history.remove(capacity);
         }
     }
-    /*
+    /**
      * Метод возвращения копии массива
      * @return new ArrayList<>(history) - копия массива с именами команд
      * */

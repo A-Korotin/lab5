@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-/*Абстрактный класс чтения введённой или записанной в файле информации*/
+/**Абстрактный класс чтения введённой или записанной в файле информации*/
 public abstract class InputReader {
     protected boolean askForInput;
 
@@ -16,14 +16,14 @@ public abstract class InputReader {
         additionalProperties.add(prop);
     }
     }
-/*
+/**
 * Класс для чтения ввода с консоли, наследуется от абстрактного класса InputReader*/
 class ConsoleReader extends InputReader {
 
     {
         askForInput = true;
     }
-    /*
+    /**
      * Метод получения данных с консоли
      * @return out - Список списков, считанный с консоли
      * */
@@ -40,14 +40,14 @@ class ConsoleReader extends InputReader {
         return out;
     }
 }
-/*
+/**
  * Класс для чтения информации из файла, наследуется от абстрактного класса InputReader*/
 class FileReader extends InputReader {
 
     {
         askForInput = false;
     }
-    /*
+    /**
      * Метод получения данных из файла
      * @return output - список списков, считанный из файла
      * */
