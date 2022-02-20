@@ -1,4 +1,4 @@
-/*
+/**
 * Интерфейс вывода информации*/
 public interface OutPuter {
     void outPut(String msg);
@@ -6,7 +6,7 @@ public interface OutPuter {
     void outPut(int number);
 
 }
-/*
+/**
 Класс для вывода информации в консоль. Имплементируется от интерфейса OutPuter*/
 class ConsoleOutPut implements OutPuter {
     public void outPut(String msg) {
@@ -23,7 +23,7 @@ class ConsoleOutPut implements OutPuter {
         System.out.println(number);
     }
 }
-/*
+/**
 Класс для вывода информации в файл. Имплементируется от интерфейса OutPuter*/
 class FileOutPut implements OutPuter {
     @Override
