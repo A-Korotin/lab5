@@ -1,4 +1,3 @@
-import javax.management.relation.RoleInfoNotFoundException;
 import java.util.List;
 import java.util.Scanner;
 /**
@@ -73,7 +72,7 @@ class DragonProperties {
             throw new RuntimeException("ОШИБКА! Параметр КООРДИНАТА_Y не может быть >998");
         if (properties.age <= 0)
             throw new RuntimeException("ОШИБКА !Параметр ВОЗРАСТ не может быть <= 0");
-        if (properties.numberOfTreasures <= 0)
+        if (properties.numberOfTreasures != null && properties.numberOfTreasures <= 0)
             throw new RuntimeException("ОШИБКА! Параметр КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ не может быть <= 0");
         return properties;
     }
