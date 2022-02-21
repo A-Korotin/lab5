@@ -34,7 +34,7 @@ class DragonProperties {
             properties.yCoord = Integer.parseInt(input.get(2 + indexShift));
             properties.age = Long.parseLong(input.get(3 + indexShift));
 
-            if (input.get(4 + indexShift).trim() == ""){
+            if (input.get(4 + indexShift).trim().isEmpty()){
                 properties.color = null;
             }
             else{
@@ -43,7 +43,7 @@ class DragonProperties {
 
             properties.type = DragonType.valueOf(input.get(5 + indexShift));
 
-            if (input.get(6 + indexShift).trim() == ""){
+            if (input.get(6 + indexShift).trim().isEmpty()){
                 properties.character = null;
             }
             else{
@@ -51,7 +51,7 @@ class DragonProperties {
             }
             properties.depth = Double.parseDouble(input.get(7 + indexShift));
 
-            if (input.get(8 + indexShift).trim() == ""){
+            if (input.get(8 + indexShift).trim().isEmpty()){
                 properties.numberOfTreasures = null;
             }
             else{
