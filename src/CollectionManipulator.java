@@ -1,4 +1,5 @@
 import javax.json.*;
+import javax.json.stream.JsonParsingException;
 import java.util.*;
 import java.io.*;
 /**
@@ -48,7 +49,7 @@ class FileManipulator implements CollectionManipulator {
             JsonObject daoJson = reader.readObject();
             return new DragonDAO(daoJson);
 
-        } catch (IOException e) {
+        } catch (IOException | JsonParsingException e) {
             // пропустить и вернуть новую коллекцию
         }
         return new DragonDAO();

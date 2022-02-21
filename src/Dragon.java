@@ -45,14 +45,13 @@ public class Dragon implements Comparable<Dragon> {
         name = description.getString("name");
         JsonObject coord = description.getJsonObject("coordinates");
         coordinates = new Coordinates((float)coord.getJsonNumber("x").doubleValue(), coord.getInt("y"));
-        //creationDate = LocalDate.parse(description.getString("creationDate"));
         creationDate = LocalDate.parse(description.getString("creationDate"), DateTimeFormatter.ofPattern("dd.MM.uuuu"));
         age = description.getJsonNumber("age").longValue();
-        color = Color.valueOf(description.getString("color"));
+        color = description.getString("color").equals("null") ? null :Color.valueOf(description.getString("color"));
         type = DragonType.valueOf(description.getString("type"));
-        character = DragonCharacter.valueOf(description.getString("character"));
+        character = description.getString("character").equals("null") ? null : DragonCharacter.valueOf(description.getString("character"));
         JsonObject cave = description.getJsonObject("cave");
-        this.cave = new DragonCave(cave.getJsonNumber("depth").doubleValue(), cave.getInt("numberOfTreasures"));
+        this.cave = new DragonCave(cave.getJsonNumber("depth").doubleValue(), cave.getString("numberOfTreasures").equals("null") ? null :cave.getInt("numberOfTreasures"));
     }
 
     public int getId() {
@@ -132,12 +131,12 @@ public class Dragon implements Comparable<Dragon> {
                         add("y", coordinates.getY()).build()).
                 add("creationDate", creationDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu"))).
                 add("age", age).
-                add("color", color.getDescription()).
+                add("color", color == null ? "null" :color.getDescription()).
                 add("type", type.getDescription()).
-                add("character", character.getDescription()).
+                add("character", character == null ? "null" : character.getDescription()).
                 add("cave", Json.createObjectBuilder().
                         add("depth", cave.getDepth()).
-                        add("numberOfTreasures", cave.getNumberOfTreasures())).build();
+                        add("numberOfTreasures", cave.getNumberOfTreasures() == null ? "null": String.valueOf(cave.getNumberOfTreasures()))).build();
         return dragon;
     }
 
