@@ -283,6 +283,9 @@ enum DragonCharacter {
     public String getDescription() {
         return description;
     }
+    public boolean compareCharacter(DragonCharacter character){
+        return description.length() > character.getDescription().length();
+    }
 
     public static int compare(DragonCharacter obj1, DragonCharacter obj2) {
         int len1 = obj1 == null ? -1: obj1.getDescription().length();

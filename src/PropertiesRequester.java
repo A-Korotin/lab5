@@ -29,7 +29,13 @@ class DragonProperties {
         if (input.size() != 9 + indexShift)
             throw new RuntimeException("ОШИБКА! Неверное количество параметров");
         try {
-            properties.name = input.get(0 + indexShift);
+            if (input.get(0 + indexShift).trim().isEmpty()){
+                properties.name = "Dragon";
+            }
+            else{
+                properties.name = input.get(0 + indexShift);
+
+            }
             properties.xCoord = Float.parseFloat(input.get(1 + indexShift));
             properties.yCoord = Integer.parseInt(input.get(2 + indexShift));
             properties.age = Long.parseLong(input.get(3 + indexShift));
@@ -88,7 +94,7 @@ class ConsoleRequester implements PropertiesRequester {
         while (true) {
             try {
                 output.name = scanner.nextLine();
-                if (output.name.isEmpty()) {
+                if (output.name.trim().isEmpty()) {
                     System.out.println("Неверный ввод.");
                     continue;
                 }
