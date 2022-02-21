@@ -165,7 +165,7 @@ class ConsoleRequester implements PropertiesRequester {
                     output.character = null;
                     break;
                 }
-                output.character = DragonCharacter.valueOf(scanner.nextLine());
+                output.character = DragonCharacter.valueOf(line);
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
@@ -189,7 +189,7 @@ class ConsoleRequester implements PropertiesRequester {
                     output.numberOfTreasures = null;
                     break;
                 }
-                output.numberOfTreasures = Integer.parseInt(scanner.nextLine());
+                output.numberOfTreasures = Integer.parseInt(line);
                 if (output.numberOfTreasures <= 0) {
                     System.out.println("Неверный ввод.");
                     continue;

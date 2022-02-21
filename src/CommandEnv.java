@@ -624,14 +624,15 @@ public class CommandEnv {
             }
 
             try{
-                character = DragonCharacter.valueOf(args.get(0));
+
+                character = args.get(0).equals("null")? null :DragonCharacter.valueOf(args.get(0));
             }
             catch (RuntimeException e){
                 outPuter.outPut("Характер не определён");
                 return -1;
             }
             for (Dragon dragon: dao.getAll()){
-                if (dragon.getCharacter().compareCharacter(character)){
+                if (DragonCharacter.compare(dragon.getCharacter(), character) > 0){
                     outPuter.outPut(dragon);
                 }
             }
