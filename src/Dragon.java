@@ -51,7 +51,8 @@ public class Dragon implements Comparable<Dragon> {
         type = DragonType.valueOf(description.getString("type"));
         character = description.getString("character").equals("null") ? null : DragonCharacter.valueOf(description.getString("character"));
         JsonObject cave = description.getJsonObject("cave");
-        this.cave = new DragonCave(cave.getJsonNumber("depth").doubleValue(), cave.getString("numberOfTreasures").equals("null") ? null :cave.getInt("numberOfTreasures"));
+
+        this.cave = new DragonCave(cave.getJsonNumber("depth").doubleValue(), cave.getString("numberOfTreasures").equals("null") ? null :Integer.valueOf(cave.getString("numberOfTreasures")));
     }
 
     public int getId() {

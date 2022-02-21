@@ -49,10 +49,10 @@ class FileManipulator implements CollectionManipulator {
             JsonObject daoJson = reader.readObject();
             return new DragonDAO(daoJson);
 
-        } catch (IOException | JsonParsingException e) {
-            // пропустить и вернуть новую коллекцию
+        } catch (IOException | RuntimeException e) {
+            throw new RuntimeException("Значения файла JSON были изменены вручную, что привело к ошибке. " +
+                                       "Была инициализирована пустая коллекция.");
         }
-        return new DragonDAO();
     }
 
 }

@@ -26,7 +26,13 @@ public class CommandEnv {
             return;
         }
         InputReader reader = new ConsoleReader();
-        DAO dao = manipulator.get();
+        DAO dao;
+        try {
+            dao = manipulator.get();
+        } catch (RuntimeException e) {
+            outPuter.outPut(e.getMessage());
+            dao = new DragonDAO();
+        }
 
         int exitCode;
         List<Command> commands;

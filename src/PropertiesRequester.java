@@ -28,45 +28,19 @@ class DragonProperties {
         if (input.size() != 9 + indexShift)
             throw new RuntimeException("ОШИБКА! Неверное количество параметров");
         try {
-            if (input.get(0 + indexShift).trim().isEmpty()){
-                properties.name = "Dragon";
-            }
-            else{
-                properties.name = input.get(0 + indexShift);
-
-            }
+            properties.name = input.get(0+indexShift);
             properties.xCoord = Float.parseFloat(input.get(1 + indexShift));
             properties.yCoord = Integer.parseInt(input.get(2 + indexShift));
             properties.age = Long.parseLong(input.get(3 + indexShift));
-
-            if (input.get(4 + indexShift).trim().isEmpty()){
-                properties.color = null;
-            }
-            else{
-                properties.color = Color.valueOf(input.get(4 + indexShift));
-            }
-
+            properties.color = input.get(4 + indexShift).equals("null") ? null: Color.valueOf(input.get(4 + indexShift));
             properties.type = DragonType.valueOf(input.get(5 + indexShift));
-
-            if (input.get(6 + indexShift).trim().isEmpty()){
-                properties.character = null;
-            }
-            else{
-                properties.character = DragonCharacter.valueOf(input.get(6 + indexShift));
-            }
+            properties.character = input.get(6 + indexShift).equals("null") ? null : DragonCharacter.valueOf(input.get(6 + indexShift));
             properties.depth = Double.parseDouble(input.get(7 + indexShift));
-
-            if (input.get(8 + indexShift).trim().isEmpty()){
-                properties.numberOfTreasures = null;
-            }
-            else{
-                properties.numberOfTreasures = Integer.parseInt(input.get(8 + indexShift));
-            }
-
+            properties.numberOfTreasures = input.get(8 + indexShift).equals("null") ? null: Integer.parseInt(input.get(8 + indexShift));
         } catch (RuntimeException e) {
             throw new RuntimeException("ОШИБКА! Типы данных несовместимы");
         }
-        if (properties.name.isEmpty())
+        if (properties.name.isEmpty()) // redundant
             throw new RuntimeException("ОШИБКА! Параметр ИМЯ не может быть пустым");
         if (properties.yCoord > 998)
             throw new RuntimeException("ОШИБКА! Параметр КООРДИНАТА_Y не может быть >998");
