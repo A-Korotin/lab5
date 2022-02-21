@@ -18,8 +18,7 @@ class FileManipulator implements CollectionManipulator {
         Map<String, String> env = System.getenv();
         String filepath = env.get("DAO_COLLECTION_FILEPATH");
 
-        File file = new File(filepath);
-        try (FileOutputStream stream = new FileOutputStream(file); OutputStreamWriter writer = new OutputStreamWriter(stream)) {
+        try (FileOutputStream stream = new FileOutputStream(filepath); OutputStreamWriter writer = new OutputStreamWriter(stream)) {
             JsonObject description = collection.getJSONDescription();
             writer.write(description.toString());
 
@@ -36,9 +35,8 @@ class FileManipulator implements CollectionManipulator {
         Map<String, String> env = System.getenv();
         String filepath = env.get("DAO_COLLECTION_FILEPATH");
 
-        File file = new File(filepath);
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
-             FileInputStream fileInputStream = new FileInputStream(file);
+             FileInputStream fileInputStream = new FileInputStream(filepath);
              BufferedInputStream inputStream = new BufferedInputStream(fileInputStream)) {
 
             int nextByte;

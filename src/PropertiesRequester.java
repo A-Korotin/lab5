@@ -114,10 +114,15 @@ class ConsoleRequester implements PropertiesRequester {
                 System.out.println("Неверный ввод.");
             }
         }
-        System.out.println("Введите цвет дракона: BLACK, BLUE, WHITE, BROWN");
+        System.out.println("Введите цвет дракона: BLACK, BLUE, WHITE, BROWN. Для присвоения null введите пустую строку");
         while (true) {
             try {
-                output.color = Color.valueOf(scanner.nextLine());
+                String line = scanner.nextLine();
+                if (line.trim().isEmpty()) {
+                    output.color = null;
+                    break;
+                }
+                output.color = Color.valueOf(line);
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
@@ -132,9 +137,14 @@ class ConsoleRequester implements PropertiesRequester {
                 System.out.println("Неверный ввод.");
             }
         }
-        System.out.println("Введите характер дракона: CUNNING, GOOD, CHAOTIC, CHAOTIC_EVIL, FICKLE;");
+        System.out.println("Введите характер дракона: CUNNING, GOOD, CHAOTIC, CHAOTIC_EVIL, FICKLE. Для присвоения null введите пустую строку");
         while (true) {
             try {
+                String line = scanner.nextLine();
+                if (line.trim().isEmpty()) {
+                    output.character = null;
+                    break;
+                }
                 output.character = DragonCharacter.valueOf(scanner.nextLine());
                 break;
             } catch (RuntimeException e) {
@@ -151,9 +161,14 @@ class ConsoleRequester implements PropertiesRequester {
                 System.out.println("Неверный ввод.");
             }
         }
-        System.out.println("Введите количество сокровищ в пещере дракона, Integer, >0");
+        System.out.println("Введите количество сокровищ в пещере дракона, Integer, >0. Для присвоения null введите пустую строку");
         while (true) {
             try {
+                String line = scanner.nextLine();
+                if (line.trim().isEmpty()){
+                    output.numberOfTreasures = null;
+                    break;
+                }
                 output.numberOfTreasures = Integer.parseInt(scanner.nextLine());
                 if (output.numberOfTreasures <= 0) {
                     System.out.println("Неверный ввод.");
