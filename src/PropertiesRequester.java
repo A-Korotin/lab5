@@ -33,11 +33,31 @@ class DragonProperties {
             properties.xCoord = Float.parseFloat(input.get(1 + indexShift));
             properties.yCoord = Integer.parseInt(input.get(2 + indexShift));
             properties.age = Long.parseLong(input.get(3 + indexShift));
-            properties.color = Color.valueOf(input.get(4 + indexShift));
+
+            if (input.get(4 + indexShift).trim() == ""){
+                properties.color = null;
+            }
+            else{
+                properties.color = Color.valueOf(input.get(4 + indexShift));
+            }
+
             properties.type = DragonType.valueOf(input.get(5 + indexShift));
-            properties.character = DragonCharacter.valueOf(input.get(6 + indexShift));
+
+            if (input.get(6 + indexShift).trim() == ""){
+                properties.character = null;
+            }
+            else{
+                properties.character = DragonCharacter.valueOf(input.get(6 + indexShift));
+            }
             properties.depth = Double.parseDouble(input.get(7 + indexShift));
-            properties.numberOfTreasures = Integer.parseInt(input.get(8 + indexShift));
+
+            if (input.get(8 + indexShift).trim() == ""){
+                properties.numberOfTreasures = null;
+            }
+            else{
+                properties.numberOfTreasures = Integer.parseInt(input.get(8 + indexShift));
+            }
+
         } catch (RuntimeException e) {
             throw new RuntimeException("ОШИБКА! Типы данных несовместимы");
         }
