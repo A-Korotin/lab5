@@ -6,18 +6,18 @@ import java.util.List;
 import javax.json.*;
 
 
-interface DAO {
+interface DAO<T extends DaoElement> {
     int create(DragonProperties properties);
     int update(int id, DragonProperties properties);
     int delete(int id);
     Dragon get(int id);
-    List<Dragon> getAll();
+    List<T> getAll();
     int clear();
     JsonObject getJSONDescription();
     void sort();
 }
 
-class DragonDAO implements DAO {
+class DragonDAO implements DAO<Dragon> {
     private LocalDateTime initDateTime;
     private int availableId = 1;
     private final List<Dragon> collection = new LinkedList<>();

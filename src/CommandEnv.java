@@ -157,7 +157,7 @@ public class CommandEnv {
          * </table>
          *
          */
-        public abstract int execute(DAO dao);
+        public abstract int execute(DAO<? extends DaoElement> dao);
 
     }
 
@@ -171,7 +171,7 @@ public class CommandEnv {
         }
 
     @Override
-    public int execute(DAO dao) {
+    public int execute(DAO<? extends DaoElement> dao) {
         outPuter.outPut("""
                 help : вывести справку по доступным командам
                 info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)
@@ -217,7 +217,7 @@ public class CommandEnv {
         }
 
         @Override
-        public int execute(DAO dao) {
+        public int execute(DAO<? extends DaoElement> dao) {
             outPuter.outPut(dao.getJSONDescription().toString());
             return 0;
         }
@@ -245,13 +245,13 @@ public class CommandEnv {
             super(args);
         }
 
-        public int execute(DAO dao) {
-            List<Dragon> dragons = dao.getAll();
+        public int execute(DAO<? extends DaoElement> dao) {
+            List<? extends DaoElement> dragons = dao.getAll();
             if (dragons.size() == 0) {
                 outPuter.outPut("пусто");
                 return 0;
             }
-            for (Dragon d : dragons)
+            for (DaoElement d : dragons)
                 outPuter.outPut(d);
             return 0;
         }
@@ -269,7 +269,7 @@ public class CommandEnv {
         }
 
         @Override
-        public int execute(DAO dao) {
+        public int execute(DAO<? extends DaoElement> dao) {
             DragonProperties properties;
             if (askForInput)
                 properties = requester.request();

@@ -1,12 +1,15 @@
 import javax.management.relation.RoleInfoNotFoundException;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Scanner;
 
 public interface PropertiesRequester {
-    DragonProperties request();
+    Properties request();
 }
+abstract class Properties {
 
-class DragonProperties {
+}
+class DragonProperties extends Properties{
     String name;
     Float xCoord;
     Integer yCoord;
@@ -18,6 +21,7 @@ class DragonProperties {
     Integer numberOfTreasures;
 
     public static DragonProperties parseProperties(List<String> input, int indexShift){
+
         DragonProperties properties = new DragonProperties();
         if (input.size() != 9 + indexShift)
             throw new RuntimeException("ОШИБКА! Неверное количество параметров");
@@ -49,7 +53,8 @@ class DragonProperties {
 class ConsoleRequester implements PropertiesRequester {
 
     @Override
-    public DragonProperties request() {
+    public Properties request() {
+
         Scanner scanner = new Scanner(System.in);
         DragonProperties output = new DragonProperties();
 
