@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 /**
 * Интерфейс для запроса информации у пользователя*/
@@ -80,7 +81,7 @@ class ConsoleRequester implements PropertiesRequester {
         System.out.println("Введите координату X пещеры дракона, Float");
         while(true) {
             try{
-                output.xCoord = Float.parseFloat(scanner.nextLine());
+                output.xCoord = Float.parseFloat(scanner.nextLine().trim());
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
@@ -90,7 +91,7 @@ class ConsoleRequester implements PropertiesRequester {
         System.out.println("Введите координату Y пещеры дракона, Integer, не больше 998");
         while (true) {
             try {
-                output.yCoord = Integer.parseInt(scanner.nextLine());
+                output.yCoord = Integer.parseInt(scanner.nextLine().trim());
                 if (output.yCoord > 998){
                     System.out.println("Неверный ввод.");
                     continue;
@@ -103,7 +104,7 @@ class ConsoleRequester implements PropertiesRequester {
         System.out.println("Введите возраст дракона, Long, >0");
         while (true) {
             try {
-                output.age = Long.parseLong(scanner.nextLine());
+                output.age = Long.parseLong(scanner.nextLine().trim());
                 if (output.age <= 0) {
                     System.out.println("Неверный ввод.");
                     continue;
@@ -116,12 +117,12 @@ class ConsoleRequester implements PropertiesRequester {
         System.out.println("Введите цвет дракона: BLACK, BLUE, WHITE, BROWN. Для присвоения null введите пустую строку");
         while (true) {
             try {
-                String line = scanner.nextLine();
-                if (line.trim().isEmpty()) {
+                String line = scanner.nextLine().trim();
+                if (line.isEmpty()) {
                     output.color = null;
                     break;
                 }
-                output.color = Color.valueOf(line);
+                output.color = Color.valueOf(line.toUpperCase());
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
@@ -130,7 +131,7 @@ class ConsoleRequester implements PropertiesRequester {
         System.out.println("Введите тип дракона: UNDERGROUND, AIR, FIRE");
         while (true) {
             try {
-                output.type = DragonType.valueOf(scanner.nextLine());
+                output.type = DragonType.valueOf(scanner.nextLine().trim().toUpperCase());
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
@@ -139,12 +140,12 @@ class ConsoleRequester implements PropertiesRequester {
         System.out.println("Введите характер дракона: CUNNING, GOOD, CHAOTIC, CHAOTIC_EVIL, FICKLE. Для присвоения null введите пустую строку");
         while (true) {
             try {
-                String line = scanner.nextLine();
-                if (line.trim().isEmpty()) {
+                String line = scanner.nextLine().trim();
+                if (line.isEmpty()) {
                     output.character = null;
                     break;
                 }
-                output.character = DragonCharacter.valueOf(line);
+                output.character = DragonCharacter.valueOf(line.toUpperCase());
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
@@ -154,7 +155,7 @@ class ConsoleRequester implements PropertiesRequester {
         System.out.println("Введите глубину пещеры дракона, double");
         while (true) {
             try {
-                output.depth = Double.parseDouble(scanner.nextLine());
+                output.depth = Double.parseDouble(scanner.nextLine().trim());
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Неверный ввод.");
@@ -163,8 +164,8 @@ class ConsoleRequester implements PropertiesRequester {
         System.out.println("Введите количество сокровищ в пещере дракона, Integer, >0. Для присвоения null введите пустую строку");
         while (true) {
             try {
-                String line = scanner.nextLine();
-                if (line.trim().isEmpty()){
+                String line = scanner.nextLine().trim();
+                if (line.isEmpty()){
                     output.numberOfTreasures = null;
                     break;
                 }
