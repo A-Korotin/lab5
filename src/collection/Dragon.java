@@ -1,3 +1,5 @@
+package collection;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.json.*;
@@ -5,7 +7,7 @@ import javax.json.*;
 /**
 Класс элементов коллекции
  */
-public class Dragon implements Comparable<Dragon> {
+public class Dragon extends DaoElement implements Comparable<Dragon> {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -143,7 +145,7 @@ public class Dragon implements Comparable<Dragon> {
 
     @Override
     public String toString() {
-        return "Dragon{" + System.lineSeparator() +
+        return "collection.Dragon{" + System.lineSeparator() +
                 "id=" + id + System.lineSeparator() +
                 "name='" + name + '\'' + System.lineSeparator() +
                 "coordinates=" + coordinates + System.lineSeparator() +
@@ -195,7 +197,7 @@ class Coordinates {
 
     @Override
     public String toString() {
-        return "Coordinates{" +
+        return "collection.Coordinates{" +
                 "x=" + x +
                 ", y=" + y +
                 '}';
@@ -224,7 +226,7 @@ class DragonCave {
 
     @Override
     public String toString() {
-        return "DragonCave{" +
+        return "collection.DragonCave{" +
                 "depth=" + depth +
                 ", numberOfTreasures=" + numberOfTreasures +
                 '}';

@@ -1,5 +1,9 @@
+package io;
+
+import collection.DAO;
+import collection.DragonDAO;
+
 import javax.json.*;
-import javax.json.stream.JsonParsingException;
 import java.util.*;
 import java.io.*;
 /**
@@ -29,7 +33,7 @@ class FileManipulator implements CollectionManipulator {
     }
     /**
      * Метод возвращения коллекции, считанной из файла
-     * @return new DragonDAO() - коллекция, считанная из файла
+     * @return new collection.DragonDAO() - коллекция, считанная из файла
      * */
     @Override
     public DAO get() {

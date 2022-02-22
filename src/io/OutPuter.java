@@ -1,3 +1,7 @@
+package io;
+
+import collection.Dragon;
+
 /**
 * Интерфейс вывода информации*/
 public interface OutPuter {
@@ -7,7 +11,7 @@ public interface OutPuter {
 
 }
 /**
-Класс для вывода информации в консоль. Имплементируется от интерфейса OutPuter*/
+Класс для вывода информации в консоль. Имплементируется от интерфейса io.OutPuter*/
 class ConsoleOutPut implements OutPuter {
     public void outPut(String msg) {
         System.out.println(msg);
@@ -24,7 +28,7 @@ class ConsoleOutPut implements OutPuter {
     }
 }
 /**
-Класс для вывода информации в файл. Имплементируется от интерфейса OutPuter*/
+Класс для вывода информации в файл. Имплементируется от интерфейса io.OutPuter*/
 class FileOutPut implements OutPuter {
     @Override
     public void outPut(String msg) {

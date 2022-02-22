@@ -1,26 +1,20 @@
+package collection;
+
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import javax.json.*;
-/**
-* Интерфейс для работы с коллекцией*/
-
-interface DAO {
-    int create(DragonProperties properties);
-    int update(int id, DragonProperties properties);
-    int delete(int id);
-    Dragon get(int id);
-    List<Dragon> getAll();
-    int clear();
-    JsonObject getJSONDescription();
-    void sort();
-}
 
 /**
-*Класс, который имплементируется от DAO. В нём мы реализуем методы для работы с коллекцией и инициализируем саму коллекцию */
-class DragonDAO implements DAO {
+ * Класс, который имплементируется от collection.DAO. В нём мы реализуем методы для работы с коллекцией и инициализируем саму коллекцию
+ */
+class DragonDAO implements DAO<Dragon> {
     private LocalDateTime initDateTime;
     private int availableId = 1;
     private final List<Dragon> collection = new LinkedList<>();
@@ -49,9 +43,9 @@ class DragonDAO implements DAO {
         availableId = maxId > description.getInt("availableId")? maxId + 1: description.getInt("availableId");
     }
     /**
-    * Метод добавления элемента в коллекцию
-    * @param properties - свойства элемента
-    * */
+     * Метод добавления элемента в коллекцию
+     * @param properties - свойства элемента
+     * */
     @Override
     public int create(DragonProperties properties) {
         collection.add(new Dragon(availableId++, properties));

@@ -1,3 +1,5 @@
+package io;
+
 import java.util.*;
 import java.io.*;
 /**Абстрактный класс чтения введённой или записанной в файле информации*/
@@ -17,7 +19,7 @@ public abstract class InputReader {
     }
     }
 /**
-* Класс для чтения ввода с консоли, наследуется от абстрактного класса InputReader*/
+* Класс для чтения ввода с консоли, наследуется от абстрактного класса io.InputReader*/
 class ConsoleReader extends InputReader {
 
     {
@@ -41,7 +43,7 @@ class ConsoleReader extends InputReader {
     }
 }
 /**
- * Класс для чтения информации из файла, наследуется от абстрактного класса InputReader*/
+ * Класс для чтения информации из файла, наследуется от абстрактного класса io.InputReader*/
 class FileReader extends InputReader {
 
     {
