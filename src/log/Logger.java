@@ -1,5 +1,6 @@
+package log;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 /**
 * Класс для записи запросов команд в массив (создан для команды history)*/

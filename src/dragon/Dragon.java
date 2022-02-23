@@ -1,4 +1,6 @@
-package collection;
+package dragon;
+
+import collection.DaoElement;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -145,7 +147,7 @@ public class Dragon extends DaoElement implements Comparable<Dragon> {
 
     @Override
     public String toString() {
-        return "collection.Dragon{" + System.lineSeparator() +
+        return "dragon.Dragon{" + System.lineSeparator() +
                 "id=" + id + System.lineSeparator() +
                 "name='" + name + '\'' + System.lineSeparator() +
                 "coordinates=" + coordinates + System.lineSeparator() +
@@ -175,125 +177,6 @@ public class Dragon extends DaoElement implements Comparable<Dragon> {
     }
 
 }
-/**
-* Класс координат элементов коллекции*/
 
-class Coordinates {
-    public Coordinates(Float x, Integer y) {
-        this.x = x;
-        this.y = y;
-    }
 
-    private Float x; //Поле не может быть null
-    private Integer y; //Максимальное значение поля: 998, Поле не может быть null
-
-    public Float getX() {
-        return x;
-    }
-
-    public Integer getY() {
-        return y;
-    }
-
-    @Override
-    public String toString() {
-        return "collection.Coordinates{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
-    }
-}
-
-/**
- * Класс пещеры элементов коллекции*/
-class DragonCave {
-
-    public DragonCave(double depth, Integer numberOfTreasures) {
-        this.depth = depth;
-        this.numberOfTreasures = numberOfTreasures;
-    }
-
-    private double depth;
-    private Integer numberOfTreasures; //Поле может быть null, Значение поля должно быть больше 0
-
-    public double getDepth() {
-        return depth;
-    }
-
-    public Integer getNumberOfTreasures() {
-        return numberOfTreasures;
-    }
-
-    @Override
-    public String toString() {
-        return "collection.DragonCave{" +
-                "depth=" + depth +
-                ", numberOfTreasures=" + numberOfTreasures +
-                '}';
-    }
-}
-/**
-* enum цветов элементов коллекции*/
-
-enum Color {
-    BLACK("BLACK"),
-    BLUE("BLUE"),
-    WHITE("WHITE"),
-    BROWN("BROWN");
-
-    private final String description;
-
-    Color(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-}
-/**
- * Enum типов элементов коллекции*/
-enum DragonType {
-    UNDERGROUND("UNDERGROUND"),
-    AIR("AIR"),
-    FIRE("FIRE");
-
-    private final String description;
-
-    DragonType(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-}
-/**
-* Enum типов характера элементов коллекции*/
-enum DragonCharacter {
-    CUNNING("CUNNING"),
-    GOOD("GOOD"),
-    CHAOTIC("CHAOTIC"),
-    CHAOTIC_EVIL("CHAOTIC_EVIL"),
-    FICKLE("FICKLE");
-
-    private final String description;
-
-    DragonCharacter(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-    public boolean compareCharacter(DragonCharacter character){
-        return description.length() > character.getDescription().length();
-    }
-
-    public static int compare(DragonCharacter obj1, DragonCharacter obj2) {
-        int len1 = obj1 == null ? -1: obj1.getDescription().length();
-        int len2 = obj2 == null ? -1: obj2.getDescription().length();
-        return len1 - len2;
-    }
-}
 

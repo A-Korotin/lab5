@@ -1,6 +1,8 @@
 package collection;
 
 
+import dragon.Dragon;
+
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -14,7 +16,7 @@ import java.util.List;
 /**
  * Класс, который имплементируется от collection.DAO. В нём мы реализуем методы для работы с коллекцией и инициализируем саму коллекцию
  */
-class DragonDAO implements DAO<Dragon> {
+public class DragonDAO implements DAO<Dragon> {
     private LocalDateTime initDateTime;
     private int availableId = 1;
     private final List<Dragon> collection = new LinkedList<>();
