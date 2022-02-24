@@ -1,6 +1,9 @@
 package commands;
 
 
+import collection.DAO;
+import dragon.Dragon;
+
 import java.util.List;
 
 /**
@@ -28,17 +31,17 @@ public class MinById extends Command {
     @Override
     public int execute(DAO dao) {
         if (args.size() > 0) {
-            outPuter.outPut("Неверное количество параметров");
+            //outPuter.outPut("Неверное количество параметров");
             return -1;
         }
         int minId = Integer.MAX_VALUE;
         for (Dragon d : dao.getAll())
             minId = d.getId() < minId ? d.getId() : minId;
         if (minId == Integer.MAX_VALUE){
-            outPuter.outPut("Коллекция пуста");
+            //outPuter.outPut("Коллекция пуста");
             return -1;
         }
-        outPuter.outPut(dao.get(minId));
+        //outPuter.outPut(dao.get(minId));
         return 0;
     }
 }

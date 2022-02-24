@@ -3,6 +3,7 @@ package commands;
 
 import collection.DAO;
 import collection.DaoElement;
+import dragon.Dragon;
 import io.request.Properties;
 
 import java.util.List;
@@ -19,9 +20,9 @@ public class AddIfMax extends Command {
     }
 
     @Override
-    public int execute(DAO<? extends DaoElement> dao) {
+    public int execute(DAO dao) {
         Long ageMax = -1L;
-        for (DaoElement dragon : dao.getAll()) {
+        for (Dragon dragon : dao.getAll()) {
             if (dragon.getAge() > ageMax) {
                 ageMax = dragon.getAge();
             }
@@ -29,16 +30,16 @@ public class AddIfMax extends Command {
         Properties properties;
         if (askForInput) {
             if (args.size() > 0) {
-                outPuter.outPut("Неверное количество параметров");
+                //outPuter.outPut("Неверное количество параметров");
                 return -1;
             }
             properties = requester.request();
         }
         else {
             try {
-                properties = DragonProperties.parseProperties(args, 0);
+                properties = Properties.parseProperties(args, 0);
             } catch (RuntimeException e) {
-                outPuter.outPut(e.getMessage());
+                //outPuter.outPut(e.getMessage());
                 return -1;
             }
         }
@@ -46,10 +47,10 @@ public class AddIfMax extends Command {
 
         if (properties.age > ageMax){
             dao.create(properties);
-            outPuter.outPut("Элемент успешно добавлен");
+            //outPuter.outPut("Элемент успешно добавлен");
         }
         else {
-            outPuter.outPut("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
+            //outPuter.outPut("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
         }
         return 0;
     }

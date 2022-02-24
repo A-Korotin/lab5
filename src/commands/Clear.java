@@ -1,5 +1,7 @@
 package commands;
 
+import collection.DAO;
+
 import java.util.List;
 
 /**
@@ -14,11 +16,11 @@ public class Clear extends Command {
     @Override
     public int execute(DAO dao) {
         if (args.size() > 0) {
-            outPuter.outPut("Неверное количество параметров");
+            //outPuter.outPut("Неверное количество параметров");
             return -1;
         }
         dao.clear();
-        outPuter.outPut("Коллекция успешно очищена");
+        //outPuter.outPut("Коллекция успешно очищена");
         return 0;
     }
 }

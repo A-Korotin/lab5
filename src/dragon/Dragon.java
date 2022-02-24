@@ -1,6 +1,7 @@
 package dragon;
 
-import collection.DaoElement;
+
+import io.request.Properties;
 import io.request.Properties;
 
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ import javax.json.*;
 /**
 Класс элементов коллекции
  */
-public class Dragon extends DaoElement implements Comparable<Dragon> {
+public class Dragon implements Comparable<Dragon> {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null

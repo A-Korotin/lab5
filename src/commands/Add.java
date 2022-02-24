@@ -1,8 +1,12 @@
 package commands;
 
 
-import java.util.List;
+import collection.DAO;
+import io.request.ConsoleRequester;
+import io.request.Properties;
 
+import java.io.Console;
+import java.util.List;
 /**
  * Класс, предназначенный для добавления элемента в коллекцию<br>
  * При вводе данных в консоль пользователю будет показываться приглашение к вводу<br>
@@ -13,27 +17,26 @@ public class Add extends Command {
     public Add(List<String> args) {
         super(args);
     }
-
     @Override
     public int execute(DAO dao) {
-        DragonProperties properties;
+        Properties properties;
         if (askForInput) {
             if (args.size() > 0) {
-                outPuter.outPut("Неверное количество параметров");
+                //outPuter.outPut("Неверное количество параметров");
                 return -1;
             }
-            properties = requester.request();
+            //properties = ConsoleRequester.request();
         }
         else {
             try {
-                properties = DragonProperties.parseProperties(args, 0);
+                //properties = Properties.parseProperties(args, 0);
             } catch (RuntimeException e) {
-                outPuter.outPut(e.getMessage());
+                //outPuter.outPut(e.getMessage());
                 return -1;
             }
         }
         int exitCode = dao.create(properties);
-        outPuter.outPut("Элемент успешно добавлен");
+        //outPuter.outPut("Элемент успешно добавлен");
         return exitCode;
     }
 }

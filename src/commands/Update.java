@@ -1,6 +1,10 @@
 package commands;
 
 
+import collection.DAO;
+import dragon.Dragon;
+import io.request.Properties;
+
 import java.util.List;
 
 /**
@@ -17,7 +21,7 @@ public class Update extends Command {
     @Override
     public int execute(DAO dao) {
         if (args.size() != 1) {
-            outPuter.outPut("Неверное количество параметров");
+            //outPuter.outPut("Неверное количество параметров");
             return -1;
         }
         int id;
@@ -25,7 +29,7 @@ public class Update extends Command {
             id = Integer.parseInt(args.get(0));
         }
         catch (RuntimeException e){
-            outPuter.outPut("Нецелочисленный тип данных id");
+            //outPuter.outPut("Нецелочисленный тип данных id");
             return -1;
         }
         boolean found = false;
@@ -36,24 +40,24 @@ public class Update extends Command {
             }
         }
         if (!found){
-            outPuter.outPut("Элемент с id %d не существует".formatted(id));
+            //outPuter.outPut("Элемент с id %d не существует".formatted(id));
             return -1;
         }
 
         int exitCode;
-        DragonProperties properties;
-        if (askForInput)
-            properties = requester.request();
+        Properties properties;
+        if (askForInput){}
+            //properties = requester.request();
         else {
             try{
-                properties = DragonProperties.parseProperties(args, 1);
+                properties = Properties.parseProperties(args, 1);
             } catch (RuntimeException e){
-                outPuter.outPut(e.getMessage());
+                //outPuter.outPut(e.getMessage());
                 return -1;
             }
         }
         exitCode = dao.update(id, properties);
-        outPuter.outPut("Элемент успешно обновлён");
+        //outPuter.outPut("Элемент успешно обновлён");
         return exitCode;
     }
 }

@@ -2,6 +2,7 @@ package collection;
 
 
 import dragon.Dragon;
+import io.request.Properties;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * Класс, который имплементируется от collection.DAO. В нём мы реализуем методы для работы с коллекцией и инициализируем саму коллекцию
  */
-public class DragonDAO implements DAO<Dragon> {
+public class DragonDAO implements DAO {
     private LocalDateTime initDateTime;
     private int availableId = 1;
     private final List<Dragon> collection = new LinkedList<>();
@@ -49,7 +50,7 @@ public class DragonDAO implements DAO<Dragon> {
      * @param properties - свойства элемента
      * */
     @Override
-    public int create(DragonProperties properties) {
+    public int create(Properties properties) {
         collection.add(new Dragon(availableId++, properties));
         return 0;
     }
@@ -59,7 +60,7 @@ public class DragonDAO implements DAO<Dragon> {
      * @param id - id элемента, который пользователь хочет обновить
      * */
     @Override
-    public int update(int id, DragonProperties properties) {
+    public int update(int id, Properties properties) {
         for(Dragon dragon1 : collection){
             if (id == dragon1.getId()) {
                 dragon1.update(properties);
@@ -134,7 +135,8 @@ public class DragonDAO implements DAO<Dragon> {
      * Метод сортировки коллекции
      * */
     @Override
-    public void sort() {
+    public int sort() {
         Collections.sort(collection);
+        return 0;
     }
 }

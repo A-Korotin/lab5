@@ -1,5 +1,7 @@
 package commands;
 
+import collection.DAO;
+
 import java.util.List;
 
 /**
@@ -14,11 +16,11 @@ public class ExecuteScript extends Command {
     @Override
     public int execute(DAO dao) {
         if (args.size() != 1) {
-            outPuter.outPut("Неверное количество параметров");
+            //outPuter.outPut("Неверное количество параметров");
             return -1;
         }
         if(filePathChain.contains(args.get(0))){
-            outPuter.outPut("Подумай головой сначала, а потом циклы скриптов пиши. Дурак.");
+            //outPuter.outPut("Подумай головой сначала, а потом циклы скриптов пиши. Дурак.");
             return -1;
         }
         String filePath = args.get(0);
@@ -31,10 +33,10 @@ public class ExecuteScript extends Command {
             commands = CommandCreator.getCommands(reader);
         }
         catch(RuntimeException e){
-            outPuter.outPut(e.getMessage());
+            //outPuter.outPut(e.getMessage());
             return -1;
         }
-        outPuter.outPut("Все команды были распознаны и поданы на выполнение");
+        //outPuter.outPut("Все команды были распознаны и поданы на выполнение");
 
         int exitCode = 0;
         for (Command c : commands)
