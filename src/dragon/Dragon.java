@@ -1,6 +1,7 @@
 package dragon;
 
 import collection.DaoElement;
+import io.request.Properties;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,7 +33,7 @@ public class Dragon extends DaoElement implements Comparable<Dragon> {
         this.cave = cave;
     }
 
-    public Dragon(int id, DragonProperties properties) {
+    public Dragon(int id, Properties properties) {
         this.id = id;
         name = properties.name;
         coordinates = new Coordinates(properties.xCoord, properties.yCoord);
@@ -165,7 +166,7 @@ public class Dragon extends DaoElement implements Comparable<Dragon> {
         return Long.compare(age, dragon.age);
     }
 
-    public void update(DragonProperties properties){
+    public void update(Properties properties){
         name = properties.name;
         coordinates = new Coordinates(properties.xCoord, properties.yCoord);
         age = properties.age;

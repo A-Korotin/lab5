@@ -1,4 +1,7 @@
 package commands;
+import collection.DAO;
+import collection.DaoElement;
+
 import java.util.List;
 
 /**
@@ -29,5 +32,5 @@ public abstract class Command {
      * </table>
      *
      */
-    public abstract int execute(DAO dao);
+    public abstract int execute(DAO<? extends DaoElement> dao);
 }

@@ -1,6 +1,10 @@
 package commands;
 
 
+import collection.DAO;
+import collection.DaoElement;
+import io.request.Properties;
+
 import java.util.List;
 
 /**
@@ -15,14 +19,14 @@ public class AddIfMax extends Command {
     }
 
     @Override
-    public int execute(DAO dao) {
+    public int execute(DAO<? extends DaoElement> dao) {
         Long ageMax = -1L;
-        for (Dragon dragon : dao.getAll()) {
+        for (DaoElement dragon : dao.getAll()) {
             if (dragon.getAge() > ageMax) {
                 ageMax = dragon.getAge();
             }
         }
-        DragonProperties properties;
+        Properties properties;
         if (askForInput) {
             if (args.size() > 0) {
                 outPuter.outPut("Неверное количество параметров");

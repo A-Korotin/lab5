@@ -8,16 +8,15 @@ import dragon.DragonType;
 * Класс присваивания полям элементов значений, полученных с консоли или из файла
 */
 public class Properties {
-    String name;
-    Float xCoord;
-    Integer yCoord;
-    Long age;
-    Color color;
-    DragonType type;
-    DragonCharacter character;
-    double depth;
-    Integer numberOfTreasures;
-
+    public String name;
+    public Float xCoord;
+    public Integer yCoord;
+    public Long age;
+    public Color color;
+    public DragonType type;
+    public DragonCharacter character;
+    public double depth;
+    public Integer numberOfTreasures;
 }
 //
 //

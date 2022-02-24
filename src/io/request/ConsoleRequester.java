@@ -5,12 +5,11 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
- * Класс, который имплементируется от io.PropertiesRequester, запрашивающий данные от пользователя с консоли */
-public final class ConsoleRequester implements Requester {
+ * Класс, запрашивающий данные от пользователя с консоли */
+public final class ConsoleRequester {
     private InputStream inputStream = System.in;
     private PrintStream printStream = System.out;
 
-    @Override
     public String request(ValidationFunction function, String startMsg, String errorMsg) {
         Scanner scanner = new Scanner(inputStream);
         boolean validInput = false;
@@ -29,12 +28,10 @@ public final class ConsoleRequester implements Requester {
         return input;
     }
 
-    @Override
     public void setInputStream(InputStream stream) {
         inputStream = stream;
     }
 
-    @Override
     public void setPrintStream(PrintStream stream) {
         printStream = stream;
     }
