@@ -7,6 +7,7 @@ import io.OutPutter;
 /**
  * Абстрактный надкласс всех команд
  */
+
 public abstract class Command {
     protected List<String> args;
     protected boolean askForInput;

@@ -1,5 +1,8 @@
 package commands;
 
+import io.InputReader;
+import log.Logger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,12 +45,13 @@ public class CommandCreator {
      * @param source Объект, считывающий пользовательский ввод
      * @return Последовательность команд, распознанных из пользовательского ввода
      */
-    public static List<CommandEnv.Command> getCommands(InputReader source) {
-        List<CommandEnv.Command> output = new ArrayList<>();
-        List<List<String>> input = source.getInput();
-        for (List<String> args: input) {
-            String commandName = args.get(0);
-            CommandEnv.Command command = availableCommands.get(commandName).construct(args);
+    public static List<Command> getCommands(InputReader source) {
+        List<Command> output = new ArrayList<>();
+        List<String> inputLines = source.getInput();
+        for (String line: inputLines) {
+            List<String> lineSplit = new ArrayList<>(List.of(line.split(" ")));
+            String commandName = lineSplit.get(0);
+            Command command = availableCommands.get(commandName).construct(lineSplit);
             command.setAskForInput(source.getAskForInput());
             output.add(command);
             Logger.log(commandName);

@@ -12,7 +12,7 @@ public abstract class InputReader {
 
     protected List<String> additionalProperties = new ArrayList<>();
 
-    public abstract List<List<String>> getInput();
+    public abstract List<String> getInput();
 
     public void addProperties(String prop) {
         additionalProperties.add(prop);
