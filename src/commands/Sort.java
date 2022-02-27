@@ -1,6 +1,7 @@
 package commands;
 
 import collection.DAO;
+import io.OutPutter;
 
 import java.util.List;
 
@@ -8,6 +9,9 @@ import java.util.List;
  * Класс, предназначенный для сортировки коллекции. Сортировка производится по <i>возрастанию</i> поля <b>"возраст"</b>
  */
 public class Sort extends Command {
+    {
+        OutPutter outPutter;
+    }
 
     public Sort(List<String> args) {
         super(args);

@@ -1,11 +1,11 @@
 package io;
-import collection.DaoElement;
+import dragon.Dragon;
 
 /**
 * Интерфейс вывода информации*/
 public interface OutPutter {
     void output(String msg);
-    void output(DaoElement dragon);
+    void output(Dragon dragon);
     void output(int number);
 
 }

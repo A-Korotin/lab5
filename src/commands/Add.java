@@ -2,6 +2,7 @@ package commands;
 
 
 import collection.DAO;
+import io.OutPutter;
 import io.request.ConsoleRequester;
 import io.request.Properties;
 
@@ -18,11 +19,13 @@ public class Add extends Command {
         super(args);
     }
     @Override
-    public int execute(DAO dao) {
+    public int execute(Instances instances) {
         Properties properties;
         if (askForInput) {
             if (args.size() > 0) {
                 //outPuter.outPut("Неверное количество параметров");
+                final OutPutter outPutter = Instances.outPutter;
+                outPutter.output("Неверное количество параметров");
                 return -1;
             }
             //properties = ConsoleRequester.request();
