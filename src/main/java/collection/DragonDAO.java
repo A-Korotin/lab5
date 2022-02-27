@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Класс, который имплементируется от collection.DAO. В нём мы реализуем методы для работы с коллекцией и инициализируем саму коллекцию
  */
-public class DragonDAO implements DAO {
+public class DragonDAO implements DAO, Describable, Orderable {
     private LocalDateTime initDateTime;
     private int availableId = 1;
     private final List<Dragon> collection = new LinkedList<>();

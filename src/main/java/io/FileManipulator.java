@@ -1,7 +1,8 @@
 package io;
 
 import collection.DAO;
-import collection.DaoElement;
+import collection.Describable;
+import dragon.Dragon;
 import collection.DragonDAO;
 
 import javax.json.Json;
@@ -17,7 +18,7 @@ public class FileManipulator implements CollectionManipulator {
      * @param collection - коллекция
      * */
     @Override
-    public void save(DAO<? extends DaoElement> collection) {
+    public void save(Describable collection) {
         Map<String, String> env = System.getenv();
         String filepath = env.get("DAO_COLLECTION_FILEPATH");
 
@@ -34,7 +35,7 @@ public class FileManipulator implements CollectionManipulator {
      * @return new collection.DragonDAO() - коллекция, считанная из файла
      * */
     @Override
-    public DAO<? extends DaoElement> get() {
+    public DAO get() {
         Map<String, String> env = System.getenv();
         String filepath = env.get("DAO_COLLECTION_FILEPATH");
 

@@ -1,6 +1,7 @@
 package commands;
 
 import collection.DAO;
+import collection.Orderable;
 
 import java.util.List;
 
@@ -19,8 +20,9 @@ public class Sort extends Command {
             //outPuter.outPut("Неверное количество параметров");
             return -1;
         }
-        dao.sort();
+        assert dao instanceof Orderable;
+        int exitCode = ((Orderable)dao).sort();
         //outPuter.outPut("Коллекция успешно отсортирована");
-        return 0;
+        return exitCode;
     }
 }
