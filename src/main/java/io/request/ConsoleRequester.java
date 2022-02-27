@@ -47,27 +47,27 @@ public final class ConsoleRequester {
         );
 
         String xCoord = request(input -> !Float.isNaN(Float.parseFloat(input)) ,
-                "Введите координату X пещеры дракона: "
+                "Введите координату X пещеры дракона, Float: "
         );
 
         out.xCoord = Float.parseFloat(xCoord);
 
         String yCoord = request(input -> Integer.parseInt(input) <= 998,
-                "Введите координату Y пещеры дракона, <= 998: "
+                "Введите координату Y пещеры дракона, Integer <= 998: "
         );
 
         out.yCoord = Integer.parseInt(yCoord);
 
         String age = request(input -> Long.parseLong(input) > 0,
-                "Введите возраст, >0: "
+                "Введите возраст дракона, Long >0: "
         );
 
         out.age = Long.parseLong(age);
 
-        String color = request(input -> Color.valueOf(input.toUpperCase()) != null || input.toLowerCase().equals("null"),
+        String color = request(input ->input.equalsIgnoreCase("null")|| Color.valueOf(input.toUpperCase()) != null,
                 "Введите цвет дракона BLACK, BLUE, WHITE, BROWN, null: "
         );
-        out.color = color.equals("null") ? null: Color.valueOf(color.toUpperCase());
+        out.color = color.equalsIgnoreCase("null") ? null: Color.valueOf(color.toUpperCase());
 
         String type = request(input -> DragonType.valueOf(input.toUpperCase()) != null,
         "Введите тип дракона UNDERGROUND, AIR, FIRE: "
@@ -76,22 +76,22 @@ public final class ConsoleRequester {
         out.type = DragonType.valueOf(type.toUpperCase());
 
         String character = request(input -> input.equalsIgnoreCase("null") || DragonCharacter.valueOf(input.toUpperCase()) != null,
-                "Введите характер дракона CUNNING, GOOD, CHAOTIC, CHAOTIC_EVIL, FICKLE, null"
+                "Введите характер дракона CUNNING, GOOD, CHAOTIC, CHAOTIC_EVIL, FICKLE, null: "
         );
 
-        out.character = DragonCharacter.valueOf(character.toUpperCase());
+        out.character = character.equalsIgnoreCase("null") ? null: DragonCharacter.valueOf(character.toUpperCase());
 
         String depth = request(input -> !Double.isNaN(Double.parseDouble(input)),
-                "Введите глубину пещеры дракона: "
+                "Введите глубину пещеры дракона, Double: "
         );
 
         out.depth = Double.parseDouble(depth);
 
-        String nTreasures = request(input -> Integer.parseInt(input) > 0 || input.equalsIgnoreCase("null"),
-                "Введите количество сокровищ в пещере дракона, >0 или null"
+        String nTreasures = request(input -> input.equalsIgnoreCase("null") || Integer.parseInt(input) > 0,
+                "Введите количество сокровищ в пещере дракона, Integer >0 или null: "
         );
 
-        out.numberOfTreasures = Integer.parseInt(nTreasures);
+        out.numberOfTreasures = nTreasures.equalsIgnoreCase("null") ? null :Integer.parseInt(nTreasures);
 
         return out;
     }

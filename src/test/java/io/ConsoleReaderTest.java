@@ -10,8 +10,8 @@ class ConsoleReaderTest {
 
     @Test
     void getInput() {
-        InputReader reader = new ConsoleReader();
-        List<String> input = reader.getInput();
-        System.out.println(input);
+//        InputReader reader = new ConsoleReader();
+//        List<String> input = reader.getInput();
+//        System.out.println(input);
     }
 }
