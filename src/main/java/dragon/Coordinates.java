@@ -11,6 +11,8 @@ public class Coordinates {
         this.y = y;
     }
 
+    public Coordinates() {}
+
     private Float x; //Поле не может быть null
     private Integer y; //Максимальное значение поля: 998, Поле не может быть null
 
@@ -18,8 +20,16 @@ public class Coordinates {
         return x;
     }
 
+    public void setX(Float x) {
+        this.x = x;
+    }
+
     public Integer getY() {
         return y;
+    }
+
+    public void setY(Integer y) {
+        this.y = y;
     }
 
     @Override

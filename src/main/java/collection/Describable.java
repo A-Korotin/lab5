@@ -1,7 +1,7 @@
 package collection;
 
-import javax.json.JsonObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface Describable {
-    JsonObject getJSONDescription();
+    String description() throws JsonProcessingException;
 }
