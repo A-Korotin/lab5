@@ -16,6 +16,4 @@ public interface DAO {
     Dragon get(int id);
     List<Dragon> getAll();
     int clear();
-    JsonObject getJSONDescription();
-    int sort();
 }

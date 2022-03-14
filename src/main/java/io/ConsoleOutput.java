@@ -1,6 +1,6 @@
 package io;
 
-import collection.DaoElement;
+import dragon.Dragon;
 
 /**
  Класс для вывода информации в консоль. Имплементируется от интерфейса io.OutPutter*/
@@ -10,7 +10,7 @@ public class ConsoleOutput implements OutPutter {
     }
 
     @Override
-    public void output(DaoElement element) {
+    public void output(Dragon element) {
         System.out.println(element);
     }
 

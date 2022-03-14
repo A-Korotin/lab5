@@ -1,26 +1,44 @@
 package dragon;
 
 
+import collection.Describable;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.request.Properties;
-import io.request.Properties;
+import json.Json;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import javax.json.*;
+
 
 /**
 Класс элементов коллекции
  */
-public class Dragon implements Comparable<Dragon> {
+public class Dragon implements Comparable<Dragon>, Describable {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+
     private String name; //Поле не может быть null, Строка не может быть пустой
+
     private Coordinates coordinates; //Поле не может быть null
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private java.time.LocalDate creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+
     private Long age; //Значение поля должно быть больше 0, Поле не может быть null
+
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private Color color; //Поле может быть null
+
     private DragonType type; //Поле не может быть null
+
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private DragonCharacter character; //Поле может быть null
+
     private DragonCave cave; //Поле не может быть null
+
+    public Dragon() {}
 
     public Dragon(int id, String name, Coordinates coordinates, LocalDate creationDate, Long age, Color color, DragonType type, DragonCharacter character, DragonCave cave) {
         this.id = id;
@@ -46,105 +64,81 @@ public class Dragon implements Comparable<Dragon> {
         cave = new DragonCave(properties.depth, properties.numberOfTreasures);
     }
 
-    public Dragon(JsonObject description) {
-        id = description.getInt("id");
-        name = description.getString("name");
-        JsonObject coord = description.getJsonObject("coordinates");
-        coordinates = new Coordinates((float)coord.getJsonNumber("x").doubleValue(), coord.getInt("y"));
-        creationDate = LocalDate.parse(description.getString("creationDate"), DateTimeFormatter.ofPattern("dd.MM.uuuu"));
-        age = description.getJsonNumber("age").longValue();
-        color = description.getString("color").equals("null") ? null :Color.valueOf(description.getString("color"));
-        type = DragonType.valueOf(description.getString("type"));
-        character = description.getString("character").equals("null") ? null : DragonCharacter.valueOf(description.getString("character"));
-        JsonObject cave = description.getJsonObject("cave");
-
-        this.cave = new DragonCave(cave.getJsonNumber("depth").doubleValue(), cave.getString("numberOfTreasures").equals("null") ? null :Integer.valueOf(cave.getString("numberOfTreasures")));
+    public String description() throws JsonProcessingException {
+        JsonNode node = Json.toJson(this);
+        return Json.stringRepresentation(node, true);
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
-
-    public Long getAge() {
-        return age;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public DragonType getType() {
-        return type;
-    }
-
-    public DragonCharacter getCharacter() {
-        return character;
-    }
-
-    public DragonCave getCave() {
-        return cave;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
 
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Long getAge() {
+        return age;
     }
 
     public void setAge(Long age) {
         this.age = age;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public DragonType getType() {
+        return type;
     }
 
     public void setType(DragonType type) {
         this.type = type;
     }
 
+    public DragonCharacter getCharacter() {
+        return character;
+    }
+
     public void setCharacter(DragonCharacter character) {
         this.character = character;
     }
 
-    public void setCave(DragonCave cave) {
-        this.cave = cave;
+    public DragonCave getCave() {
+        return cave;
     }
 
-    public JsonObject getJSONDescription() {
-        JsonObject dragon = Json.createObjectBuilder().
-                add("id", id).
-                add("name", name).
-                add("coordinates", Json.createObjectBuilder().
-                        add("x", coordinates.getX()).
-                        add("y", coordinates.getY()).build()).
-                add("creationDate", creationDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu"))).
-                add("age", age).
-                add("color", color == null ? "null" :color.getDescription()).
-                add("type", type.getDescription()).
-                add("character", character == null ? "null" : character.getDescription()).
-                add("cave", Json.createObjectBuilder().
-                        add("depth", cave.getDepth()).
-                        add("numberOfTreasures", cave.getNumberOfTreasures() == null ? "null": String.valueOf(cave.getNumberOfTreasures()))).build();
-        return dragon;
+    public void setCave(DragonCave cave) {
+        this.cave = cave;
     }
 
     @Override

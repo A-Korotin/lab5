@@ -1,7 +1,7 @@
 package commands;
 
 import collection.DAO;
-import io.OutPutter;
+import collection.Orderable;
 
 import java.util.List;
 
@@ -9,9 +9,6 @@ import java.util.List;
  * Класс, предназначенный для сортировки коллекции. Сортировка производится по <i>возрастанию</i> поля <b>"возраст"</b>
  */
 public class Sort extends Command {
-    {
-        OutPutter outPutter;
-    }
 
     public Sort(List<String> args) {
         super(args);
@@ -23,8 +20,9 @@ public class Sort extends Command {
             //outPuter.outPut("Неверное количество параметров");
             return -1;
         }
-        dao.sort();
+        assert dao instanceof Orderable;
+        int exitCode = ((Orderable)dao).sort();
         //outPuter.outPut("Коллекция успешно отсортирована");
-        return 0;
+        return exitCode;
     }
 }

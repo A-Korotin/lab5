@@ -1,13 +1,15 @@
 package collection;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import dragon.Dragon;
 import io.request.Properties;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
+import json.Json;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -17,34 +19,18 @@ import java.util.List;
 /**
  * Класс, который имплементируется от collection.DAO. В нём мы реализуем методы для работы с коллекцией и инициализируем саму коллекцию
  */
-public class DragonDAO implements DAO {
+public class DragonDAO implements DAO, Describable, Orderable {
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private LocalDateTime initDateTime;
+
     private int availableId = 1;
-    private final List<Dragon> collection = new LinkedList<>();
+
+    private List<Dragon> collection = new LinkedList<>();
 
     public DragonDAO() {
         initDateTime = LocalDateTime.now();
     }
 
-    public DragonDAO(JsonObject description) {
-        String initTime = description.getString("init date");
-
-        if (initTime == null)
-            initDateTime = LocalDateTime.now();
-        else
-            initDateTime = LocalDateTime.parse(initTime, DateTimeFormatter.ofPattern("dd.MM.uuuu: HH:mm:ss"));
-
-        JsonArray dragons = description.getJsonArray("elements");
-
-        for (int i = 0; i < description.getInt("size"); ++i)
-            collection.add(new Dragon(dragons.getJsonObject(i)));
-
-        int maxId = -1;
-        for(Dragon d: collection)
-            maxId = d.getId() > maxId?d.getId():maxId;
-
-        availableId = maxId > description.getInt("availableId")? maxId + 1: description.getInt("availableId");
-    }
     /**
      * Метод добавления элемента в коллекцию
      * @param properties - свойства элемента
@@ -97,6 +83,7 @@ public class DragonDAO implements DAO {
      * Метод получения всей коллекции
      * @return outputCollection - копия коллекции
      * */
+    @JsonProperty("collection")
     @Override
     public List<Dragon> getAll(){
         List<Dragon> outputCollection = new LinkedList<>();
@@ -116,20 +103,9 @@ public class DragonDAO implements DAO {
      * @return output - информация о коллекции
      * */
     @Override
-    public JsonObject getJSONDescription() {
-
-        JsonArrayBuilder dragons = Json.createArrayBuilder();
-        for (Dragon d: collection)
-            dragons.add(d.getJSONDescription());
-
-        JsonObject output = Json.createObjectBuilder().
-                add("type", collection.getClass().getSimpleName()).
-                add("size", collection.size()).
-                add("init date", initDateTime.format(DateTimeFormatter.ofPattern("dd.MM.uuuu: HH:mm:ss"))).
-                add("availableId", availableId).
-                add("elements", dragons.build()).build();
-
-        return output;
+    public String description() throws JsonProcessingException {
+        JsonNode node = Json.toJson(this);
+        return Json.stringRepresentation(node, true);
     }
     /**
      * Метод сортировки коллекции
@@ -138,5 +114,25 @@ public class DragonDAO implements DAO {
     public int sort() {
         Collections.sort(collection);
         return 0;
+    }
+
+    public LocalDateTime getInitDateTime() {
+        return initDateTime;
+    }
+
+    public void setInitDateTime(LocalDateTime initDateTime) {
+        this.initDateTime = initDateTime;
+    }
+
+    public int getAvailableId() {
+        return availableId;
+    }
+
+    public void setAvailableId(int availableId) {
+        this.availableId = availableId;
+    }
+
+    public void setCollection(List<Dragon> collection) {
+        this.collection = collection;
     }
 }

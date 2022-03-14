@@ -1,12 +1,12 @@
 package io;
 
 import collection.DAO;
-import collection.DaoElement;
+import collection.Describable;
+import com.fasterxml.jackson.databind.JsonNode;
+import dragon.Dragon;
 import collection.DragonDAO;
+import json.Json;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import java.io.*;
 import java.util.Map;
 
@@ -17,13 +17,13 @@ public class FileManipulator implements CollectionManipulator {
      * @param collection - коллекция
      * */
     @Override
-    public void save(DAO<? extends DaoElement> collection) {
+    public void save(Describable collection) {
         Map<String, String> env = System.getenv();
         String filepath = env.get("DAO_COLLECTION_FILEPATH");
 
         try (FileOutputStream stream = new FileOutputStream(filepath); OutputStreamWriter writer = new OutputStreamWriter(stream)) {
-            JsonObject description = collection.getJSONDescription();
-            writer.write(description.toString());
+            String description = collection.description();
+            writer.write(description);
 
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
@@ -34,7 +34,7 @@ public class FileManipulator implements CollectionManipulator {
      * @return new collection.DragonDAO() - коллекция, считанная из файла
      * */
     @Override
-    public DAO<? extends DaoElement> get() {
+    public DAO get() {
         Map<String, String> env = System.getenv();
         String filepath = env.get("DAO_COLLECTION_FILEPATH");
 
@@ -47,9 +47,10 @@ public class FileManipulator implements CollectionManipulator {
                 bos.write((char) nextByte);
 
             String input = bos.toString();
-            JsonReader reader = Json.createReader(new StringReader(input));
-            JsonObject daoJson = reader.readObject();
-            return new DragonDAO(daoJson);
+            JsonNode node = Json.parse(input);
+            DragonDAO out = Json.fromJson(node, DragonDAO.class);
+            return out;
+
 
         } catch (IOException | RuntimeException e) {
             throw new RuntimeException("Значения файла JSON были изменены вручную, что привело к ошибке. " +
