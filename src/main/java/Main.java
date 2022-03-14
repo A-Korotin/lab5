@@ -1,25 +1,14 @@
 import collection.DAO;
-import collection.Describable;
-import collection.DragonDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.*;
-import io.request.ConsoleRequester;
-import io.request.Properties;
+import io.request.*;
 
 
 public class Main {
     public static void main(String[] args) throws JsonProcessingException {
+        DAO dao = new FileManipulator().get();
         ConsoleRequester requester = new ConsoleRequester();
-        Properties p = new Properties();
-
-        DAO dao = new DragonDAO();
-
+        Properties p = requester.requestProperties();
         dao.create(p);
-        FileManipulator manipulator = new FileManipulator();
-        manipulator.save((Describable) dao);
-
-        DAO dao1 = manipulator.get();
-        dao1.create(p);
-        System.out.println(((Describable) dao1).description());
     }
 }
