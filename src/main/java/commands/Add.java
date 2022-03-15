@@ -30,7 +30,7 @@ public class Add extends Command {
         }
         else {
             try {
-                properties = instances.properties.parseProperties(args, 0);
+                properties = Properties.parseProperties(args, 0);
             } catch (Exception e) {
                 instances.consoleOutputout.output(e.getMessage());
                 return -1;

@@ -1,6 +1,7 @@
 package commands;
 
 import collection.DAO;
+import collection.Describable;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Save extends Command {
             return -1;
         }
         try {
-            instances.fileManipulator.save(instances.dao);
+            instances.fileManipulator.save((Describable) instances.dao);
             instances.consoleOutputout.output("Коллекция успешно сохранена");
             return 0;
         } catch (RuntimeException e) {

@@ -28,7 +28,7 @@ public class FilterGreaterThanCharacter extends Command {
 
         try{
 
-            character = args.get(0).equals("null")? null : DragonCharacter.valueOf(args.get(0));
+            character = args.get(0).equalsIgnoreCase("null")? null : DragonCharacter.valueOf(args.get(0).toUpperCase());
         }
         catch (RuntimeException e){
             instances.consoleOutputout.output("Характер не определён");

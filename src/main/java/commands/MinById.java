@@ -37,7 +37,7 @@ public class MinById extends Command {
             minId = d.getId() < minId ? d.getId() : minId;
         if (minId == Integer.MAX_VALUE){
             instances.consoleOutputout.output("Коллекция пуста");
-            return -1;
+            return 0;
         }
         instances.consoleOutputout.output(instances.dao.get(minId));
         return 0;

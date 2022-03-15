@@ -48,7 +48,7 @@ public class Update extends Command {
             properties = instances.consoleRequester.requestProperties();
         else {
             try{
-                properties = instances.properties.parseProperties(args, 1);
+                properties = Properties.parseProperties(args, 1);
             } catch (Exception e) {
                 instances.consoleOutputout.output(e.getMessage());
                 return -1;

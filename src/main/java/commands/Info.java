@@ -1,5 +1,6 @@
 package commands;
 
+import collection.Describable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class Info extends Command {
             return -1;
         }
         try{
-            instances.consoleOutputout.output(instances.dao.description().toString());
+            instances.consoleOutputout.output(((Describable) instances.dao).description());
         }
         catch (JsonProcessingException e){
             instances.consoleOutputout.output("Что-то пошло не так...");
