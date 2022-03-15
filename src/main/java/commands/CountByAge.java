@@ -16,9 +16,9 @@ public class CountByAge extends Command {
     }
 
     @Override
-    public int execute(DAO dao) {
+    public int execute(Instances instances) {
         if (args.size() != 1) {
-            //outPuter.outPut("Неверное количество параметров");
+            instances.consoleOutputout.output("Неверное количество параметров");
             return -1;
         }
         Long age;
@@ -26,17 +26,17 @@ public class CountByAge extends Command {
             age = Long.parseLong(args.get(0));
         }
         catch(RuntimeException e){
-            //outPuter.outPut("Типы данных не совпали");
+            instances.consoleOutputout.output("Типы данных не совпали");
             return -1;
         }
 
         int ageCount = 0;
-        for (Dragon dragon : dao.getAll()) {
+        for (Dragon dragon : instances.dao.getAll()) {
             if (dragon.getAge().equals(age)) {
                 ageCount++;
             }
         }
-        //outPuter.outPut(ageCount);
+        instances.consoleOutputout.output(ageCount);
         return 0;
     }
 }

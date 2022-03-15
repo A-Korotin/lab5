@@ -12,7 +12,6 @@ public abstract class Command {
     protected List<String> args;
     protected boolean askForInput;
     protected String name;
-    protected OutPutter outPutter;
 
     public void setAskForInput(boolean ask) {
         askForInput = ask;
@@ -34,5 +33,5 @@ public abstract class Command {
      * </table>
      *
      */
-    public abstract int execute(DAO dao);
+    public abstract int execute(Instances instances);
 }

@@ -14,13 +14,13 @@ public class Clear extends Command {
     }
 
     @Override
-    public int execute(DAO dao) {
+    public int execute(Instances instances) {
         if (args.size() > 0) {
-            //outPuter.outPut("Неверное количество параметров");
+            instances.consoleOutputout.output("Неверное количество параметров");
             return -1;
         }
-        dao.clear();
-        //outPuter.outPut("Коллекция успешно очищена");
+        instances.dao.clear();
+        instances.consoleOutputout.output("Коллекция успешно очищена");
         return 0;
     }
 }

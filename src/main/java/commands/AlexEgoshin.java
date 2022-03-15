@@ -14,9 +14,9 @@ public class AlexEgoshin extends Command {
     public AlexEgoshin(List<String> args) { super(args); }
 
     @Override
-    public int execute(DAO dao) {
+    public int execute(Instances instances) {
         if (args.size() > 0) {
-            //outPuter.outPut("Неверное количество параметров");
+            instances.consoleOutputout.output("Неверное количество параметров");
             return -1;
         }
         class AlexEgoshinPostavMaxBall extends JFrame {
@@ -34,7 +34,7 @@ public class AlexEgoshin extends Command {
                     add(label2);
                 }
                 catch (NullPointerException e){
-                    //outPuter.outPut("Неверно указан путь до файла");
+                    instances.consoleOutputout.output("Неверно указан путь до файла");
                 }
             }
 
@@ -47,7 +47,7 @@ public class AlexEgoshin extends Command {
         }
         AlexEgoshinPostavMaxBall alexEgoshinPostavMaxBall = new AlexEgoshinPostavMaxBall();
         alexEgoshinPostavMaxBall.createAndShowGUI();
-        //outPuter.outPut("Команда успешно выполнена -> надо максимальный балл для Алексея Коротина и Дуль Яна");
+        instances.consoleOutputout.output("Команда успешно выполнена -> надо максимальный балл для Алексея Коротина и Дуль Яна");
         return 0;
     }
 

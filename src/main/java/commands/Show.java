@@ -1,6 +1,5 @@
 package commands;
 
-import collection.DAO;
 import dragon.Dragon;
 
 import java.util.List;
@@ -27,18 +26,19 @@ public class Show extends Command {
         super(args);
     }
 
-    public int execute(DAO dao) {
+    public int execute(Instances instances) {
         if (args.size() > 0) {
-            //outPuter.outPut("Неверное количество параметров");
+            instances.consoleOutputout.output("Неверное количество параметров");
             return -1;
         }
-        List<Dragon> dragons = dao.getAll();
+        List<Dragon> dragons = instances.dao.getAll();
         if (dragons.size() == 0) {
-            //outPuter.outPut("пусто");
+            instances.consoleOutputout.output("пусто");
             return 0;
         }
-        for (Dragon d : dragons){}
-            //outPuter.outPut(d);
+        for (Dragon d : dragons) {
+            instances.consoleOutputout.output(d);
+        }
         return 0;
     }
 }
