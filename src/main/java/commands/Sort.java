@@ -15,14 +15,14 @@ public class Sort extends Command {
     }
 
     @Override
-    public int execute(DAO dao) {
+    public int execute(Instances instances) {
         if (args.size() > 0) {
-            //outPuter.outPut("Неверное количество параметров");
+            instances.consoleOutputout.output("Неверное количество параметров");
             return -1;
         }
-        assert dao instanceof Orderable;
-        int exitCode = ((Orderable)dao).sort();
-        //outPuter.outPut("Коллекция успешно отсортирована");
+        assert instances.dao instanceof Orderable;
+        int exitCode = ((Orderable)instances.dao).sort();
+        instances.consoleOutputout.output("Коллекция успешно отсортирована");
         return exitCode;
     }
 }

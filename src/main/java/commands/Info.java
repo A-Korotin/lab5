@@ -1,6 +1,6 @@
 package commands;
 
-import collection.DAO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
 
@@ -23,12 +23,17 @@ public class Info extends Command {
     }
 
     @Override
-    public int execute(DAO dao) {
+    public int execute(Instances instances) {
         if (args.size() > 0) {
-            //outPuter.outPut("Неверное количество параметров");
+            instances.consoleOutputout.output("Неверное количество параметров");
             return -1;
         }
-        //outPuter.outPut(dao.getJSONDescription().toString());
+        try{
+            instances.consoleOutputout.output(instances.dao.description().toString());
+        }
+        catch (JsonProcessingException e){
+            instances.consoleOutputout.output("Что-то пошло не так...");
+        }
         return 0;
     }
 }

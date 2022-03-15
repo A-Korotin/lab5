@@ -19,10 +19,10 @@ public class FilterGreaterThanCharacter extends Command {
     }
 
     @Override
-    public int execute(DAO dao) {
+    public int execute(Instances instances) {
         DragonCharacter character;
         if (args.size() != 1) {
-            //outPuter.outPut("Неверное количество параметров");
+            instances.consoleOutputout.output("Неверное количество параметров");
             return -1;
         }
 
@@ -31,12 +31,12 @@ public class FilterGreaterThanCharacter extends Command {
             character = args.get(0).equals("null")? null : DragonCharacter.valueOf(args.get(0));
         }
         catch (RuntimeException e){
-            //outPuter.outPut("Характер не определён");
+            instances.consoleOutputout.output("Характер не определён");
             return -1;
         }
-        for (Dragon dragon: dao.getAll()){
+        for (Dragon dragon: instances.dao.getAll()){
             if (DragonCharacter.compare(dragon.getCharacter(), character) > 0){
-                //outPuter.outPut(dragon);
+                instances.consoleOutputout.output(dragon);
             }
         }
         return 0;
