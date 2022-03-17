@@ -6,6 +6,7 @@ import io.ConsoleReader;
 import io.request.ConsoleRequester;
 import io.request.Properties;
 
+import java.awt.*;
 import java.io.Console;
 import java.util.List;
 /**
@@ -18,26 +19,19 @@ public class Add extends Command {
     public Add(List<String> args) {
         super(args);
     }
+
     @Override
     public int execute(Instances instances) {
-        Properties properties;
-        if (askForInput) {
-            if (args.size() > 0) {
-                instances.consoleOutputout.output("Неверное количество параметров");
-                return -1;
-            }
-            properties = instances.consoleRequester.requestProperties();
+        int exitCode;
+        try{
+            exitCode = instances.dao.create(GetProperties.getProperties(askForInput,args,instances,0));
         }
-        else {
-            try {
-                properties = Properties.parseProperties(args, 0);
-            } catch (Exception e) {
-                instances.consoleOutputout.output(e.getMessage());
-                return -1;
-            }
+        catch (RuntimeException e){
+            instances.consoleOutputout.output(e.getMessage());
+            exitCode = -1;
         }
-        int exitCode = instances.dao.create(properties);
-        instances.consoleOutputout.output("Элемент успешно добавлен");
+        if (exitCode == 0)
+            instances.consoleOutputout.output("Элемент успешно добавлен");
         return exitCode;
     }
 }

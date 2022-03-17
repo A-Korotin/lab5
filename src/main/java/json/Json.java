@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 
 public class Json {
     private static final ObjectMapper objectMapper = getDefaultObjectMapper();

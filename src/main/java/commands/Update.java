@@ -43,19 +43,15 @@ public class Update extends Command {
         }
 
         int exitCode;
-        Properties properties;
-        if (askForInput)
-            properties = instances.consoleRequester.requestProperties();
-        else {
-            try{
-                properties = Properties.parseProperties(args, 1);
-            } catch (Exception e) {
-                instances.consoleOutputout.output(e.getMessage());
-                return -1;
-            }
+        try{
+            exitCode = instances.dao.update(id, GetProperties.getProperties(askForInput,args,instances,1));
         }
-        exitCode = instances.dao.update(id, properties);
-        instances.consoleOutputout.output("Элемент успешно обновлён");
+        catch(RuntimeException e){
+            instances.consoleOutputout.output(e.getMessage());
+            exitCode = -1;
+        }
+        if (exitCode == 0)
+            instances.consoleOutputout.output("Элемент успешно обновлён");
         return exitCode;
     }
 }
