@@ -6,7 +6,7 @@ import java.util.List;
 
 public class GetProperties {
     public static Properties getProperties(boolean askForInput, List<String> args, Instances instances, int indexShift){
-        Properties properties = new Properties();
+        Properties properties;
         if (askForInput) {
             if (args.size() > 0) {
                 throw new RuntimeException("Неверное количество параметров");
@@ -15,7 +15,7 @@ public class GetProperties {
         }
         else {
             try {
-                properties = instances.properties.parseProperties(args, indexShift);
+                properties = Properties.parseProperties(args, indexShift);
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage());
             }

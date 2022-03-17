@@ -11,13 +11,13 @@ import java.io.*;
 import java.util.Map;
 
 /**Класс, реализующий методы сохранения данных в файл и получение данных из файла для дальнейшего взаимодействия с ними*/
-public class FileManipulator implements CollectionManipulator {
+public final class FileManipulator {
     /**
      * Метод сохранения коллекции в файл
      * @param collection - коллекция
      * */
-    @Override
-    public void save(Describable collection) {
+
+    public static void save(Describable collection) {
         Map<String, String> env = System.getenv();
         String filepath = env.get("DAO_COLLECTION_FILEPATH");
 
@@ -33,8 +33,7 @@ public class FileManipulator implements CollectionManipulator {
      * Метод возвращения коллекции, считанной из файла
      * @return new collection.DragonDAO() - коллекция, считанная из файла
      * */
-    @Override
-    public DAO get() {
+    public static DAO get() {
         Map<String, String> env = System.getenv();
         String filepath = env.get("DAO_COLLECTION_FILEPATH");
 

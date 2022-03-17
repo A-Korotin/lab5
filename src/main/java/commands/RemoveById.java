@@ -16,20 +16,20 @@ public class RemoveById extends Command {
     @Override
     public int execute(Instances instances) {
         if (args.size() != 1) {
-            instances.consoleOutputout.output("Неверное количество параметров");
+            instances.outPutter.output("Неверное количество параметров");
             return -1;
         }
         int exitCode;
         try{
             if ((exitCode = instances.dao.delete(Integer.parseInt(args.get(0)))) == 0)
-                instances.consoleOutputout.output("Элемент успешно удален");
+                instances.outPutter.output("Элемент успешно удален");
             else{
-                instances.consoleOutputout.output("Элемент не найден.");
+                instances.outPutter.output("Элемент не найден.");
             }
             return exitCode;
         }
         catch (RuntimeException e){
-            instances.consoleOutputout.output("Нецелочисленный тип данных id");
+            instances.outPutter.output("Нецелочисленный тип данных id");
             return -1;
         }
     }

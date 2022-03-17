@@ -14,10 +14,10 @@ public class Help extends Command {
     @Override
     public int execute(Instances instances) {
         if (args.size() > 0) {
-            instances.consoleOutputout.output("Неверное количество параметров");
+            instances.outPutter.output("Неверное количество параметров");
             return -1;
         }
-        instances.consoleOutputout.output("""
+        instances.outPutter.output("""
                 help : вывести справку по доступным командам
                 info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)
                 show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении

@@ -17,11 +17,11 @@ public class ExecuteScript extends Command {
     @Override
     public int execute(Instances instances) {
         if (args.size() != 1) {
-            instances.consoleOutputout.output("Неверное количество параметров");
+            instances.outPutter.output("Неверное количество параметров");
             return -1;
         }
         if(Instances.filePathChain.contains(args.get(0))){
-            instances.consoleOutputout.output("Подумай головой сначала, а потом циклы скриптов пиши. Дурак.");
+            instances.outPutter.output("Подумай головой сначала, а потом циклы скриптов пиши. Дурак.");
             return -1;
         }
         String filePath = args.get(0);
@@ -34,10 +34,10 @@ public class ExecuteScript extends Command {
             commands = CommandCreator.getCommands(reader);
         }
         catch(RuntimeException e){
-            instances.consoleOutputout.output(e.getMessage());
+            instances.outPutter.output(e.getMessage());
             return -1;
         }
-        instances.consoleOutputout.output("Все команды были распознаны и поданы на выполнение");
+        instances.outPutter.output("Все команды были распознаны и поданы на выполнение");
 
         int exitCode = 0;
         for (Command c : commands)

@@ -17,6 +17,10 @@ public abstract class Command {
         askForInput = ask;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public Command(List<String> args) {
         this.args = args;
         name = args.get(0);

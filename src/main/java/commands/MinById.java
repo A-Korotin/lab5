@@ -29,17 +29,17 @@ public class MinById extends Command {
     @Override
     public int execute(Instances instances) {
         if (args.size() > 0) {
-            instances.consoleOutputout.output("Неверное количество параметров");
+            instances.outPutter.output("Неверное количество параметров");
             return -1;
         }
         int minId = Integer.MAX_VALUE;
         for (Dragon d : instances.dao.getAll())
             minId = d.getId() < minId ? d.getId() : minId;
         if (minId == Integer.MAX_VALUE){
-            instances.consoleOutputout.output("Коллекция пуста");
+            instances.outPutter.output("Коллекция пуста");
             return 0;
         }
-        instances.consoleOutputout.output(instances.dao.get(minId));
+        instances.outPutter.output(instances.dao.get(minId));
         return 0;
     }
 }

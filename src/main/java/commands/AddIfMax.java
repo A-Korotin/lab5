@@ -29,7 +29,7 @@ public class AddIfMax extends Command {
         Properties properties;
         if (askForInput) {
             if (args.size() > 0) {
-                instances.consoleOutputout.output("Неверное количество параметров");
+                instances.outPutter.output("Неверное количество параметров");
                 return -1;
             }
             properties = instances.consoleRequester.requestProperties();
@@ -38,7 +38,7 @@ public class AddIfMax extends Command {
             try {
                 properties = Properties.parseProperties(args, 0);
             } catch (Exception e) {
-                instances.consoleOutputout.output(e.getMessage());
+                instances.outPutter.output(e.getMessage());
                 return -1;
             }
         }
@@ -46,10 +46,10 @@ public class AddIfMax extends Command {
 
         if (properties.age > ageMax){
             instances.dao.create(properties);
-            instances.consoleOutputout.output("Элемент успешно добавлен");
+            instances.outPutter.output("Элемент успешно добавлен");
         }
         else {
-            instances.consoleOutputout.output("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
+            instances.outPutter.output("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
         }
         return 0;
     }

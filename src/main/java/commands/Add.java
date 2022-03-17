@@ -27,11 +27,11 @@ public class Add extends Command {
             exitCode = instances.dao.create(GetProperties.getProperties(askForInput,args,instances,0));
         }
         catch (RuntimeException e){
-            instances.consoleOutputout.output(e.getMessage());
+            instances.outPutter.output(e.getMessage());
             exitCode = -1;
         }
         if (exitCode == 0)
-            instances.consoleOutputout.output("Элемент успешно добавлен");
+            instances.outPutter.output("Элемент успешно добавлен");
         return exitCode;
     }
 }

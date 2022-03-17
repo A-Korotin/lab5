@@ -9,14 +9,13 @@ import io.request.ConsoleRequester;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Instances {
-    OutPutter consoleOutputout = new ConsoleOutput();
-    DAO dao = new DragonDAO();
-    ConsoleReader consoleReader = new ConsoleReader();
-    ConsoleRequester consoleRequester = new ConsoleRequester();
-    InputReader fileReader = new FileReader();
-    FileManipulator fileManipulator = new FileManipulator();
-    static List<String> filePathChain = new ArrayList<>();
+public final class Instances {
+    public OutPutter outPutter;
+    public DAO dao;
+    public InputReader consoleReader;
+    public ConsoleRequester consoleRequester;
+    public InputReader fileReader;
+    public static List<String> filePathChain = new ArrayList<>();
 
 
 }
