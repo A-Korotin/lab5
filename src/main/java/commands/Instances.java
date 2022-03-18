@@ -1,23 +1,20 @@
 package commands;
 
 
-import collection.DragonDAO;
+import collection.DAO;
 import io.*;
 import io.request.ConsoleRequester;
-import io.request.Properties;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Instances {
-    OutPutter consoleOutput = new ConsoleOutput();
-    DragonDAO dao = new DragonDAO();
-    Properties properties = new Properties();
-    ConsoleReader consoleReader = new ConsoleReader();
-    ConsoleRequester consoleRequester = new ConsoleRequester();
-    InputReader fileReader = new FileReader();
-    FileManipulator fileManipulator = new FileManipulator();
-    static List<String> filePathChain = new ArrayList<>();
+public final class Instances {
+    public OutPutter outPutter;
+    public DAO dao;
+    public InputReader consoleReader;
+    public ConsoleRequester consoleRequester;
+    public InputReader fileReader;
+    public static List<String> filePathChain = new ArrayList<>();
 
 
 }
