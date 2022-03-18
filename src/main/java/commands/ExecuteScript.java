@@ -41,7 +41,6 @@ public class ExecuteScript extends Command {
 
         int exitCode = 0;
         for (Command c : commands) {
-            Logger.log(c.getName());
             exitCode += c.execute(instances);
         }
         return exitCode;

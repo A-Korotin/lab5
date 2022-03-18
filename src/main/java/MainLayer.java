@@ -37,11 +37,16 @@ public final class MainLayer {
     }
 
     private void loopBody() {
-        List<Command> commands = CommandCreator.getCommands(instances.consoleReader);
+        List<Command> commands;
+        try {
+            commands = CommandCreator.getCommands(instances.consoleReader);
+        } catch (RuntimeException e) {
+            instances.outPutter.output("Такой команды не существует. Введите help для подробной информации");
+            return;
+        }
+
         int exit;
         for (Command c: commands) {
-            Logger.log(c.getName());
-
             if (c.getName().equals("execute_script"))
                 Instances.filePathChain.clear();
 

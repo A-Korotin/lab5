@@ -43,7 +43,7 @@ public class Update extends Command {
 
         int exitCode;
         try{
-            exitCode = instances.dao.update(id, GetProperties.getProperties(askForInput,args,instances,1));
+            exitCode = instances.dao.update(id, GetProperties.getProperties(askForInput, args,instances,1));
         }
         catch(RuntimeException e){
             instances.outPutter.output(e.getMessage());
