@@ -1,7 +1,6 @@
 package commands;
 
 import dragon.Dragon;
-import io.request.Properties;
 
 import java.util.List;
 

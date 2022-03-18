@@ -1,6 +1,5 @@
 package commands;
 
-import collection.DAO;
 import log.Logger;
 
 import java.util.List;

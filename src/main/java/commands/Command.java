@@ -1,8 +1,7 @@
 package commands;
-import collection.DAO;
+
 
 import java.util.List;
-import io.OutPutter;
 
 /**
  * Абстрактный надкласс всех команд
@@ -29,7 +28,7 @@ public abstract class Command {
 
     /**
      *
-     * @param instances Экземпляры всех классов, необходимых для корректного исполнения команды
+     * @param instances класс необходимых экземпляров
      * @return Код выхода команды.
      * <table align="left">
      *     <tr><b>0</b>  - команда завершена <i>без ошибок</i></tr>

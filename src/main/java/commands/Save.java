@@ -1,6 +1,5 @@
 package commands;
 
-import collection.DAO;
 import collection.Describable;
 import io.FileManipulator;
 
