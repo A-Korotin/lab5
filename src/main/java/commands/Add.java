@@ -24,7 +24,8 @@ public class Add extends Command {
     public int execute(Instances instances) {
         int exitCode;
         try{
-            exitCode = instances.dao.create(GetProperties.getProperties(askForInput,args,instances,0));
+            Properties properties = GetProperties.getProperties(askForInput,args,instances,0);
+            exitCode = instances.dao.create(properties);
         }
         catch (RuntimeException e){
             instances.consoleOutputout.output(e.getMessage());

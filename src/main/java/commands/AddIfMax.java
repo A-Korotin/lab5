@@ -29,7 +29,7 @@ public class AddIfMax extends Command {
             Properties properties = GetProperties.getProperties(askForInput,args,instances,0);
 
             if (properties.age > ageMax){
-                instances.dao.create(properties);
+                exitCode = instances.dao.create(properties);
             }
             else {
                 exitCode = 1;
