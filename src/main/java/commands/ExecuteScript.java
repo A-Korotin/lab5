@@ -1,6 +1,7 @@
 package commands;
 
 import io.InputReader;
+import log.Logger;
 
 import java.util.List;
 
@@ -33,14 +34,16 @@ public class ExecuteScript extends Command {
             commands = CommandCreator.getCommands(reader);
         }
         catch(RuntimeException e){
-            instances.outPutter.output(e.getMessage());
+            instances.outPutter.output("Одна или несколько команд не были распознаны");
             return -1;
         }
         instances.outPutter.output("Все команды были распознаны и поданы на выполнение");
 
         int exitCode = 0;
-        for (Command c : commands)
+        for (Command c : commands) {
+            Logger.log(c.getName());
             exitCode += c.execute(instances);
+        }
         return exitCode;
     }
 }

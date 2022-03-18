@@ -7,6 +7,7 @@ import io.ConsoleReader;
 import io.FileManipulator;
 import io.FileReader;
 import io.request.ConsoleRequester;
+import log.Logger;
 
 import java.util.List;
 
@@ -39,6 +40,8 @@ public final class MainLayer {
         List<Command> commands = CommandCreator.getCommands(instances.consoleReader);
         int exit;
         for (Command c: commands) {
+            Logger.log(c.getName());
+
             if (c.getName().equals("execute_script"))
                 Instances.filePathChain.clear();
 
