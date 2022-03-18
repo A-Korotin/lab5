@@ -30,10 +30,8 @@ public class AddIfMax extends Command {
 
             if (properties.age > ageMax){
                 instances.dao.create(properties);
-                instances.consoleOutputout.output("Элемент успешно добавлен");
             }
             else {
-                instances.consoleOutputout.output("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
                 exitCode = 1;
             }
         }
