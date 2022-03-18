@@ -36,13 +36,13 @@ public class AddIfMax extends Command {
             }
         }
         catch (RuntimeException e){
-            instances.consoleOutputout.output(e.getMessage());
+            instances.consoleOutput.output(e.getMessage());
             exitCode = -1;
         }
         if (exitCode == 0)
-            instances.consoleOutputout.output("Элемент успешно добавлен");
+            instances.consoleOutput.output("Элемент успешно добавлен");
         if (exitCode == 1)
-            instances.consoleOutputout.output("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
+            instances.consoleOutput.output("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
         return exitCode;
 
     }

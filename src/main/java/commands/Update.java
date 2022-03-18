@@ -19,7 +19,7 @@ public class Update extends Command {
     @Override
     public int execute(Instances instances) {
         if (args.size() != 1) {
-            instances.consoleOutputout.output("Неверное количество параметров");
+            instances.consoleOutput.output("Неверное количество параметров");
             return -1;
         }
         int id;
@@ -27,7 +27,7 @@ public class Update extends Command {
             id = Integer.parseInt(args.get(0));
         }
         catch (RuntimeException e){
-            instances.consoleOutputout.output("Нецелочисленный тип данных id");
+            instances.consoleOutput.output("Нецелочисленный тип данных id");
             return -1;
         }
         boolean found = false;
@@ -38,7 +38,7 @@ public class Update extends Command {
             }
         }
         if (!found){
-            instances.consoleOutputout.output("Элемент с id %d не существует".formatted(id));
+            instances.consoleOutput.output("Элемент с id %d не существует".formatted(id));
             return -1;
         }
 
@@ -48,11 +48,11 @@ public class Update extends Command {
             exitCode = instances.dao.update(id, properties);
         }
         catch(RuntimeException e){
-            instances.consoleOutputout.output(e.getMessage());
+            instances.consoleOutput.output(e.getMessage());
             exitCode = -1;
         }
         if (exitCode == 0)
-            instances.consoleOutputout.output("Элемент успешно обновлён");
+            instances.consoleOutput.output("Элемент успешно обновлён");
         return exitCode;
     }
 }

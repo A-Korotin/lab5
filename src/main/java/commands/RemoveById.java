@@ -1,6 +1,5 @@
 package commands;
 
-import collection.DAO;
 
 import java.util.List;
 
@@ -16,20 +15,20 @@ public class RemoveById extends Command {
     @Override
     public int execute(Instances instances) {
         if (args.size() != 1) {
-            instances.consoleOutputout.output("Неверное количество параметров");
+            instances.consoleOutput.output("Неверное количество параметров");
             return -1;
         }
         int exitCode;
         try{
             if ((exitCode = instances.dao.delete(Integer.parseInt(args.get(0)))) == 0)
-                instances.consoleOutputout.output("Элемент успешно удален");
+                instances.consoleOutput.output("Элемент успешно удален");
             else{
-                instances.consoleOutputout.output("Элемент не найден.");
+                instances.consoleOutput.output("Элемент не найден.");
             }
             return exitCode;
         }
         catch (RuntimeException e){
-            instances.consoleOutputout.output("Нецелочисленный тип данных id");
+            instances.consoleOutput.output("Нецелочисленный тип данных id");
             return -1;
         }
     }

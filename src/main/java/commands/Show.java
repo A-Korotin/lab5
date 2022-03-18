@@ -28,16 +28,16 @@ public class Show extends Command {
 
     public int execute(Instances instances) {
         if (args.size() > 0) {
-            instances.consoleOutputout.output("Неверное количество параметров");
+            instances.consoleOutput.output("Неверное количество параметров");
             return -1;
         }
         List<Dragon> dragons = instances.dao.getAll();
         if (dragons.size() == 0) {
-            instances.consoleOutputout.output("пусто");
+            instances.consoleOutput.output("пусто");
             return 0;
         }
         for (Dragon d : dragons) {
-            instances.consoleOutputout.output(d);
+            instances.consoleOutput.output(d);
         }
         return 0;
     }

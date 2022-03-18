@@ -1,7 +1,6 @@
 package commands;
 
 
-import collection.DAO
 import collection.DragonDAO;
 import io.*;
 import io.request.ConsoleRequester;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Instances {
-    OutPutter consoleOutputout = new ConsoleOutput();
+    OutPutter consoleOutput = new ConsoleOutput();
     DragonDAO dao = new DragonDAO();
     Properties properties = new Properties();
     ConsoleReader consoleReader = new ConsoleReader();

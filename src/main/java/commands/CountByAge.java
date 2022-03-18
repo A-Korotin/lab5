@@ -1,7 +1,6 @@
 package commands;
 
 
-import collection.DAO;
 import dragon.Dragon;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class CountByAge extends Command {
     @Override
     public int execute(Instances instances) {
         if (args.size() != 1) {
-            instances.consoleOutputout.output("Неверное количество параметров");
+            instances.consoleOutput.output("Неверное количество параметров");
             return -1;
         }
         Long age;
@@ -26,7 +25,7 @@ public class CountByAge extends Command {
             age = Long.parseLong(args.get(0));
         }
         catch(RuntimeException e){
-            instances.consoleOutputout.output("Типы данных не совпали");
+            instances.consoleOutput.output("Типы данных не совпали");
             return -1;
         }
 
@@ -36,7 +35,7 @@ public class CountByAge extends Command {
                 ageCount++;
             }
         }
-        instances.consoleOutputout.output(ageCount);
+        instances.consoleOutput.output(ageCount);
         return 0;
     }
 }

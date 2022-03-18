@@ -1,6 +1,5 @@
 package commands;
 
-import collection.DAO;
 import collection.Orderable;
 
 import java.util.List;
@@ -17,12 +16,12 @@ public class Sort extends Command {
     @Override
     public int execute(Instances instances) {
         if (args.size() > 0) {
-            instances.consoleOutputout.output("Неверное количество параметров");
+            instances.consoleOutput.output("Неверное количество параметров");
             return -1;
         }
         assert instances.dao instanceof Orderable;
         int exitCode = ((Orderable)instances.dao).sort();
-        instances.consoleOutputout.output("Коллекция успешно отсортирована");
+        instances.consoleOutput.output("Коллекция успешно отсортирована");
         return exitCode;
     }
 }

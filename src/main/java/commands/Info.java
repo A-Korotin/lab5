@@ -25,14 +25,14 @@ public class Info extends Command {
     @Override
     public int execute(Instances instances) {
         if (args.size() > 0) {
-            instances.consoleOutputout.output("Неверное количество параметров");
+            instances.consoleOutput.output("Неверное количество параметров");
             return -1;
         }
         try{
-            instances.consoleOutputout.output(instances.dao.description().toString());
+            instances.consoleOutput.output(instances.dao.description().toString());
         }
         catch (JsonProcessingException e){
-            instances.consoleOutputout.output("Что-то пошло не так...");
+            instances.consoleOutput.output("Что-то пошло не так...");
         }
         return 0;
     }

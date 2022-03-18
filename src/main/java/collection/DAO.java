@@ -4,7 +4,6 @@ import dragon.Dragon;
 import io.request.Properties;
 
 import java.util.List;
-import javax.json.*;
 /**
 * Интерфейс для работы с коллекцией
 */

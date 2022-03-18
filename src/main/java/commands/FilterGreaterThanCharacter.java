@@ -1,7 +1,6 @@
 package commands;
 
 
-import collection.DAO;
 import dragon.Dragon;
 import dragon.DragonCharacter;
 
@@ -22,7 +21,7 @@ public class FilterGreaterThanCharacter extends Command {
     public int execute(Instances instances) {
         DragonCharacter character;
         if (args.size() != 1) {
-            instances.consoleOutputout.output("Неверное количество параметров");
+            instances.consoleOutput.output("Неверное количество параметров");
             return -1;
         }
 
@@ -31,12 +30,12 @@ public class FilterGreaterThanCharacter extends Command {
             character = args.get(0).equals("null")? null : DragonCharacter.valueOf(args.get(0));
         }
         catch (RuntimeException e){
-            instances.consoleOutputout.output("Характер не определён");
+            instances.consoleOutput.output("Характер не определён");
             return -1;
         }
         for (Dragon dragon: instances.dao.getAll()){
             if (DragonCharacter.compare(dragon.getCharacter(), character) > 0){
-                instances.consoleOutputout.output(dragon);
+                instances.consoleOutput.output(dragon);
             }
         }
         return 0;

@@ -1,6 +1,5 @@
 package commands;
 
-import collection.DAO;
 
 import java.util.List;
 
@@ -17,15 +16,15 @@ public class Save extends Command {
     @Override
     public int execute(Instances instances) {
         if (args.size() > 0) {
-            instances.consoleOutputout.output("Неверное количество параметров");
+            instances.consoleOutput.output("Неверное количество параметров");
             return -1;
         }
         try {
             instances.fileManipulator.save(instances.dao);
-            instances.consoleOutputout.output("Коллекция успешно сохранена");
+            instances.consoleOutput.output("Коллекция успешно сохранена");
             return 0;
         } catch (RuntimeException e) {
-            instances.consoleOutputout.output("Не удалось сохранить коллекцию (" + e.getMessage() + ")");
+            instances.consoleOutput.output("Не удалось сохранить коллекцию (" + e.getMessage() + ")");
         }
         return -1;
 
