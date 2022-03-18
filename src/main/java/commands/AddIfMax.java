@@ -24,16 +24,20 @@ public class AddIfMax extends Command {
                 ageMax = dragon.getAge();
             }
         }
-        int exitCode = 0;
-        try{
-            Properties properties = GetProperties.getProperties(askForInput,args,instances,0);
+        int exitCode;
+        Properties properties;
+        try {
+            properties = GetProperties.getProperties(askForInput, args, instances, 0);
 
-            if (properties.age > ageMax){
+            if (properties.age > ageMax) {
                 exitCode = instances.dao.create(properties);
+            } else {
+                exitCode = 0;
             }
-            else {
-                exitCode = 1;
-            }
+        } catch (RuntimeException e) {
+            instances.outPutter.output(e.getMessage());
+            return -1;
+        }
         if (properties.age > ageMax){
             instances.dao.create(properties);
             instances.outPutter.output("Элемент успешно добавлен");
