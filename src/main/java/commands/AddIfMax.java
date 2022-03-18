@@ -1,7 +1,5 @@
 package commands;
 
-
-import collection.DAO;
 import dragon.Dragon;
 import io.request.Properties;
 
@@ -26,31 +24,28 @@ public class AddIfMax extends Command {
                 ageMax = dragon.getAge();
             }
         }
-        Properties properties;
-        if (askForInput) {
-            if (args.size() > 0) {
-                instances.consoleOutputout.output("Неверное количество параметров");
-                return -1;
+        int exitCode = 0;
+        try{
+            Properties properties = GetProperties.getProperties(askForInput,args,instances,0);
+
+            if (properties.age > ageMax){
+                instances.dao.create(properties);
+                instances.consoleOutputout.output("Элемент успешно добавлен");
             }
-            properties = instances.consoleRequester.requestProperties();
-        }
-        else {
-            try {
-                properties = Properties.parseProperties(args, 0);
-            } catch (Exception e) {
-                instances.consoleOutputout.output(e.getMessage());
-                return -1;
+            else {
+                instances.consoleOutputout.output("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
+                exitCode = 1;
             }
         }
-
-
-        if (properties.age > ageMax){
-            instances.dao.create(properties);
+        catch (RuntimeException e){
+            instances.consoleOutputout.output(e.getMessage());
+            exitCode = -1;
+        }
+        if (exitCode == 0)
             instances.consoleOutputout.output("Элемент успешно добавлен");
-        }
-        else {
+        if (exitCode == 1)
             instances.consoleOutputout.output("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
-        }
-        return 0;
+        return exitCode;
+
     }
 }
