@@ -21,7 +21,7 @@ public class AlexEgoshin extends Command {
                 this.getContentPane().setLayout(new FlowLayout());
                 try {
                     JLabel label1 = new JLabel("Поставь максималочку,пожалуйста");
-                    ImageIcon icon = new ImageIcon(getClass().getResource("Privet_Alex.png"));
+                    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("Privet_Alex.png"));
 
                     JLabel label2 = new JLabel(icon);
 
