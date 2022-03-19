@@ -1,6 +1,9 @@
 package commands;
 
+import exceptions.InvalidArgsSizeException;
+import exceptions.InvalidValueException;
 import io.InputReader;
+import log.Logger;
 
 import java.util.List;
 
@@ -10,17 +13,13 @@ import java.util.List;
  */
 public class ExecuteScript extends Command {
     public ExecuteScript(List<String> args) {
-        super(args);
+        super(args, 1);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() != 1) {
-            instances.consoleOutput.output("Неверное количество параметров");
-            return -1;
-        }
         if(Instances.filePathChain.contains(args.get(0))){
-            instances.consoleOutput.output("Подумай головой сначала, а потом циклы скриптов пиши. Дурак.");
+            instances.outPutter.output("Подумай головой сначала, а потом циклы скриптов пиши. Дурак.");
             return -1;
         }
         String filePath = args.get(0);
@@ -32,15 +31,20 @@ public class ExecuteScript extends Command {
         try{
             commands = CommandCreator.getCommands(reader);
         }
-        catch(RuntimeException e){
-            instances.consoleOutput.output(e.getMessage());
+        catch(InvalidArgsSizeException e) {
+            instances.outPutter.output(e.getMessage());
             return -1;
         }
-        instances.consoleOutput.output("Все команды были распознаны и поданы на выполнение");
+        catch (RuntimeException e) {
+            instances.outPutter.output("Одна или несколько команд не были распознаны");
+            return -1;
+        }
+        instances.outPutter.output("Все команды были распознаны и поданы на выполнение");
 
         int exitCode = 0;
-        for (Command c : commands)
+        for (Command c : commands) {
             exitCode += c.execute(instances);
+        }
         return exitCode;
     }
 }

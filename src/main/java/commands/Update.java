@@ -1,7 +1,7 @@
 package commands;
 
 import dragon.Dragon;
-import io.request.Properties;
+import exceptions.InvalidValueException;
 
 import java.util.List;
 
@@ -13,21 +13,17 @@ import java.util.List;
 public class Update extends Command {
 
     public Update(List<String> args) {
-        super(args);
+        super(args, 1, 10);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() != 1) {
-            instances.consoleOutput.output("Неверное количество параметров");
-            return -1;
-        }
         int id;
         try{
             id = Integer.parseInt(args.get(0));
         }
         catch (RuntimeException e){
-            instances.consoleOutput.output("Нецелочисленный тип данных id");
+            instances.outPutter.output("Нецелочисленный тип данных id");
             return -1;
         }
         boolean found = false;
@@ -38,21 +34,20 @@ public class Update extends Command {
             }
         }
         if (!found){
-            instances.consoleOutput.output("Элемент с id %d не существует".formatted(id));
+            instances.outPutter.output("Элемент с id %d не существует".formatted(id));
             return -1;
         }
 
         int exitCode;
         try{
-            Properties properties = GetProperties.getProperties(askForInput,args,instances,1);
-            exitCode = instances.dao.update(id, properties);
+            exitCode = instances.dao.update(id, GetProperties.getProperties(askForInput, args,instances,1));
         }
-        catch(RuntimeException e){
-            instances.consoleOutput.output(e.getMessage());
+        catch(InvalidValueException e){
+            instances.outPutter.output(e.getMessage());
             exitCode = -1;
         }
         if (exitCode == 0)
-            instances.consoleOutput.output("Элемент успешно обновлён");
+            instances.outPutter.output("Элемент успешно обновлён");
         return exitCode;
     }
 }

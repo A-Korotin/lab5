@@ -1,7 +1,8 @@
 package commands;
 
 import dragon.Dragon;
-import io.request.Properties;
+import exceptions.InvalidValueException;
+import io.Properties;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public class AddIfMax extends Command {
 
     public AddIfMax(List<String> args) {
-        super(args);
+        super(args, 0, 9);
     }
 
     @Override
@@ -44,6 +45,5 @@ public class AddIfMax extends Command {
         if (exitCode == 1)
             instances.consoleOutput.output("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
         return exitCode;
-
     }
 }

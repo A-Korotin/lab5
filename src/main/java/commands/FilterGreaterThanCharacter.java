@@ -14,28 +14,23 @@ import java.util.List;
 public class FilterGreaterThanCharacter extends Command {
 
     public FilterGreaterThanCharacter(List<String> args) {
-        super(args);
+        super(args, 1);
     }
 
     @Override
     public int execute(Instances instances) {
         DragonCharacter character;
-        if (args.size() != 1) {
-            instances.consoleOutput.output("Неверное количество параметров");
-            return -1;
-        }
+        try {
 
-        try{
-
-            character = args.get(0).equals("null")? null : DragonCharacter.valueOf(args.get(0));
+            character = args.get(0).equalsIgnoreCase("null")? null : DragonCharacter.valueOf(args.get(0).toUpperCase());
         }
         catch (RuntimeException e){
-            instances.consoleOutput.output("Характер не определён");
+            instances.outPutter.output("Характер не определён");
             return -1;
         }
         for (Dragon dragon: instances.dao.getAll()){
             if (DragonCharacter.compare(dragon.getCharacter(), character) > 0){
-                instances.consoleOutput.output(dragon);
+                instances.outPutter.output(dragon);
             }
         }
         return 0;

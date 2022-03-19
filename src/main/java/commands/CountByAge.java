@@ -11,21 +11,17 @@ import java.util.List;
 public class CountByAge extends Command {
 
     public CountByAge(List<String> args) {
-        super(args);
+        super(args, 1);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() != 1) {
-            instances.consoleOutput.output("Неверное количество параметров");
-            return -1;
-        }
         Long age;
         try{
             age = Long.parseLong(args.get(0));
         }
         catch(RuntimeException e){
-            instances.consoleOutput.output("Типы данных не совпали");
+            instances.outPutter.output("Типы данных не совпали");
             return -1;
         }
 
@@ -35,7 +31,7 @@ public class CountByAge extends Command {
                 ageCount++;
             }
         }
-        instances.consoleOutput.output(ageCount);
+        instances.outPutter.output(ageCount);
         return 0;
     }
 }

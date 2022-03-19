@@ -9,26 +9,22 @@ import java.util.List;
 public class RemoveById extends Command {
 
     public RemoveById(List<String> args) {
-        super(args);
+        super(args, 1);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() != 1) {
-            instances.consoleOutput.output("Неверное количество параметров");
-            return -1;
-        }
         int exitCode;
         try{
             if ((exitCode = instances.dao.delete(Integer.parseInt(args.get(0)))) == 0)
-                instances.consoleOutput.output("Элемент успешно удален");
+                instances.outPutter.output("Элемент успешно удален");
             else{
-                instances.consoleOutput.output("Элемент не найден.");
+                instances.outPutter.output("Элемент не найден.");
             }
             return exitCode;
         }
         catch (RuntimeException e){
-            instances.consoleOutput.output("Нецелочисленный тип данных id");
+            instances.outPutter.output("Нецелочисленный тип данных id");
             return -1;
         }
     }

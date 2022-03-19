@@ -1,6 +1,8 @@
 package commands;
 
 
+import exceptions.InvalidArgsSizeException;
+
 import java.util.List;
 
 /**
@@ -16,10 +18,26 @@ public abstract class Command {
         askForInput = ask;
     }
 
-    public Command(List<String> args) {
+    public String getName() {
+        return name;
+    }
+
+    private boolean validArgsSize(Integer[] expected) {
+        for(Integer i: expected) {
+            if (i == args.size())
+                return true;
+        }
+        return false;
+    }
+
+    public Command(List<String> args, Integer... nArgsExpected) {
         this.args = args;
         name = args.get(0);
         args.remove(0);
+        args.removeIf(String::isEmpty);
+
+        if (!validArgsSize(nArgsExpected))
+            throw new InvalidArgsSizeException(name, args.size(), nArgsExpected);
     }
 
     /**

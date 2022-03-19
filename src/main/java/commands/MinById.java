@@ -23,23 +23,19 @@ import java.util.List;
 public class MinById extends Command {
 
     public MinById(List<String> args) {
-        super(args);
+        super(args, 0);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() > 0) {
-            instances.consoleOutput.output("Неверное количество параметров");
-            return -1;
-        }
         int minId = Integer.MAX_VALUE;
         for (Dragon d : instances.dao.getAll())
             minId = d.getId() < minId ? d.getId() : minId;
         if (minId == Integer.MAX_VALUE){
-            instances.consoleOutput.output("Коллекция пуста");
-            return -1;
+            instances.outPutter.output("Коллекция пуста");
+            return 0;
         }
-        instances.consoleOutput.output(instances.dao.get(minId));
+        instances.outPutter.output(instances.dao.get(minId));
         return 0;
     }
 }

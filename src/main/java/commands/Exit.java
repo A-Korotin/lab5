@@ -2,7 +2,7 @@ package commands;
 
 
 import java.util.List;
-
+import exceptions.ProgramExitException;
 /**
  * Класс, предназначенный для завершения работы программы в штатном режиме (<i>без сохранения изменений в коллекции</i>)
  *
@@ -10,16 +10,11 @@ import java.util.List;
 public class Exit extends Command {
 
     public Exit(List<String> args) {
-        super(args);
+        super(args, 0);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() > 0) {
-            instances.consoleOutput.output("Неверное количество параметров");
-            return -1;
-        }
-        System.exit(0);
-        return 0;
+        throw new ProgramExitException("Завершение программы...");
     }
 }

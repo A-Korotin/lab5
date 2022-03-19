@@ -1,6 +1,7 @@
 package commands;
 
-import io.request.Properties;
+import exceptions.InvalidValueException;
+import io.Properties;
 
 import java.util.List;
 /**
@@ -11,7 +12,7 @@ import java.util.List;
 public class Add extends Command {
 
     public Add(List<String> args) {
-        super(args);
+        super(args, 0, 9);
     }
 
     @Override
@@ -21,7 +22,7 @@ public class Add extends Command {
             Properties properties = GetProperties.getProperties(askForInput,args,instances,0);
             exitCode = instances.dao.create(properties);
         }
-        catch (RuntimeException e){
+        catch (InvalidValueException e){
             instances.outPutter.output(e.getMessage());
             exitCode = -1;
         }

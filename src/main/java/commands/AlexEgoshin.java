@@ -8,14 +8,12 @@ import java.util.List;
  * Класс, предназначенный для <i>секретной команды</i> от Дуль Я. С. и Коротина А. М.
  */
 public class AlexEgoshin extends Command {
-    public AlexEgoshin(List<String> args) { super(args); }
+    public AlexEgoshin(List<String> args) {
+        super(args, 0);
+    }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() > 0) {
-            instances.consoleOutput.output("Неверное количество параметров");
-            return -1;
-        }
         class AlexEgoshinPostavMaxBall extends JFrame {
 
             public AlexEgoshinPostavMaxBall() {
@@ -23,7 +21,7 @@ public class AlexEgoshin extends Command {
                 this.getContentPane().setLayout(new FlowLayout());
                 try {
                     JLabel label1 = new JLabel("Поставь максималочку,пожалуйста");
-                    ImageIcon icon = new ImageIcon(getClass().getResource("Privet_Alex.png"));
+                    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("Privet_Alex.png"));
 
                     JLabel label2 = new JLabel(icon);
 
@@ -31,7 +29,7 @@ public class AlexEgoshin extends Command {
                     add(label2);
                 }
                 catch (NullPointerException e){
-                    instances.consoleOutput.output("Неверно указан путь до файла");
+                    instances.outPutter.output("Неверно указан путь до файла");
                 }
             }
 
@@ -44,7 +42,7 @@ public class AlexEgoshin extends Command {
         }
         AlexEgoshinPostavMaxBall alexEgoshinPostavMaxBall = new AlexEgoshinPostavMaxBall();
         alexEgoshinPostavMaxBall.createAndShowGUI();
-        instances.consoleOutput.output("Команда успешно выполнена -> надо максимальный балл для Алексея Коротина и Дуль Яна");
+        instances.outPutter.output("Команда успешно выполнена -> надо максимальный балл для Алексея Коротина и Дуль Яна");
         return 0;
     }
 

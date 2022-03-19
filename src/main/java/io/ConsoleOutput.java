@@ -1,5 +1,6 @@
 package io;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import dragon.Dragon;
 
 /**
@@ -11,7 +12,11 @@ public class ConsoleOutput implements OutPutter {
 
     @Override
     public void output(Dragon element) {
-        System.out.println(element);
+        try {
+            System.out.println(element.description());
+        } catch (JsonProcessingException e) {
+            System.out.println("Не удалось получить описание элемента");
+        }
     }
 
     @Override
