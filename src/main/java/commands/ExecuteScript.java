@@ -11,15 +11,11 @@ import java.util.List;
  */
 public class ExecuteScript extends Command {
     public ExecuteScript(List<String> args) {
-        super(args);
+        super(args, 1);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() != 1) {
-            instances.outPutter.output("Неверное количество параметров");
-            return -1;
-        }
         if(Instances.filePathChain.contains(args.get(0))){
             instances.outPutter.output("Подумай головой сначала, а потом циклы скриптов пиши. Дурак.");
             return -1;

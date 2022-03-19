@@ -10,16 +10,11 @@ import java.util.List;
 public class Sort extends Command {
 
     public Sort(List<String> args) {
-        super(args);
+        super(args, 0);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() > 0) {
-            instances.outPutter.output("Неверное количество параметров");
-            return -1;
-        }
-        assert instances.dao instanceof Orderable;
         int exitCode = ((Orderable)instances.dao).sort();
         instances.outPutter.output("Коллекция успешно отсортирована");
         return exitCode;

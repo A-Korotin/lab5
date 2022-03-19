@@ -23,14 +23,10 @@ import java.util.List;
 public class Show extends Command {
 
     public Show(List<String> args) {
-        super(args);
+        super(args, 0);
     }
 
     public int execute(Instances instances) {
-        if (args.size() > 0) {
-            instances.outPutter.output("Неверное количество параметров");
-            return -1;
-        }
         List<Dragon> dragons = instances.dao.getAll();
         if (dragons.size() == 0) {
             instances.outPutter.output("пусто");

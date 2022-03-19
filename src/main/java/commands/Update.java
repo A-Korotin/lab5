@@ -12,15 +12,11 @@ import java.util.List;
 public class Update extends Command {
 
     public Update(List<String> args) {
-        super(args);
+        super(args, 1, 9);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() != 1) {
-            instances.outPutter.output("Неверное количество параметров");
-            return -1;
-        }
         int id;
         try{
             id = Integer.parseInt(args.get(0));

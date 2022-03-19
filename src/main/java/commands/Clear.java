@@ -9,15 +9,11 @@ import java.util.List;
 public class Clear extends Command {
 
     public Clear(List<String> args) {
-        super(args);
+        super(args, 0);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() > 0) {
-            instances.outPutter.output("Неверное количество параметров");
-            return -1;
-        }
         instances.dao.clear();
         instances.outPutter.output("Коллекция успешно очищена");
         return 0;

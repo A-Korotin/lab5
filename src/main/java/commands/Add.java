@@ -11,7 +11,7 @@ import java.util.List;
 public class Add extends Command {
 
     public Add(List<String> args) {
-        super(args);
+        super(args, 0, 8);
     }
 
     @Override

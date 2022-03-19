@@ -12,15 +12,11 @@ import java.util.List;
 public class Save extends Command {
 
     public Save(List<String> args) {
-        super(args);
+        super(args, 1);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() > 0) {
-            instances.outPutter.output("Неверное количество параметров");
-            return -1;
-        }
         try {
             FileManipulator.save((Describable) instances.dao);
             instances.outPutter.output("Коллекция успешно сохранена");

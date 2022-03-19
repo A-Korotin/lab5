@@ -5,7 +5,7 @@ import io.request.Properties;
 import java.util.List;
 
 public class GetProperties {
-    public static Properties getProperties(boolean askForInput, List<String> args, Instances instances, int indexShift){
+    public static Properties getProperties(boolean askForInput, List<String> args, Instances instances, int indexShift) {
         Properties properties;
         if (askForInput) {
             properties = instances.consoleRequester.requestProperties();

@@ -20,15 +20,11 @@ import java.util.List;
 public class Info extends Command {
 
     public Info(List<String> args) {
-        super(args);
+        super(args, 0);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() > 0) {
-            instances.outPutter.output("Неверное количество параметров");
-            return -1;
-        }
         try{
             instances.outPutter.output(((Describable) instances.dao).description());
         }

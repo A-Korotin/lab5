@@ -8,14 +8,12 @@ import java.util.List;
  * Класс, предназначенный для <i>секретной команды</i> от Дуль Я. С. и Коротина А. М.
  */
 public class AlexEgoshin extends Command {
-    public AlexEgoshin(List<String> args) { super(args); }
+    public AlexEgoshin(List<String> args) {
+        super(args, 0);
+    }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() > 0) {
-            instances.outPutter.output("Неверное количество параметров");
-            return -1;
-        }
         class AlexEgoshinPostavMaxBall extends JFrame {
 
             public AlexEgoshinPostavMaxBall() {

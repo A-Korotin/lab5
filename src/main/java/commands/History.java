@@ -7,15 +7,11 @@ import java.util.List;
 public class History extends Command {
 
     public History(List<String> args) {
-        super(args);
+        super(args, 0);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() > 0) {
-            instances.outPutter.output("Неверное количество параметров");
-            return -1;
-        }
         for (String msg : Logger.getAll()) {
             instances.outPutter.output(msg);
         }

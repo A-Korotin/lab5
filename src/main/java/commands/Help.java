@@ -8,15 +8,11 @@ import java.util.List;
 public class Help extends Command {
 
     public Help(List<String> args) {
-        super(args);
+        super(args, 0);
     }
 
     @Override
     public int execute(Instances instances) {
-        if (args.size() > 0) {
-            instances.outPutter.output("Неверное количество параметров");
-            return -1;
-        }
         instances.outPutter.output("""
                 help : вывести справку по доступным командам
                 
