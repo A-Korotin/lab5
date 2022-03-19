@@ -35,6 +35,8 @@ public abstract class Command {
         this.args = args;
         name = args.get(0);
         args.remove(0);
+        args.removeIf(String::isEmpty);
+
         if (!validArgsSize(nArgsExpected))
             throw new InvalidArgsSizeException(name, args.size(), nArgsExpected);
     }
