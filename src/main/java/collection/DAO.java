@@ -1,7 +1,7 @@
 package collection;
 
 import dragon.Dragon;
-import io.request.Properties;
+import io.Properties;
 
 import java.util.List;
 /**

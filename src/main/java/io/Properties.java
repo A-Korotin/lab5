@@ -1,8 +1,10 @@
-package io.request;
+package io;
 
 import dragon.Color;
 import dragon.DragonCharacter;
 import dragon.DragonType;
+import exceptions.InvalidValueException;
+
 import java.util.List;
 
 /**
@@ -19,10 +21,7 @@ public class Properties {
     public double depth;
     public Integer numberOfTreasures;
 
-    public static Properties parseProperties(List<String> input, int indexShift) throws Exception {
-        if (input.size() != 9 + indexShift)
-            throw new Exception(String.format("Ошибка. Неверное количество параметров. Ожидалось %d, получено %d", 9 + indexShift, input.size()));
-
+    public static Properties parseProperties(List<String> input, int indexShift) throws InvalidValueException{
         Properties properties = new Properties();
 
         try {
@@ -36,20 +35,20 @@ public class Properties {
             properties.depth = Double.parseDouble(input.get(7 + indexShift));
             properties.numberOfTreasures = input.get(8 + indexShift).equals("null") ? null: Integer.parseInt(input.get(8 + indexShift));
         } catch (RuntimeException e) {
-            throw new Exception("Ошибка. Типы данных несовместимы.");
+            throw new InvalidValueException("Ошибка. Типы данных несовместимы.");
         }
 
         if (properties.name.isEmpty())
-            throw new Exception("Ошибка. Параметр ИМЯ не может быть пустым");
+            throw new InvalidValueException("Ошибка. Параметр ИМЯ не может быть пустым");
 
         if (properties.yCoord > 998)
-            throw new Exception("Ошибка. Параметр КООРДИНАТА_Y не может быть >998");
+            throw new InvalidValueException("Ошибка. Параметр КООРДИНАТА_Y не может быть >998 (Получено %d)".formatted(properties.yCoord));
 
         if (properties.age <= 0)
-            throw new Exception("Ошибка. Параметр ВОЗРАСТ не может быть <= 0");
+            throw new InvalidValueException("Ошибка. Параметр ВОЗРАСТ не может быть <= 0 (Получено %d)".formatted(properties.age));
 
         if (properties.numberOfTreasures != null && properties.numberOfTreasures <= 0)
-            throw new Exception("Ошибка. Параметр КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ не может быть <= 0");
+            throw new InvalidValueException("Ошибка. Параметр КОЛИЧЕСТВО_СОКРОВИЩ_В_ПЕЩЕРЕ не может быть <= 0 (Получено %d)".formatted(properties.numberOfTreasures));
 
         return properties;
     }

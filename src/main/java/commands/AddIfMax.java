@@ -1,7 +1,8 @@
 package commands;
 
 import dragon.Dragon;
-import io.request.Properties;
+import exceptions.InvalidValueException;
+import io.Properties;
 
 import java.util.List;
 
@@ -28,22 +29,18 @@ public class AddIfMax extends Command {
         Properties properties;
         try {
             properties = GetProperties.getProperties(askForInput, args, instances, 0);
-
-            if (properties.age > ageMax) {
-                exitCode = instances.dao.create(properties);
-            } else {
-                exitCode = 0;
-            }
-        } catch (RuntimeException e) {
+        } catch (InvalidValueException e) {
             instances.outPutter.output(e.getMessage());
             return -1;
         }
+
         if (properties.age > ageMax){
-            instances.dao.create(properties);
+            exitCode = instances.dao.create(properties);
             instances.outPutter.output("Элемент успешно добавлен");
         }
         else {
             instances.outPutter.output("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
+            return 0;
         }
         return exitCode;
     }

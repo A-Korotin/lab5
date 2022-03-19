@@ -12,7 +12,7 @@ import java.util.List;
 public class Save extends Command {
 
     public Save(List<String> args) {
-        super(args, 1);
+        super(args, 0);
     }
 
     @Override

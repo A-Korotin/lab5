@@ -3,6 +3,7 @@ package io.request;
 import dragon.Color;
 import dragon.DragonCharacter;
 import dragon.DragonType;
+import io.Properties;
 
 import java.io.InputStream;
 import java.io.PrintStream;

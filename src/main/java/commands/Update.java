@@ -1,6 +1,7 @@
 package commands;
 
 import dragon.Dragon;
+import exceptions.InvalidValueException;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class Update extends Command {
         try{
             exitCode = instances.dao.update(id, GetProperties.getProperties(askForInput, args,instances,1));
         }
-        catch(RuntimeException e){
+        catch(InvalidValueException e){
             instances.outPutter.output(e.getMessage());
             exitCode = -1;
         }

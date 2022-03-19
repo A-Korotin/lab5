@@ -1,21 +1,18 @@
 package commands;
 
-import io.request.Properties;
+import exceptions.InvalidValueException;
+import io.Properties;
 
 import java.util.List;
 
 public class GetProperties {
-    public static Properties getProperties(boolean askForInput, List<String> args, Instances instances, int indexShift) {
+    public static Properties getProperties(boolean askForInput, List<String> args, Instances instances, int indexShift) throws InvalidValueException {
         Properties properties;
         if (askForInput) {
             properties = instances.consoleRequester.requestProperties();
         }
         else {
-            try {
-                properties = Properties.parseProperties(args, indexShift);
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage());
-            }
+            properties = Properties.parseProperties(args, indexShift);
         }
         return properties;
     }
