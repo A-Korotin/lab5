@@ -13,7 +13,7 @@ import java.util.List;
 public class Update extends Command {
 
     public Update(List<String> args) {
-        super(args, 1, 9);
+        super(args, 1, 10);
     }
 
     @Override

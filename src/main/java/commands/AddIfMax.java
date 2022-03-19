@@ -14,7 +14,7 @@ import java.util.List;
 public class AddIfMax extends Command {
 
     public AddIfMax(List<String> args) {
-        super(args, 0, 8);
+        super(args, 0, 9);
     }
 
     @Override

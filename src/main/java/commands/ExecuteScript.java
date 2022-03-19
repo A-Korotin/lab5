@@ -1,5 +1,7 @@
 package commands;
 
+import exceptions.InvalidArgsSizeException;
+import exceptions.InvalidValueException;
 import io.InputReader;
 import log.Logger;
 
@@ -29,7 +31,11 @@ public class ExecuteScript extends Command {
         try{
             commands = CommandCreator.getCommands(reader);
         }
-        catch(RuntimeException e){
+        catch(InvalidArgsSizeException e) {
+            instances.outPutter.output(e.getMessage());
+            return -1;
+        }
+        catch (RuntimeException e) {
             instances.outPutter.output("Одна или несколько команд не были распознаны");
             return -1;
         }
