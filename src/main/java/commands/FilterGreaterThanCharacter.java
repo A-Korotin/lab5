@@ -20,19 +20,19 @@ public class FilterGreaterThanCharacter extends Command {
     @Override
     public int execute(Instances instances) {
         DragonCharacter character;
-        try {
 
+        try {
             character = args.get(0).equalsIgnoreCase("null")? null : DragonCharacter.valueOf(args.get(0).toUpperCase());
         }
         catch (RuntimeException e){
             instances.outPutter.output("Характер не определён");
             return -1;
         }
-        for (Dragon dragon: instances.dao.getAll()){
-            if (DragonCharacter.compare(dragon.getCharacter(), character) > 0){
-                instances.outPutter.output(dragon);
-            }
-        }
+
+        instances.dao.getAll().stream()
+                .filter(dragon -> DragonCharacter.compare(dragon.getCharacter(), character) > 0)
+                .forEach(instances.outPutter::output);
+
         return 0;
     }
 }

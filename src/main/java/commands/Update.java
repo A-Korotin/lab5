@@ -26,13 +26,9 @@ public class Update extends Command {
             instances.outPutter.output("Нецелочисленный тип данных id");
             return -1;
         }
-        boolean found = false;
-        for(Dragon d: instances.dao.getAll()) {
-            if(d.getId() == id) {
-                found = true;
-                break;
-            }
-        }
+
+        boolean found = instances.dao.getAll().stream().anyMatch(dragon -> dragon.getId() == id);
+
         if (!found){
             instances.outPutter.output("Элемент с id %d не существует".formatted(id));
             return -1;

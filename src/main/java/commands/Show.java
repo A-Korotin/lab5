@@ -28,13 +28,12 @@ public class Show extends Command {
 
     public int execute(Instances instances) {
         List<Dragon> dragons = instances.dao.getAll();
-        if (dragons.size() == 0) {
-            instances.outPutter.output("пусто");
-            return 0;
-        }
-        for (Dragon d : dragons) {
-            instances.outPutter.output(d);
-        }
+
+        if (dragons.isEmpty())
+            instances.outPutter.output("Пусто");
+        else
+            dragons.forEach(instances.outPutter::output);
+
         return 0;
     }
 }

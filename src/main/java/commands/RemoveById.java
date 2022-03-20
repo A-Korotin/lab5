@@ -24,7 +24,7 @@ public class RemoveById extends Command {
             return exitCode;
         }
         catch (RuntimeException e){
-            instances.outPutter.output("Нецелочисленный тип данных id");
+            instances.outPutter.output("\"%s\" не является Integer".formatted(args.get(0)));
             return -1;
         }
     }

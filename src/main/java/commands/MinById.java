@@ -2,7 +2,9 @@ package commands;
 
 import dragon.Dragon;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Класс, предназначенный для вывода элемента с наименьшим <b>ID</b> в заранее заданный поток вывода
@@ -28,14 +30,17 @@ public class MinById extends Command {
 
     @Override
     public int execute(Instances instances) {
-        int minId = Integer.MAX_VALUE;
-        for (Dragon d : instances.dao.getAll())
-            minId = d.getId() < minId ? d.getId() : minId;
-        if (minId == Integer.MAX_VALUE){
+
+        Optional<Dragon> minDragon = instances.dao.getAll().stream().min(Comparator.comparingInt(Dragon::getId));
+
+        Integer minId = minDragon.isPresent() ? minDragon.get().getId() : null;
+
+        if (minId == null)
             instances.outPutter.output("Коллекция пуста");
-            return 0;
-        }
-        instances.outPutter.output(instances.dao.get(minId));
+        else
+            instances.outPutter.output(minId);
+
+
         return 0;
     }
 }

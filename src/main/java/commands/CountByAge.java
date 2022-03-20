@@ -16,22 +16,18 @@ public class CountByAge extends Command {
 
     @Override
     public int execute(Instances instances) {
-        Long age;
+        long age;
         try{
             age = Long.parseLong(args.get(0));
         }
         catch(RuntimeException e){
-            instances.outPutter.output("Типы данных не совпали");
+            instances.outPutter.output("\"%s\" не является Long".formatted(args.get(0)));
             return -1;
         }
 
-        int ageCount = 0;
-        for (Dragon dragon : instances.dao.getAll()) {
-            if (dragon.getAge().equals(age)) {
-                ageCount++;
-            }
-        }
-        instances.outPutter.output(ageCount);
+        long amount = instances.dao.getAll().stream().filter(dragon -> dragon.getAge().equals(age)).count();
+
+        instances.outPutter.output(amount);
         return 0;
     }
 }

@@ -12,9 +12,8 @@ public class History extends Command {
 
     @Override
     public int execute(Instances instances) {
-        for (String msg : Logger.getAll()) {
-            instances.outPutter.output(msg);
-        }
+        Logger.getAll().forEach(instances.outPutter::output);
+
         return 0;
     }
 }

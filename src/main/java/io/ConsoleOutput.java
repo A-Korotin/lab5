@@ -20,7 +20,7 @@ public class ConsoleOutput implements OutPutter {
     }
 
     @Override
-    public void output(int number) {
+    public <T extends Number> void output(T number) {
         System.out.println(number);
     }
 }
