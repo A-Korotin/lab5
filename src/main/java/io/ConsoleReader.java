@@ -19,9 +19,7 @@ public final class ConsoleReader extends InputReader {
     public List<String> getInput() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine().trim();
-        List<String> output = new ArrayList<>();
-        output.add(input);
-        return output;
+        return new ArrayList<>(List.of(input));
     }
 }
 

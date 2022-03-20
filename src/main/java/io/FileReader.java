@@ -29,9 +29,8 @@ public final class FileReader extends InputReader {
 
             String allData = bos.toString();
 
-            List<String> lines = new ArrayList<>(List.of(allData.split(System.lineSeparator())));
+            return new ArrayList<>(List.of(allData.split(System.lineSeparator())));
 
-            return lines;
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Файл не найден и\\или нет прав на чтение");
