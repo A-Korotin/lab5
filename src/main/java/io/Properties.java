@@ -10,7 +10,7 @@ import java.util.List;
 /**
 * Класс присваивания полям элементов значений, полученных с консоли или из файла
 */
-public class Properties {
+public final class Properties {
     public String name;
     public Float xCoord;
     public Integer yCoord;

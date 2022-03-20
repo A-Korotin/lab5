@@ -11,7 +11,7 @@ import java.util.List;
  * При вводе данных в консоль пользователю будет показываться приглашение к вводу<br>
  * При вводе данных в файл все характеристики элемента нужно вводить последовательно через пробел
  */
-public class AddIfMax extends Command {
+public final class AddIfMax extends Command {
 
     public AddIfMax(List<String> args) {
         super(args, 0, 9);

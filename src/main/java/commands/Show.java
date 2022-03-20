@@ -20,7 +20,7 @@ import java.util.List;
  *     <tr><i>Информация о пещере</i></tr>
  * </table>
  */
-public class Show extends Command {
+public final class Show extends Command {
 
     public Show(List<String> args) {
         super(args, 0);

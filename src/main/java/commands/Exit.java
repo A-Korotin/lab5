@@ -7,7 +7,7 @@ import exceptions.ProgramExitException;
  * Класс, предназначенный для завершения работы программы в штатном режиме (<i>без сохранения изменений в коллекции</i>)
  *
  */
-public class Exit extends Command {
+public final class Exit extends Command {
 
     public Exit(List<String> args) {
         super(args, 0);

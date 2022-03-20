@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 /**
  * Класс для чтения ввода с консоли, наследуется от абстрактного класса io.InputReader*/
-public class ConsoleReader extends InputReader {
+public final class ConsoleReader extends InputReader {
 
     {
         askForInput = true;
