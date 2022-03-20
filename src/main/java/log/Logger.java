@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 /**
 * Класс для записи запросов команд в массив (создан для команды history)*/
-public class Logger {
+public final class Logger {
     private static int capacity = 6;
     private static final List<String> history = new ArrayList<>();
     /**
@@ -13,9 +13,8 @@ public class Logger {
     * */
     public static void log(String command){
         history.add(0,command);
-        if (history.size() > capacity) {
+        if (history.size() > capacity)
             history.remove(capacity);
-        }
     }
     /**
      * Метод возвращения копии массива

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 
-public class Json {
+public final class Json {
     private static final ObjectMapper objectMapper = getDefaultObjectMapper();
 
     private static ObjectMapper getDefaultObjectMapper() {

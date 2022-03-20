@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Класс, предназначенный для удаления элемента коллекции по его <b>ID</b> (<i>обязательный аргумент команды</i>)
  */
-public class RemoveById extends Command {
+public final class RemoveById extends Command {
 
     public RemoveById(List<String> args) {
         super(args, 1);

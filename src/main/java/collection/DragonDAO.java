@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Класс, который имплементируется от collection.DAO. В нём мы реализуем методы для работы с коллекцией и инициализируем саму коллекцию
  */
-public class DragonDAO implements DAO, Describable, Orderable {
+public final class DragonDAO implements DAO, Describable, Orderable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private LocalDateTime initDateTime;
 

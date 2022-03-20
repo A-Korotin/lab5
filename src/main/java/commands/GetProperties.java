@@ -5,7 +5,7 @@ import io.Properties;
 
 import java.util.List;
 
-public class GetProperties {
+public final class GetProperties {
     public static Properties getProperties(boolean askForInput, List<String> args, Instances instances, int indexShift) throws InvalidValueException {
         Properties properties;
         if (askForInput) {

@@ -22,7 +22,7 @@ import java.util.Optional;
  * </table>
  *
  */
-public class MinById extends Command {
+public final class MinById extends Command {
 
     public MinById(List<String> args) {
         super(args, 0);

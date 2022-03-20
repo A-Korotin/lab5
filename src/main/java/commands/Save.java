@@ -9,7 +9,7 @@ import java.util.List;
  * Класс, предназначенный для сохранения информации о коллекции в файл формата <b>JSON</b><br>
  * Путь до искомого файла передается через <i>переменную окружения</i> <b>DAO_COLLECTION_FILEPATH</b>
  */
-public class Save extends Command {
+public final class Save extends Command {
 
     public Save(List<String> args) {
         super(args, 0);

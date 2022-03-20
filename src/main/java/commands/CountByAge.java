@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Класс, предназначенный для вывода количества элементов с заданным <b>возрастом</b> (<i>обязательный аргумент команды</i>)
  */
-public class CountByAge extends Command {
+public final class CountByAge extends Command {
 
     public CountByAge(List<String> args) {
         super(args, 1);

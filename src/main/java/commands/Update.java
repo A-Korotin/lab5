@@ -10,7 +10,7 @@ import java.util.List;
  * При вводе данных в консоль пользователю будет показываться приглашение к вводу<br>
  * При вводе данных в файл все характеристики элемента нужно вводить последовательно через пробел
  */
-public class Update extends Command {
+public final class Update extends Command {
 
     public Update(List<String> args) {
         super(args, 1, 10);

@@ -11,7 +11,7 @@ import java.util.List;
  * Сравнение характеров происходит по <b>длине названия</b> характера
  *
  */
-public class FilterGreaterThanCharacter extends Command {
+public final class FilterGreaterThanCharacter extends Command {
 
     public FilterGreaterThanCharacter(List<String> args) {
         super(args, 1);

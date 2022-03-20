@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Класс для чтения информации из файла, наследуется от абстрактного класса io.InputReader*/
-public class FileReader extends InputReader {
+public final class FileReader extends InputReader {
 
     {
         askForInput = false;

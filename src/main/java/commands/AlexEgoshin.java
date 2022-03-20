@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Класс, предназначенный для <i>секретной команды</i> от Дуль Я. С. и Коротина А. М.
  */
-public class AlexEgoshin extends Command {
+public final class AlexEgoshin extends Command {
     public AlexEgoshin(List<String> args) {
         super(args, 0);
     }

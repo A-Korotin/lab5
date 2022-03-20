@@ -17,7 +17,7 @@ import java.util.List;
  *     <tr><i>Элементы коллекции</i></tr>
  * </table>
  */
-public class Info extends Command {
+public final class Info extends Command {
 
     public Info(List<String> args) {
         super(args, 0);
