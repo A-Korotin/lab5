@@ -77,7 +77,7 @@ public final class ConsoleRequester {
         p.depth = request(input -> true, Double::parseDouble,
                 "Введите глубину пещеры дракона, Double: ");
 
-        p.numberOfTreasures = request(input -> input == null || input > 0, Integer::parseInt,
+        p.numberOfTreasures = request(input -> input == null || input > 0, input -> input.equalsIgnoreCase("null") ? null : Integer.parseInt(input),
                 "Введите количество сокровищ в пещере дракона, Integer >0 или null: ");
 
         return p;
