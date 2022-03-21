@@ -12,7 +12,8 @@ import java.util.function.Predicate;
 import java.util.function.Function;
 
 /**
- * Класс, запрашивающий данные от пользователя с консоли */
+ * Класс, запрашивающий данные от пользователя с консоли
+*/
 public final class ConsoleRequester {
 
     private InputStream inputStream = System.in;

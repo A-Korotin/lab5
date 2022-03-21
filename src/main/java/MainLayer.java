@@ -13,6 +13,9 @@ import log.Logger;
 
 import java.util.List;
 
+/**
+ * Класс основного цикла программы
+ */
 public final class MainLayer {
     private final Instances instances = new Instances();
 
