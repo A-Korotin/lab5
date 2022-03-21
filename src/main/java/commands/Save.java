@@ -1,6 +1,7 @@
 package commands;
 
 import collection.Describable;
+import exceptions.SavedToTmpFileException;
 import io.FileManipulator;
 
 import java.util.List;
@@ -18,10 +19,14 @@ public final class Save extends Command {
     @Override
     public int execute(Instances instances) {
         try {
-            FileManipulator.save((Describable) instances.dao);
+            FileManipulator.save(((Describable) instances.dao));
             instances.outPutter.output("Коллекция успешно сохранена");
             return 0;
-        } catch (RuntimeException e) {
+        } catch (SavedToTmpFileException e) {
+            instances.outPutter.output(e.getMessage());
+            return 0;
+        }
+        catch (RuntimeException e) {
             instances.outPutter.output("Не удалось сохранить коллекцию (" + e.getMessage() + ")");
         }
         return -1;
