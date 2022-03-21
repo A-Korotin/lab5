@@ -51,9 +51,11 @@ public final class FileManipulator {
             return out;
 
 
-        } catch (IOException | RuntimeException e) {
-            throw new RuntimeException("Значения файла JSON были изменены вручную, что привело к ошибке. " +
-                    "Была инициализирована пустая коллекция.");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Файл не найден\\отказано в доступе (%s). Была инициализирована пустая коллекция".formatted(e.getMessage()));
+        }
+        catch (IOException | RuntimeException e) {
+            throw new RuntimeException("Значения файла JSON были изменены вручную, что привело к ошибке. Была инициализирована пустая коллекция.");
         }
     }
 
