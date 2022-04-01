@@ -37,9 +37,12 @@ public final class CommandCreator {
         availableCommands.put("count_by_age", CountByAge::new);
         availableCommands.put("filter_greater_than_character", FilterGreaterThanCharacter::new);
         availableCommands.put("ya_alex_egoshin_postavlu_12_balov", AlexEgoshin::new);
-
     }
 
+    public static Command getCommandDirect(List<String> args) {
+        String name = args.get(0);
+        return availableCommands.get(name).construct(args);
+    }
     /**
      * Метод для получения команд из пользовательского ввода
      * @param source Объект, считывающий пользовательский ввод

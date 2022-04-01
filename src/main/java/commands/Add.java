@@ -21,15 +21,7 @@ public final class Add extends Command implements PropertiesDependant {
     @Override
     public int execute(Instances instances) {
         int exitCode;
-        try{
-            Properties properties = GetProperties.getProperties(askForInput,args,instances,0);
-            exitCode = instances.dao.create(properties);
-        }
-        catch (InvalidValueException e){
-            instances.outPutter.output(e.getMessage());
-            exitCode = -1;
-        }
-        if (exitCode == 0)
+        if ((exitCode = instances.dao.create(properties)) == 0)
             instances.outPutter.output("Элемент успешно добавлен");
         return exitCode;
     }

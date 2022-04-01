@@ -29,13 +29,6 @@ public final class AddIfMax extends Command implements PropertiesDependant {
             }
         }
         int exitCode;
-        Properties properties;
-        try {
-            properties = GetProperties.getProperties(askForInput, args, instances, 0);
-        } catch (InvalidValueException e) {
-            instances.outPutter.output(e.getMessage());
-            return -1;
-        }
 
         if (properties.age > ageMax){
             exitCode = instances.dao.create(properties);

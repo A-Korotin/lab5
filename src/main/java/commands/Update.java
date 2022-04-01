@@ -41,14 +41,8 @@ public final class Update extends Command implements PropertiesDependant {
             return -1;
         }
 
-        int exitCode;
-        try{
-            exitCode = instances.dao.update(id, GetProperties.getProperties(askForInput, args,instances,1));
-        }
-        catch(InvalidValueException e){
-            instances.outPutter.output(e.getMessage());
-            exitCode = -1;
-        }
+        int exitCode = instances.dao.update(id, properties);
+
         if (exitCode == 0)
             instances.outPutter.output("Элемент успешно обновлён");
         return exitCode;

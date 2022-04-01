@@ -5,7 +5,7 @@ import commands.dependencies.Instances;
 import commands.dependencies.PropertiesDependant;
 import exceptions.InvalidArgsSizeException;
 import io.Properties;
-import net.CommandProperties;
+import commands.dependencies.CommandProperties;
 import java.util.List;
 
 /**
@@ -28,11 +28,18 @@ public abstract class Command {
 
     public final CommandProperties getProperties(Instances instances) {
         CommandProperties p = new CommandProperties();
-        p.name = name;
         p.args = args;
+        p.args.add(0, name);
         if (this instanceof PropertiesDependant)
             p.properties = instances.consoleRequester.requestProperties();
         return p;
+    }
+
+    public static Command restoreFromProperties(CommandProperties properties) {
+        List<String> args = properties.args;
+        Command c = CommandCreator.getCommandDirect(args);
+        c.properties = properties.properties;
+        return c;
     }
 
     private boolean validArgsSize(Integer[] expected) {
