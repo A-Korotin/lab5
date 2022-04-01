@@ -1,7 +1,7 @@
 import collection.DragonDAO;
 import commands.Command;
 import commands.CommandCreator;
-import commands.Instances;
+import commands.dependencies.Instances;
 import exceptions.InvalidArgsSizeException;
 import exceptions.ProgramExitException;
 import io.ConsoleOutput;
@@ -9,8 +9,10 @@ import io.ConsoleReader;
 import io.FileManipulator;
 import io.FileReader;
 import io.request.ConsoleRequester;
-import log.Logger;
+import json.Json;
+import net.CommandProperties;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -71,9 +73,16 @@ public final class MainLayer {
                 Instances.filePathChain.clear();
 
 
-            if ((exit = c.execute(instances)) != 0)
-                instances.outPutter.output("Команда %s не была выполнена корректно. Код выхода %d".formatted(c.getName(), exit));
-            exit = 0;
+            CommandProperties properties = c.getProperties(instances);
+            try {
+                System.out.println(Json.stringRepresentation(Json.toJson(properties), true));
+            } catch (IOException e) {
+                System.out.println("...");
+            }
+//
+//            if ((exit = c.execute(instances)) != 0)
+//                instances.outPutter.output("Команда %s не была выполнена корректно. Код выхода %d".formatted(c.getName(), exit));
+//            exit = 0;
         }
     }
 }

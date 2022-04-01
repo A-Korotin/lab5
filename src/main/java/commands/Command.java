@@ -1,8 +1,11 @@
 package commands;
 
 
+import commands.dependencies.Instances;
+import commands.dependencies.PropertiesDependant;
 import exceptions.InvalidArgsSizeException;
-
+import io.Properties;
+import net.CommandProperties;
 import java.util.List;
 
 /**
@@ -13,6 +16,7 @@ public abstract class Command {
     protected List<String> args;
     protected boolean askForInput;
     protected String name;
+    protected Properties properties = null;
 
     public void setAskForInput(boolean ask) {
         askForInput = ask;
@@ -20,6 +24,15 @@ public abstract class Command {
 
     public String getName() {
         return name;
+    }
+
+    public final CommandProperties getProperties(Instances instances) {
+        CommandProperties p = new CommandProperties();
+        p.name = name;
+        p.args = args;
+        if (this instanceof PropertiesDependant)
+            p.properties = instances.consoleRequester.requestProperties();
+        return p;
     }
 
     private boolean validArgsSize(Integer[] expected) {

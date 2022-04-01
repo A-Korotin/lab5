@@ -1,5 +1,8 @@
 package commands;
 
+import commands.dependencies.GetProperties;
+import commands.dependencies.Instances;
+import commands.dependencies.PropertiesDependant;
 import dragon.Dragon;
 import exceptions.InvalidValueException;
 
@@ -10,7 +13,7 @@ import java.util.List;
  * При вводе данных в консоль пользователю будет показываться приглашение к вводу<br>
  * При вводе данных в файл все характеристики элемента нужно вводить последовательно через пробел
  */
-public final class Update extends Command {
+public final class Update extends Command implements PropertiesDependant {
 
     public Update(List<String> args) {
         super(args, 1, 10);
