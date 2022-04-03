@@ -1,9 +1,11 @@
 package commands;
 
 
+import commands.dependencies.GetProperties;
 import commands.dependencies.Instances;
 import commands.dependencies.PropertiesDependant;
 import exceptions.InvalidArgsSizeException;
+import exceptions.InvalidValueException;
 import io.Properties;
 import commands.dependencies.CommandProperties;
 import java.util.List;
@@ -17,6 +19,7 @@ public abstract class Command {
     protected boolean askForInput;
     protected String name;
     protected Properties properties = null;
+    protected int indexShift = 0;
 
     public void setAskForInput(boolean ask) {
         askForInput = ask;
@@ -26,12 +29,12 @@ public abstract class Command {
         return name;
     }
 
-    public final CommandProperties getProperties(Instances instances) {
+    public final CommandProperties getProperties(Instances instances) throws InvalidValueException {
         CommandProperties p = new CommandProperties();
         p.args = args;
         p.args.add(0, name);
         if (this instanceof PropertiesDependant)
-            p.properties = instances.consoleRequester.requestProperties();
+            p.properties = GetProperties.getProperties(askForInput, args, instances, indexShift+1);
         return p;
     }
 

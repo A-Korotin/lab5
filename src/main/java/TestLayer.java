@@ -1,8 +1,11 @@
 import collection.DragonDAO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import commands.Command;
 import commands.CommandCreator;
+import commands.ExecuteScript;
 import commands.dependencies.Instances;
 import exceptions.InvalidArgsSizeException;
+import exceptions.InvalidValueException;
 import exceptions.ProgramExitException;
 import io.ConsoleOutput;
 import io.ConsoleReader;
@@ -42,13 +45,16 @@ public class TestLayer {
             } catch (ProgramExitException e) {
                 instances.outPutter.output(e.getMessage());
                 break;
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
+            } catch (InvalidValueException e) {
+                instances.outPutter.output("Не удалось получить properties");
+            }
+            catch (IOException e) {
+                instances.outPutter.output(e.getMessage());
             }
         }
     }
 
-    private void loopBody() throws IOException {
+    private void loopBody() throws IOException, InvalidValueException {
         List<Command> commands;
         try {
             commands = CommandCreator.getCommands(instances.consoleReader);
@@ -68,15 +74,18 @@ public class TestLayer {
             if (c.getName().equals("execute_script"))
                 Instances.filePathChain.clear();
 
-            String desc = Json.stringRepresentation(Json.toJson(c.getProperties(instances)), true);
-
-            CommandProperties p = Json.fromJson(Json.parse(desc), CommandProperties.class);
-
-            Command command = Command.restoreFromProperties(p);
-
-            if ((exit = command.execute(instances)) != 0)
-                instances.outPutter.output("Команда %s не была выполнена корректно. Код выхода %d".formatted(c.getName(), exit));
-            exit = 0;
+            try {
+                if (c instanceof ExecuteScript) {
+                    List<Command> commands1 = ((ExecuteScript) c).getNestedCommands(instances);
+                    for (Command command : commands1) {
+                        CommandProperties p = command.getProperties(instances);
+                        instances.outPutter.output(Json.stringRepresentation(Json.toJson(p), true));
+                    }
+                } else
+                    instances.outPutter.output(Json.stringRepresentation(Json.toJson(c.getProperties(instances)), true));
+            } catch (NullPointerException e) {
+                instances.outPutter.output("Одна или несколько команд не были распознаны");
+            }
         }
     }
 }
