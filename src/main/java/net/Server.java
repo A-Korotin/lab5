@@ -38,7 +38,7 @@ public class Server {
     }
 
     public String readMessage(){
-        buffer.flip();
+        //buffer.flip();
         String message;
         byte[] bytes = new byte[buffer.remaining()];
         buffer.get(bytes);
@@ -47,18 +47,21 @@ public class Server {
     }
 
     public void send(String message, SocketAddress address) throws IOException {
-        buffer.clear();
-        server.send(ByteBuffer.wrap(message.getBytes()), address);
+        buffer = ByteBuffer.wrap(message.getBytes());
+        server.send(buffer, address);
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Instances instances = new Instances();
         instances.outPutter = new ConsoleOutput();
         Server server = new Server(instances);
         SocketAddress clientAddress = server.receive();
         String message = server.readMessage();
+        server.buffer.flip();
         instances.outPutter.output("Client at " + clientAddress + " sent: " + message);
+
+        server.send("хуй))", clientAddress);
     }
 
 }

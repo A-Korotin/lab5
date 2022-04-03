@@ -7,31 +7,38 @@ import java.nio.channels.DatagramChannel;
 
 public final class Client {
     private DatagramChannel client;
-    private InetSocketAddress address;
+    private SocketAddress address;
     ByteBuffer buffer;
 
     public Client(String host, int port) {
+        address = new InetSocketAddress(host, port);
+        buffer = ByteBuffer.allocate(1024);
         try {
-            client = DatagramChannel.open().bind(null);
+            client = DatagramChannel.open();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        address = new InetSocketAddress(host, port);
-        buffer = ByteBuffer.allocate(1024);
+
     }
 
     public void sendMsg(String msg) throws IOException {
         client.send(ByteBuffer.wrap(msg.getBytes()), address);
     }
 
-    public String receiveMsg() {
+    public String receiveMsg() throws IOException {
+        buffer.clear();
+        address = client.receive(buffer);
         buffer.flip();
         byte[] bytes = new byte[buffer.remaining()];
         buffer.get(bytes);
         return new String(bytes);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        Client client = new Client("localhost", 4444);
 
+        client.sendMsg("Hello");
+        client.buffer.flip();
+        System.out.println("Ответ: " + client.receiveMsg());
     }
 }
