@@ -19,6 +19,7 @@ public class Server {
         this.address = new InetSocketAddress("localhost",4444);
         try {
             this.server = DatagramChannel.open().bind(address);
+            //server.configureBlocking(false);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,16 +39,12 @@ public class Server {
     }
 
     public String readMessage(){
-        //buffer.flip();
-        String message;
-        byte[] bytes = new byte[buffer.remaining()];
-        buffer.get(bytes);
-        message = new String(bytes);
-        return message;
+        return StandardCharsets.UTF_16.decode(buffer).toString();
     }
 
     public void send(String message, SocketAddress address) throws IOException {
-        buffer = ByteBuffer.wrap(message.getBytes());
+        buffer.clear();
+        buffer = StandardCharsets.UTF_16.encode(message);
         server.send(buffer, address);
     }
 
@@ -57,6 +54,7 @@ public class Server {
         instances.outPutter = new ConsoleOutput();
         Server server = new Server(instances);
         SocketAddress clientAddress = server.receive();
+        server.buffer.flip();
         String message = server.readMessage();
         server.buffer.flip();
         instances.outPutter.output("Client at " + clientAddress + " sent: " + message);

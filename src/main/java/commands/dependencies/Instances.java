@@ -2,6 +2,7 @@ package commands.dependencies;
 
 
 import collection.DAO;
+import collection.DragonDAO;
 import io.*;
 import io.request.ConsoleRequester;
 
@@ -9,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Instances {
-    public OutPutter outPutter;
-    public DAO dao;
-    public InputReader consoleReader;
-    public ConsoleRequester consoleRequester;
-    public InputReader fileReader;
+    public OutPutter outPutter = new ConsoleOutput();
+    public DAO dao = new DragonDAO();
+    public InputReader consoleReader = new ConsoleReader();
+    public ConsoleRequester consoleRequester = new ConsoleRequester();
+    public InputReader fileReader = new FileReader();
     public static List<String> filePathChain = new ArrayList<>();
 
 

@@ -6,6 +6,5 @@ import dragon.Dragon;
 public interface OutPutter {
     void output(String msg);
     void output(Dragon dragon);
-    void output(int number);
     <T extends Number>void output(T t);
 }
