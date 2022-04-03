@@ -8,6 +8,7 @@ import exceptions.InvalidValueException;
 import io.Properties;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Класс, предназначенный для добавления элемента в коллекцию, если <b>возраст</b> нового элемента больше возраста всех существующих элементов<br>
@@ -22,12 +23,10 @@ public final class AddIfMax extends Command implements PropertiesDependant {
 
     @Override
     public int execute(Instances instances) {
-        Long ageMax = -1L;
-        for (Dragon dragon : instances.dao.getAll()) {
-            if (dragon.getAge() > ageMax) {
-                ageMax = dragon.getAge();
-            }
-        }
+        Optional<Dragon> maxDragon = instances.dao.getAll().stream().max((d1, d2) -> (int) (d1.getAge() - d2.getAge()));
+
+        Long ageMax = maxDragon.isPresent() ? maxDragon.get().getAge() : -1L;
+
         int exitCode;
 
         if (properties.age > ageMax){

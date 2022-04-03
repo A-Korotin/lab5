@@ -29,11 +29,11 @@ public final class FilterGreaterThanCharacter extends Command {
             instances.outPutter.output("Характер не определён");
             return -1;
         }
-        for (Dragon dragon: instances.dao.getAll()){
-            if (DragonCharacter.compare(dragon.getCharacter(), character) > 0){
-                instances.outPutter.output(dragon);
-            }
-        }
+
+        instances.dao.getAll().stream()
+                .filter(dragon -> DragonCharacter.compareBoolean(dragon.getCharacter(), character))
+                .forEach(dragon -> instances.outPutter.output(dragon));
+
         return 0;
     }
 }

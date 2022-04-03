@@ -25,13 +25,8 @@ public final class CountByAge extends Command {
             instances.outPutter.output("Типы данных не совпали");
             return -1;
         }
+        Long ageCount = instances.dao.getAll().stream().filter(dragon -> dragon.getAge().equals(age)).count();
 
-        int ageCount = 0;
-        for (Dragon dragon : instances.dao.getAll()) {
-            if (dragon.getAge().equals(age)) {
-                ageCount++;
-            }
-        }
         instances.outPutter.output(ageCount);
         return 0;
     }

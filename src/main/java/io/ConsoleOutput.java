@@ -23,4 +23,9 @@ public final class ConsoleOutput implements OutPutter {
     public void output(int number) {
         System.out.println(number);
     }
+
+    @Override
+    public <T extends Number>void output(T t) {
+        System.out.println(t);
+    }
 }
