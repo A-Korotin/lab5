@@ -17,6 +17,7 @@ public final class Update extends Command implements PropertiesDependant {
 
     public Update(List<String> args) {
         super(args, 1, 10);
+        indexShift = 1;
     }
 
     @Override
