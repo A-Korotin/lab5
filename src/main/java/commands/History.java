@@ -1,5 +1,6 @@
 package commands;
 
+import commands.dependencies.Instances;
 import log.Logger;
 
 import java.util.List;

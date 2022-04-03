@@ -9,17 +9,17 @@ import io.ConsoleReader;
 import io.FileManipulator;
 import io.FileReader;
 import io.request.ConsoleRequester;
+import json.Json;
+import commands.dependencies.CommandProperties;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-/**
- * Класс основного цикла программы
- */
-public final class MainLayer {
+public class TestLayer {
     private final Instances instances = new Instances();
 
-    public MainLayer() {
+    public TestLayer() {
         instances.outPutter = new ConsoleOutput();
 
         try {
@@ -34,22 +34,21 @@ public final class MainLayer {
         instances.fileReader = new FileReader();
 
     }
-
     public void run() {
-        instances.outPutter.output("Введите команду");
-
+        instances.outPutter.output("Начало");
         while (true) {
             try {
                 loopBody();
             } catch (ProgramExitException e) {
                 instances.outPutter.output(e.getMessage());
                 break;
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
             }
         }
-
     }
 
-    private void loopBody() {
+    private void loopBody() throws IOException {
         List<Command> commands;
         try {
             commands = CommandCreator.getCommands(instances.consoleReader);
@@ -68,7 +67,14 @@ public final class MainLayer {
         for (Command c: commands) {
             if (c.getName().equals("execute_script"))
                 Instances.filePathChain.clear();
-            if ((exit = c.execute(instances)) != 0)
+
+            String desc = Json.stringRepresentation(Json.toJson(c.getProperties(instances)), true);
+
+            CommandProperties p = Json.fromJson(Json.parse(desc), CommandProperties.class);
+
+            Command command = Command.restoreFromProperties(p);
+
+            if ((exit = command.execute(instances)) != 0)
                 instances.outPutter.output("Команда %s не была выполнена корректно. Код выхода %d".formatted(c.getName(), exit));
             exit = 0;
         }

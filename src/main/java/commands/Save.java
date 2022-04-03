@@ -1,6 +1,7 @@
 package commands;
 
 import collection.Describable;
+import commands.dependencies.Instances;
 import exceptions.SavedToTmpFileException;
 import io.FileManipulator;
 

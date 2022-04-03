@@ -1,4 +1,4 @@
-package commands;
+package commands.dependencies;
 
 
 import collection.DAO;

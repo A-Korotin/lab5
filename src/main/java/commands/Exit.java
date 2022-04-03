@@ -2,6 +2,8 @@ package commands;
 
 
 import java.util.List;
+
+import commands.dependencies.Instances;
 import exceptions.ProgramExitException;
 /**
  * Класс, предназначенный для завершения работы программы в штатном режиме (<i>без сохранения изменений в коллекции</i>)
