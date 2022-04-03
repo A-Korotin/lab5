@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Класс, создающий команды из пользовательского ввода
  */
-public class CommandCreator {
+public final class CommandCreator {
 
     private interface ConstructorReference {
         Command construct(List<String> args);

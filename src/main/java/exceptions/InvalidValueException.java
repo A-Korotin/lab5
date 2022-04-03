@@ -1,6 +1,9 @@
 package exceptions;
 
-public class InvalidValueException extends Exception {
+/**
+ * Исключение неверного значения
+ */
+public final class InvalidValueException extends Exception {
     public InvalidValueException(String msg) {
         super(msg);
     }

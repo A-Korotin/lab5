@@ -6,10 +6,15 @@ import java.util.Scanner;
 
 /**
  * Класс для чтения ввода с консоли, наследуется от абстрактного класса io.InputReader*/
-public class ConsoleReader extends InputReader {
+public final class ConsoleReader extends InputReader {
 
     {
         askForInput = true;
+    }
+
+    public String getRawInput() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine().trim();
     }
     /**
      * Метод получения данных с консоли
@@ -17,10 +22,9 @@ public class ConsoleReader extends InputReader {
      * */
     @Override
     public List<String> getInput() {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine().trim();
+       String line = getRawInput();
         List<String> output = new ArrayList<>();
-        output.add(input);
+        output.add(line);
         return output;
     }
 }

@@ -4,7 +4,7 @@ import log.Logger;
 
 import java.util.List;
 
-public class History extends Command {
+public final class History extends Command {
 
     public History(List<String> args) {
         super(args, 0);

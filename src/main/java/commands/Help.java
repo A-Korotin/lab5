@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Класс, предназначенный для выведения всех возможных команд и их аргументов в ранее заданный поток вывода
  */
-public class Help extends Command {
+public final class Help extends Command {
 
     public Help(List<String> args) {
         super(args, 0);

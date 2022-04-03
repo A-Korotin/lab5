@@ -11,7 +11,7 @@ import java.util.List;
  * Класс, предназначенный для выполнения скрипта (<i>последовательности команд</i>) из файла <br>
  * Путь до искомого файла является обязательным аргументом команды
  */
-public class ExecuteScript extends Command {
+public final class ExecuteScript extends Command {
     public ExecuteScript(List<String> args) {
         super(args, 1);
     }

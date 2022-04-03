@@ -12,7 +12,11 @@ import io.request.ConsoleRequester;
 import log.Logger;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
+/**
+ * Класс основного цикла программы
+ */
 public final class MainLayer {
     private final Instances instances = new Instances();
 
@@ -53,7 +57,10 @@ public final class MainLayer {
         } catch (InvalidArgsSizeException e) {
             instances.outPutter.output(e.getMessage());
             return;
-        } catch (RuntimeException e) {
+        } catch (NoSuchElementException e) {
+            throw new ProgramExitException("Завершение программы...");
+        }
+        catch (NullPointerException e) {
             instances.outPutter.output("Такой команды не существует. Введите help для подробной информации");
             return;
         }

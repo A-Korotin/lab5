@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Класс, предназначенный для очищения коллекции (<i>безвозвратного удаления всех элементов</i>)
  */
-public class Clear extends Command {
+public final class Clear extends Command {
 
     public Clear(List<String> args) {
         super(args, 0);
