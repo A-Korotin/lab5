@@ -1,8 +1,12 @@
 package net;
 
+import collection.Describable;
+import collection.DragonDAO;
 import commands.Command;
 import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
+import exceptions.SavedToTmpFileException;
+import io.FileManipulator;
 import json.Json;
 
 import java.io.IOException;
@@ -31,8 +35,15 @@ public class Server {
     }
 
     public void run() throws IOException {
-
+        int loopCount = 0;
         instances.outPutter.output("Server started at " + address);
+
+        try {
+            instances.dao = FileManipulator.get();
+        } catch (RuntimeException e) {
+            instances.outPutter.output(e.getMessage());
+            instances.dao = new DragonDAO();
+        }
 
         while (true) {
             selector.select();
@@ -42,12 +53,22 @@ public class Server {
                     Command command = Command.restoreFromProperties(Json.fromJson(Json.parse(input),CommandProperties.class));
                     command.execute(instances);
                     write(k, instances.outPutter.compound());
+                    loopCount ++;
+                    if (loopCount % 2 == 0){
+                        try {
+                            FileManipulator.save(((Describable) instances.dao));
+                            instances.outPutter.output("Коллекция была автоматически сохранена");
+                        } catch (SavedToTmpFileException e) {
+                            instances.outPutter.output(e.getMessage());
+                        }
+                        catch (RuntimeException e) {
+                            instances.outPutter.output("Автоматическое сохранение коллекции завершилось ошибкой (" + e.getMessage() + ")");
+                        }
 
+                    }
                 }
-
             }
         }
-
     }
 
     private static String read(SelectionKey key) throws IOException {

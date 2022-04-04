@@ -7,6 +7,7 @@ import commands.dependencies.Instances;
 import exceptions.InvalidArgsSizeException;
 import exceptions.InvalidValueException;
 import exceptions.ProgramExitException;
+import io.ConsoleOutput;
 import json.Json;
 import net.Client;
 
@@ -22,6 +23,7 @@ public final class ClientLayer {
 
     public ClientLayer() throws IOException {
         client = new Client("localhost", 4444);
+        instances.outPutter = new ConsoleOutput();
     }
 
     public void run() {

@@ -30,7 +30,7 @@ public class ServerOutput implements OutPutter{
 
     @Override
     public String compound(){
-        String result = null;
+        String result = "";
 
         for (String element : list){
             result = result + System.lineSeparator() + element;
