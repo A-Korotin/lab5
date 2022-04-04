@@ -27,7 +27,7 @@ public final class CommandCreator {
         availableCommands.put("update", Update::new);
         availableCommands.put("remove_by_id", RemoveById::new);
         availableCommands.put("clear", Clear::new);
-        availableCommands.put("save", Save::new);
+        // availableCommands.put("save", Save::new); Команда save недоступна в 6 лабораторной работе
         availableCommands.put("execute_script", ExecuteScript::new);
         availableCommands.put("exit", Exit::new);
         availableCommands.put("add_if_max", AddIfMax::new);
