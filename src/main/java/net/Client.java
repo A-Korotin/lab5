@@ -45,7 +45,7 @@ public final class Client {
 
         while (System.currentTimeMillis() - startTime < timeout * 1000) {
 
-            if (channel.read(buffer) == 0) continue;
+            if (channel.read(buffer) <= 0) continue;
 
             buffer.flip();
             return StandardCharsets.UTF_16.decode(buffer).toString();

@@ -4,6 +4,7 @@ import commands.CommandCreator;
 import commands.ExecuteScript;
 import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
+import exceptions.InfiniteLoopException;
 import exceptions.InvalidArgsSizeException;
 import exceptions.InvalidValueException;
 import exceptions.ProgramExitException;
@@ -12,6 +13,7 @@ import json.Json;
 import net.Client;
 
 import java.io.IOException;
+import java.net.PortUnreachableException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -34,7 +36,10 @@ public final class ClientLayer {
             } catch (ProgramExitException e) {
                 instances.outPutter.output(e.getMessage());
                 break;
-            } catch (InvalidValueException | IOException e) {
+            } catch (PortUnreachableException e) {
+                instances.outPutter.output("Сервер не работает в данный момент. Повторите попытку позже");
+            }
+            catch (InvalidValueException | IOException e) {
                 instances.outPutter.output(e.getMessage());
             }
         }
@@ -59,16 +64,25 @@ public final class ClientLayer {
         for(Command c: commands) {
             if (c instanceof ExecuteScript)
                 Instances.filePathChain.clear();
-
-            if (c instanceof ExecuteScript)
-                commandProperties.addAll(handleExecuteScript((ExecuteScript) c));
-            else
-                commandProperties.add(c.getProperties(instances));
-
+            try {
+                if (c instanceof ExecuteScript)
+                    commandProperties.addAll(handleExecuteScript((ExecuteScript) c));
+                else
+                    commandProperties.add(c.getProperties(instances));
+            } catch (NullPointerException e) {
+                instances.outPutter.output("Одна или несколько команд не были распознаны");
+                return;
+            } catch (InfiniteLoopException e) {
+                instances.outPutter.output(e.getMessage());
+                return;
+            }
         }
 
         for (CommandProperties p: commandProperties) {
             String request;
+            if (p.args.get(0).equals("exit"))
+                throw new ProgramExitException("Завершение программы...");
+
             try {
                 request = serialize(p);
             } catch (JsonProcessingException e) {
@@ -108,4 +122,16 @@ public final class ClientLayer {
 
     }
 
+}
+
+
+class Bruh {
+    public static void main(String[] args) {
+        try {
+            ClientLayer layer = new ClientLayer();
+            layer.run();
+        } catch (IOException e) {
+            System.out.println("не удалось создать клиент");
+        }
+    }
 }

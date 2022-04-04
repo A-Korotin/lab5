@@ -36,8 +36,6 @@ public class Server {
 
     public void run() throws IOException {
         int loopCount = 0;
-        instances.outPutter.output("Server started at " + address);
-
         try {
             instances.dao = FileManipulator.get();
         } catch (RuntimeException e) {
