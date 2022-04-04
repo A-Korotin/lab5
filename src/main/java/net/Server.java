@@ -1,66 +1,77 @@
 package net;
 
+import commands.Command;
+import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
-import io.ConsoleOutput;
+import json.Json;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.nio.ByteBuffer;
+import java.nio.*;
 import java.nio.channels.DatagramChannel;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.nio.charset.StandardCharsets;
 
+
 public class Server {
+    Selector selector;
     InetSocketAddress address;
-    DatagramChannel server;
+    DatagramChannel channel;
     Instances instances;
-    ByteBuffer buffer;
-    public Server(Instances instances) {
-        this.address = new InetSocketAddress("localhost",4444);
-        try {
-            this.server = DatagramChannel.open().bind(address);
-            //server.configureBlocking(false);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+    public Server(String host, int port) throws IOException {
+        selector = Selector.open();
+        address = new InetSocketAddress(host, port);
+        channel = DatagramChannel.open().bind(address);
+        channel.configureBlocking(false);
+        channel.register(selector, SelectionKey.OP_READ, new ClientClass());
+        instances = new Instances();
+    }
+
+    public void run() throws IOException {
+
+        instances.outPutter.output("Server started at " + address);
+
+        while (true) {
+            selector.select();
+            for (SelectionKey k: selector.selectedKeys()) {
+                if(k.isReadable()) {
+                    String input = read(k);
+                    Command command = Command.restoreFromProperties(Json.fromJson(Json.parse(input),CommandProperties.class));
+                    command.execute(instances);
+                    write(k, instances.outPutter.compound());
+
+                }
+
+            }
         }
-        this.instances = instances;
-        this.buffer = ByteBuffer.allocate(1024);
 
-        instances.outPutter.output("server started at " + address);
     }
-    public SocketAddress receive(){
-        SocketAddress clientAddress = null;
-        try {
-            clientAddress = server.receive(buffer);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+    private static String read(SelectionKey key) throws IOException {
+        DatagramChannel channel = (DatagramChannel) key.channel();
+        ClientClass client = (ClientClass) key.attachment();
+        client.buffer.clear();
+        client.clientAddress = channel.receive(client.buffer);
+        if(client.clientAddress != null) {
+            client.buffer.flip();
+            return StandardCharsets.UTF_16.decode(client.buffer).toString();
         }
-        return clientAddress;
+        return null;
     }
 
-    public String readMessage(){
-        return StandardCharsets.UTF_16.decode(buffer).toString();
+    private static void write(SelectionKey key, String msg) throws IOException {
+        DatagramChannel channel = (DatagramChannel) key.channel();
+        ClientClass client = (ClientClass) key.attachment();
+        int bytesSent = channel.send(StandardCharsets.UTF_16.encode(msg), client.clientAddress);
+
     }
 
-    public void send(String message, SocketAddress address) throws IOException {
-        buffer.clear();
-        buffer = StandardCharsets.UTF_16.encode(message);
-        server.send(buffer, address);
+    static class ClientClass {
+        public SocketAddress clientAddress;
+        public ByteBuffer buffer = ByteBuffer.allocate(1024);
     }
-
-
-    public static void main(String[] args) throws IOException {
-        Instances instances = new Instances();
-        instances.outPutter = new ConsoleOutput();
-        Server server = new Server(instances);
-        SocketAddress clientAddress = server.receive();
-        server.buffer.flip();
-        String message = server.readMessage();
-        server.buffer.flip();
-        instances.outPutter.output("Client at " + clientAddress + " sent: " + message);
-
-        server.send("хуй))", clientAddress);
-    }
-
 }
 

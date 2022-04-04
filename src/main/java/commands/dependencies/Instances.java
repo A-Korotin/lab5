@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Instances {
-    public OutPutter outPutter = new ConsoleOutput();
+    public OutPutter outPutter = new ServerOutput();
     public DAO dao = new DragonDAO();
     public InputReader consoleReader = new ConsoleReader();
     public ConsoleRequester consoleRequester = new ConsoleRequester();
