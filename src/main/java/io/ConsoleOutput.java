@@ -23,4 +23,9 @@ public final class ConsoleOutput implements OutPutter {
     public <T extends Number>void output(T t) {
         System.out.println(t);
     }
+
+    @Override
+    public String compound() {
+        return null;
+    }
 }
