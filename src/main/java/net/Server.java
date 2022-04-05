@@ -7,6 +7,7 @@ import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
 import exceptions.SavedToTmpFileException;
 import io.FileManipulator;
+import io.OutPutter;
 import json.Json;
 
 import java.io.IOException;
@@ -50,7 +51,15 @@ public class Server {
                     String input = read(k);
                     Command command = Command.restoreFromProperties(Json.fromJson(Json.parse(input),CommandProperties.class));
                     command.execute(instances);
-                    write(k, instances.outPutter.compound());
+                    try{
+                        write(k, instances.outPutter.compound());
+                    }
+                    catch(NullPointerException e){
+                        instances.outPutter.output(e.getMessage());
+                        continue;
+
+                    }
+
 
                         try {
                             FileManipulator.save(((Describable) instances.dao));
