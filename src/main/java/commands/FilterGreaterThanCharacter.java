@@ -29,10 +29,16 @@ public final class FilterGreaterThanCharacter extends Command {
             instances.outPutter.output("Характер не определён");
             return -1;
         }
-
-        instances.dao.getAll().stream()
-                .filter(dragon -> DragonCharacter.compareBoolean(dragon.getCharacter(), character))
-                .forEach(dragon -> instances.outPutter.output(dragon));
+        long count = 0;
+        count = instances.dao.getAll().stream()
+                .filter(dragon -> DragonCharacter.compareBoolean(dragon.getCharacter(), character)).count();
+        if (count == 0) {
+            instances.outPutter.output("Нет подходящих элементов");
+        } else {
+            instances.dao.getAll().stream()
+                    .filter(dragon -> DragonCharacter.compareBoolean(dragon.getCharacter(), character))
+                    .forEach(instances.outPutter::output);
+        }
 
         return 0;
     }

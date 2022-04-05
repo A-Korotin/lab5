@@ -34,8 +34,8 @@ public class Server {
         instances = new Instances();
     }
 
-    public void run() throws IOException {
-        int loopCount = 0;
+    public void run() throws IOException, NullPointerException{
+
         try {
             instances.dao = FileManipulator.get();
         } catch (RuntimeException e) {
@@ -51,11 +51,10 @@ public class Server {
                     Command command = Command.restoreFromProperties(Json.fromJson(Json.parse(input),CommandProperties.class));
                     command.execute(instances);
                     write(k, instances.outPutter.compound());
-                    loopCount ++;
-                    if (loopCount % 2 == 0){
+
                         try {
                             FileManipulator.save(((Describable) instances.dao));
-                            instances.outPutter.output("Коллекция была автоматически сохранена");
+
                         } catch (SavedToTmpFileException e) {
                             instances.outPutter.output(e.getMessage());
                         }
@@ -63,7 +62,6 @@ public class Server {
                             instances.outPutter.output("Автоматическое сохранение коллекции завершилось ошибкой (" + e.getMessage() + ")");
                         }
 
-                    }
                 }
             }
         }

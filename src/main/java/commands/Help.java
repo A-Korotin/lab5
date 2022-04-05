@@ -47,9 +47,7 @@ public final class Help extends Command {
                 
                 count_by_age age : вывести количество элементов, значение поля age которых равно заданному
                 
-                filter_greater_than_character character : вывести элементы, значение поля character которых больше заданного
-                
-                ya_alex_egoshin_postavlu_12_balov : вывести прекрасную пасхалку""");
+                filter_greater_than_character character : вывести элементы, значение поля character которых больше заданного""");
         return 0;
     }
 

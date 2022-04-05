@@ -29,7 +29,7 @@ public final class ClientLayer {
     }
 
     public void run() {
-        instances.outPutter.output("Введите команду");
+        instances.outPutter.output("Введите команду. Для полного списка команд введите help");
         for(;;) {
             try {
                 loopBody();
