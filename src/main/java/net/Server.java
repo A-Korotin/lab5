@@ -53,28 +53,30 @@ public class Server {
                     String input = read(k);
                     Command command = Command.restoreFromProperties(Json.fromJson(Json.parse(input),CommandProperties.class));
                     command.execute(instances);
+
+
                     List<String> list = instances.outPutter.compound();
+
                     for (String msg : list){
                         try{
                             write(k, msg);
-                            TimeUnit.MILLISECONDS.sleep(100);
                         }
-                        catch(NullPointerException | InterruptedException e){
+                        catch(NullPointerException e){
                             instances.outPutter.output(e.getMessage());
-                            continue;
                         }
                     }
-                    list.clear();
-                    write(k, "END");
-                        try {
-                            FileManipulator.save(((Describable) instances.dao));
 
-                        } catch (SavedToTmpFileException e) {
-                            instances.outPutter.output(e.getMessage());
-                        }
-                        catch (RuntimeException e) {
-                            instances.outPutter.output("Автоматическое сохранение коллекции завершилось ошибкой (" + e.getMessage() + ")");
-                        }
+                    try {
+                        FileManipulator.save(((Describable) instances.dao));
+
+                    } catch (SavedToTmpFileException e) {
+                        instances.outPutter.output(e.getMessage());
+                    }
+                    catch (RuntimeException e) {
+                        instances.outPutter.output("Автоматическое сохранение коллекции завершилось ошибкой (" + e.getMessage() + ")");
+                    }
+
+                    list.clear();
 
                 }
             }

@@ -35,9 +35,11 @@ public class ServerOutput implements OutPutter{
     public List<String> compound(){
         List<String> listOfString = new ArrayList<>();
         String result = "";
+        int count = 0;
 
         for (String element : list){
             result = result + System.lineSeparator() + element;
+            count++;
             try {
                 if (getMemoryLength(result) >= 10000){
                     listOfString.add(result);
@@ -46,9 +48,11 @@ public class ServerOutput implements OutPutter{
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            if (count == list.size()){
+                listOfString.add(result);
+            }
         }
-        if (listOfString.size() == 0)
-            listOfString.add(result);
 
         list.clear();
         return listOfString;
