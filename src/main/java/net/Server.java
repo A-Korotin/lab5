@@ -6,6 +6,7 @@ import commands.Command;
 import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
 import exceptions.SavedToTmpFileException;
+import io.Autosaver;
 import io.FileManipulator;
 import io.OutPutter;
 import json.Json;
@@ -54,27 +55,11 @@ public class Server {
                     Command command = Command.restoreFromProperties(Json.fromJson(Json.parse(input),CommandProperties.class));
                     command.execute(instances);
 
-
                     List<String> list = instances.outPutter.compound();
 
-                    for (String msg : list){
-                        try{
-                            write(k, msg);
-                        }
-                        catch(NullPointerException e){
-                            instances.outPutter.output(e.getMessage());
-                        }
-                    }
+                    Server.writeLayer(k, list, instances);
 
-                    try {
-                        FileManipulator.save(((Describable) instances.dao));
-
-                    } catch (SavedToTmpFileException e) {
-                        instances.outPutter.output(e.getMessage());
-                    }
-                    catch (RuntimeException e) {
-                        instances.outPutter.output("Автоматическое сохранение коллекции завершилось ошибкой (" + e.getMessage() + ")");
-                    }
+                    Autosaver.autosave(instances);
 
                     list.clear();
 
@@ -93,6 +78,17 @@ public class Server {
             return StandardCharsets.UTF_16.decode(client.buffer).toString();
         }
         return null;
+    }
+
+    private static void writeLayer(SelectionKey k, List<String> list, Instances instances){
+        for (String msg : list){
+            try{
+                write(k, msg);
+            }
+            catch(NullPointerException | IOException e){
+                instances.outPutter.output(e.getMessage());
+            }
+        }
     }
 
     private static void write(SelectionKey key, String msg) throws IOException {
