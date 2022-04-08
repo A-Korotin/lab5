@@ -36,7 +36,7 @@ public final class CommandCreator {
         availableCommands.put("min_by_id", MinById::new);
         availableCommands.put("count_by_age", CountByAge::new);
         availableCommands.put("filter_greater_than_character", FilterGreaterThanCharacter::new);
-        availableCommands.put("ya_alex_egoshin_postavlu_12_balov", AlexEgoshin::new);
+        // availableCommands.put("ya_alex_egoshin_postavlu_12_balov", AlexEgoshin::new);
     }
 
     public static Command getCommandDirect(List<String> args) {

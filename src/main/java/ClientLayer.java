@@ -123,15 +123,3 @@ public final class ClientLayer {
     }
 
 }
-
-
-class Bruh {
-    public static void main(String[] args) {
-        try {
-            ClientLayer layer = new ClientLayer();
-            layer.run();
-        } catch (IOException e) {
-            System.out.println("не удалось создать клиент");
-        }
-    }
-}
