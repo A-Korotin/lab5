@@ -63,6 +63,7 @@ public class Server {
                         }
                     }
                     list.clear();
+                    write(k, "END");
 
 
                         try {

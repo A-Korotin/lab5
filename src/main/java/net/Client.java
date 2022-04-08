@@ -42,13 +42,17 @@ public final class Client {
         ByteBuffer buffer = ByteBuffer.allocate(4096);
         buffer.clear();
         long startTime = System.currentTimeMillis();
+        StringBuilder builder = new StringBuilder();
 
         while (System.currentTimeMillis() - startTime < timeout * 1000) {
 
             if (channel.read(buffer) <= 0) continue;
 
             buffer.flip();
-            return StandardCharsets.UTF_16.decode(buffer).toString();
+            String received = StandardCharsets.UTF_16.decode(buffer).toString();
+            if (received.equals("END"))
+                return builder.toString();
+            builder.append(received).append(System.lineSeparator());
         }
 
         throw new ResponseTimeoutException();
