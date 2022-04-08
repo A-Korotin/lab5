@@ -19,6 +19,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class Server {
@@ -56,16 +57,15 @@ public class Server {
                     for (String msg : list){
                         try{
                             write(k, msg);
+                            TimeUnit.MILLISECONDS.sleep(100);
                         }
-                        catch(NullPointerException e){
+                        catch(NullPointerException | InterruptedException e){
                             instances.outPutter.output(e.getMessage());
                             continue;
                         }
                     }
                     list.clear();
                     write(k, "END");
-
-
                         try {
                             FileManipulator.save(((Describable) instances.dao));
 

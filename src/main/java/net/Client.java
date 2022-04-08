@@ -39,7 +39,7 @@ public final class Client {
 
     private String read(SelectionKey key, long timeout) throws IOException {
         DatagramChannel channel = (DatagramChannel) key.channel();
-        ByteBuffer buffer = ByteBuffer.allocate(4096);
+        ByteBuffer buffer = ByteBuffer.allocate(10000);
         buffer.clear();
         long startTime = System.currentTimeMillis();
         StringBuilder builder = new StringBuilder();
@@ -50,9 +50,12 @@ public final class Client {
 
             buffer.flip();
             String received = StandardCharsets.UTF_16.decode(buffer).toString();
-            if (received.equals("END"))
+            if (received.equals("END")) {
                 return builder.toString();
+            }
+
             builder.append(received).append(System.lineSeparator());
+            buffer.clear();
         }
 
         throw new ResponseTimeoutException();

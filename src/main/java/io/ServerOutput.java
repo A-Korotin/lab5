@@ -39,7 +39,7 @@ public class ServerOutput implements OutPutter{
         for (String element : list){
             result = result + System.lineSeparator() + element;
             try {
-                if (getMemoryLength(result) >= 1000){
+                if (getMemoryLength(result) >= 10000){
                     listOfString.add(result);
                     result = "";
                 }
