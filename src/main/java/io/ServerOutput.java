@@ -3,6 +3,9 @@ package io;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import dragon.Dragon;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,15 +32,37 @@ public class ServerOutput implements OutPutter{
     }
 
     @Override
-    public String compound(){
+    public List<String> compound(){
+        List<String> listOfList = new ArrayList<>();
         String result = "";
 
         for (String element : list){
             result = result + System.lineSeparator() + element;
+            try {
+                if (getMemoryLength(result) >= 1000){
+                    listOfList.add(result);
+                    result = "";
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         list.clear();
-        return result;
+        return listOfList;
+    }
+
+    public static int getMemoryLength(Object object) throws java.io.IOException
+    {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(stream);
+
+        objectOutputStream.writeObject(object);
+        objectOutputStream.flush();
+        objectOutputStream.close();
+        stream.close();
+
+        return stream.toByteArray().length;
     }
     
 }
