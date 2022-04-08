@@ -33,23 +33,25 @@ public class ServerOutput implements OutPutter{
 
     @Override
     public List<String> compound(){
-        List<String> listOfList = new ArrayList<>();
+        List<String> listOfString = new ArrayList<>();
         String result = "";
 
         for (String element : list){
             result = result + System.lineSeparator() + element;
             try {
                 if (getMemoryLength(result) >= 1000){
-                    listOfList.add(result);
+                    listOfString.add(result);
                     result = "";
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        if (listOfString.size() == 0)
+            listOfString.add(result);
 
         list.clear();
-        return listOfList;
+        return listOfString;
     }
 
     public static int getMemoryLength(Object object) throws java.io.IOException
