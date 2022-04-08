@@ -1,14 +1,12 @@
 package net;
 
-import collection.Describable;
 import collection.DragonDAO;
+import com.fasterxml.jackson.core.JsonParseException;
 import commands.Command;
 import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
-import exceptions.SavedToTmpFileException;
 import io.Autosaver;
 import io.FileManipulator;
-import io.OutPutter;
 import json.Json;
 
 import java.io.IOException;
@@ -52,8 +50,16 @@ public class Server {
             for (SelectionKey k: selector.selectedKeys()) {
                 if(k.isReadable()) {
                     String input = read(k);
-                    Command command = Command.restoreFromProperties(Json.fromJson(Json.parse(input),CommandProperties.class));
-                    command.execute(instances);
+                    try{
+                        Command command = Command.restoreFromProperties(Json.fromJson(Json.parse(input),CommandProperties.class));
+                        command.execute(instances);
+
+                    } catch (JsonParseException e) {
+                        instances.outPutter.output("Ben запретил такое отправлять" + System.lineSeparator() + e.getMessage());
+
+                    } catch (IOException e) {
+                        instances.outPutter.output("Ben запретил такое отправлять" + System.lineSeparator() + e.getMessage());
+                    }
 
                     List<String> list = instances.outPutter.compound();
 
@@ -81,21 +87,22 @@ public class Server {
     }
 
     private static void writeLayer(SelectionKey k, List<String> list, Instances instances){
-        for (String msg : list){
             try{
-                write(k, msg);
+                for (String msg : list) {
+                    write(k, msg);
+                    TimeUnit.MILLISECONDS.sleep(20);
+                }
+                write(k, "END");
             }
-            catch(NullPointerException | IOException e){
+            catch(NullPointerException | IOException | InterruptedException e){
                 instances.outPutter.output(e.getMessage());
             }
-        }
     }
 
     private static void write(SelectionKey key, String msg) throws IOException {
         DatagramChannel channel = (DatagramChannel) key.channel();
         ClientClass client = (ClientClass) key.attachment();
         int bytesSent = channel.send(StandardCharsets.UTF_16.encode(msg), client.clientAddress);
-
     }
 
     static class ClientClass {
