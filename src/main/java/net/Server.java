@@ -18,6 +18,7 @@ import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 
 public class Server {
@@ -51,14 +52,17 @@ public class Server {
                     String input = read(k);
                     Command command = Command.restoreFromProperties(Json.fromJson(Json.parse(input),CommandProperties.class));
                     command.execute(instances);
-                    try{
-                        write(k, instances.outPutter.compound());
+                    List<String> list = instances.outPutter.compound();
+                    for (String msg : list){
+                        try{
+                            write(k, msg);
+                        }
+                        catch(NullPointerException e){
+                            instances.outPutter.output(e.getMessage());
+                            continue;
+                        }
                     }
-                    catch(NullPointerException e){
-                        instances.outPutter.output(e.getMessage());
-                        continue;
-
-                    }
+                    list.clear();
 
 
                         try {
