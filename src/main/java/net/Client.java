@@ -9,6 +9,8 @@ import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Client {
     private final Selector selector;
@@ -39,25 +41,31 @@ public final class Client {
 
     private String read(SelectionKey key, long timeout) throws IOException {
         DatagramChannel channel = (DatagramChannel) key.channel();
-        ByteBuffer buffer = ByteBuffer.allocate(10000);
+        ByteBuffer buffer = ByteBuffer.allocate(20000);
         buffer.clear();
         long startTime = System.currentTimeMillis();
-        StringBuilder builder = new StringBuilder();
+        List<String> received = new ArrayList<>(10);
 
         while (System.currentTimeMillis() - startTime < timeout * 1000) {
 
             if (channel.read(buffer) <= 0) continue;
 
             buffer.flip();
-            String received = StandardCharsets.UTF_16.decode(buffer).toString();
-            if (received.equals("END")) {
-                return builder.toString();
+            String msg = StandardCharsets.UTF_16.decode(buffer).toString();
+            if (msg.equals("END")) {
+                return attachInput(received);
             }
 
-            builder.append(received).append(System.lineSeparator());
+            received.add(msg);
             buffer.clear();
         }
 
         throw new ResponseTimeoutException();
+    }
+
+    private String attachInput(List<String> input) {
+        StringBuilder b = new StringBuilder();
+        input.forEach(b::append);
+        return b.toString();
     }
 }
