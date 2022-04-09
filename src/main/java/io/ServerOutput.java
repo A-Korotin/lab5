@@ -79,12 +79,15 @@ public class ServerOutput implements OutPutter{
             try {
                 if (getMemoryLength(element) >= 10000){
                     char[] arrayString = element.toCharArray();
-                    for (int i = 0; i < arrayString.length; i++) {
+                    for (int i = 0; i <= arrayString.length; i++) {
                         result = result + arrayString[i];
                         if (getMemoryLength(result) >= 10000){
                             listOfString.add(result);
                             result = "";
                         }
+                        if (i == arrayString.length)
+                            listOfString.add(result);
+                            result = "";
                     }
                 }
 

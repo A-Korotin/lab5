@@ -90,6 +90,7 @@ public class Server {
             try{
                 for (String msg : list) {
                     write(k, msg);
+                    System.out.println(msg);
                     TimeUnit.MILLISECONDS.sleep(20);
                 }
                 write(k, "END");

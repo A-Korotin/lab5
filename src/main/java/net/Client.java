@@ -41,7 +41,7 @@ public final class Client {
 
     private String read(SelectionKey key, long timeout) throws IOException {
         DatagramChannel channel = (DatagramChannel) key.channel();
-        ByteBuffer buffer = ByteBuffer.allocate(20000);
+        ByteBuffer buffer = ByteBuffer.allocate(10008);
         buffer.clear();
         long startTime = System.currentTimeMillis();
         List<String> received = new ArrayList<>(10);
