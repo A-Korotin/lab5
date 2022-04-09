@@ -81,14 +81,16 @@ public class Server {
     }
 
     private static void writeLayer(SelectionKey k, List<String> list, Instances instances){
-        for (String msg : list){
             try{
-                write(k, msg);
+                for (String msg : list) {
+                    write(k, msg);
+                    TimeUnit.MILLISECONDS.sleep(20);
+                }
+                write(k, "END");
             }
-            catch(NullPointerException | IOException e){
+            catch(NullPointerException | IOException | InterruptedException e){
                 instances.outPutter.output(e.getMessage());
             }
-        }
     }
 
     private static void write(SelectionKey key, String msg) throws IOException {
