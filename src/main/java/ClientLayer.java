@@ -4,7 +4,6 @@ import commands.CommandCreator;
 import commands.ExecuteScript;
 import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
-import exceptions.InfiniteLoopException;
 import exceptions.InvalidArgsSizeException;
 import exceptions.InvalidValueException;
 import exceptions.ProgramExitException;
@@ -72,7 +71,7 @@ public final class ClientLayer {
             } catch (NullPointerException e) {
                 instances.outPutter.output("Одна или несколько команд не были распознаны");
                 return;
-            } catch (InfiniteLoopException e) {
+            } catch (RuntimeException e) {
                 instances.outPutter.output(e.getMessage());
                 return;
             }
@@ -80,6 +79,8 @@ public final class ClientLayer {
 
         for (CommandProperties p: commandProperties) {
             String request;
+
+            // Закончить работу клиента, не отправлять команду на сервер
             if (p.args.get(0).equals("exit"))
                 throw new ProgramExitException("Завершение программы...");
 

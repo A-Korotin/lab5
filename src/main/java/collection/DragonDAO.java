@@ -10,6 +10,7 @@ import io.Properties;
 
 import json.Json;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -112,6 +113,15 @@ public final class DragonDAO implements DAO, Describable, Orderable {
     public int sort() {
         Collections.sort(collection);
         return 0;
+    }
+
+    @Override
+    public String info() {
+        return "Collection {" + System.lineSeparator() +
+                "\tinit date: " + initDateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm:ss")) + "," + System.lineSeparator() +
+                "\ttype: " + "LinkedList" + "," + System.lineSeparator() +
+                "\tsize: " + collection.size() + "," + System.lineSeparator() +
+                "}";
     }
 
     public LocalDateTime getInitDateTime() {

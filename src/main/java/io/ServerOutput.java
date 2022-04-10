@@ -116,7 +116,7 @@ public class ServerOutput implements OutPutter{
         char[] arrayString = bigString.toCharArray();
         for(int i = 0; i < arrayString.length; i++){
             result = result + arrayString[i];
-            if (i % 10000 == 0 | i == arrayString.length - 1){
+            if (i % 10000 == 0 || i == arrayString.length - 1){
                 listOfString.add(result);
                 result = "";
             }

@@ -90,8 +90,8 @@ public class Server {
             try{
                 for (String msg : list) {
                     write(k, msg);
-                    System.out.println(msg);
-                    TimeUnit.MILLISECONDS.sleep(20);
+
+                    TimeUnit.MILLISECONDS.sleep(10);
                 }
                 write(k, "END");
             }

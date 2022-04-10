@@ -15,6 +15,8 @@ import java.util.List;
 public final class Client {
     private final Selector selector;
 
+    private static final int MAX_PACKET_LENGTH = 10_000;
+
     public Client(String host, int port) throws IOException {
         InetSocketAddress address = new InetSocketAddress(host, port);
         DatagramChannel channel = DatagramChannel.open().connect(address);
@@ -31,6 +33,7 @@ public final class Client {
                 return read(key, timeout);
             }
         }
+        // never returned, read throws Exception
         return null;
     }
 
@@ -41,7 +44,7 @@ public final class Client {
 
     private String read(SelectionKey key, long timeout) throws IOException {
         DatagramChannel channel = (DatagramChannel) key.channel();
-        ByteBuffer buffer = ByteBuffer.allocate(10008);
+        ByteBuffer buffer = ByteBuffer.allocate(MAX_PACKET_LENGTH * 2); // UTF 16 encoding
         buffer.clear();
         long startTime = System.currentTimeMillis();
         List<String> received = new ArrayList<>(10);
@@ -52,9 +55,9 @@ public final class Client {
 
             buffer.flip();
             String msg = StandardCharsets.UTF_16.decode(buffer).toString();
-            if (msg.equals("END")) {
+
+            if (msg.equals("END"))
                 return attachInput(received);
-            }
 
             received.add(msg);
             buffer.clear();
