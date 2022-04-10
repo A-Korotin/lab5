@@ -71,37 +71,58 @@ public class ServerOutput implements OutPutter{
         return stream.toByteArray().length;
     }
 
+//    @Override
+//    public List<String> compound(){
+//        List<String> listOfString = new ArrayList<>();
+//        String result = "";
+//        for (String element : list){
+//            try {
+//                if (getMemoryLength(element) >= 10000){
+//                    char[] arrayString = element.toCharArray();
+//                    for (int i = 0; i < arrayString.length; i++) {
+//                        result = result + arrayString[i];
+//                        if (getMemoryLength(result) >= 10000){
+//                            listOfString.add(result);
+//                            result = "";
+//                        }
+//                        if (i == arrayString.length - 1)
+//                            listOfString.add(result);
+//                            result = "";
+//                    }
+//                }
+//
+//                else{
+//                    listOfString.add(element);
+//                }
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        list.clear();
+//        return listOfString;
+//    }
+
+
     @Override
-    public List<String> compound(){
+    public List<String> compound() {
         List<String> listOfString = new ArrayList<>();
         String result = "";
+        String bigString = "";
         for (String element : list){
-            try {
-                if (getMemoryLength(element) >= 10000){
-                    char[] arrayString = element.toCharArray();
-                    for (int i = 0; i <= arrayString.length; i++) {
-                        result = result + arrayString[i];
-                        if (getMemoryLength(result) >= 10000){
-                            listOfString.add(result);
-                            result = "";
-                        }
-                        if (i == arrayString.length)
-                            listOfString.add(result);
-                            result = "";
-                    }
-                }
-
-                else{
-                    listOfString.add(element);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
+            bigString = bigString + element;
+        }
+        char[] arrayString = bigString.toCharArray();
+        for(int i = 0; i < arrayString.length; i++){
+            result = result + arrayString[i];
+            if (i % 10000 == 0 | i == arrayString.length - 1){
+                listOfString.add(result);
+                result = "";
             }
         }
 
         list.clear();
         return listOfString;
     }
-    
 }

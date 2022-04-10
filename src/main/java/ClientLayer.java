@@ -90,7 +90,7 @@ public final class ClientLayer {
                 return;
             }
 
-            String response = client.sendAndReceiveResponse(request, 10);
+            String response = client.sendAndReceiveResponse(request, 20);
 
             instances.outPutter.output(response);
         }
