@@ -30,6 +30,11 @@ public final class DragonDAO implements DAO, Describable, Orderable {
         initDateTime = LocalDateTime.now();
     }
 
+    public DragonDAO(List<Dragon> collection) {
+        this();
+        this.collection = collection;
+    }
+
     /**
      * Метод добавления элемента в коллекцию
      * @param properties - свойства элемента

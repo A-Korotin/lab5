@@ -5,6 +5,7 @@ import java.net.BindException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        System.out.println("HELLO!");
         try {
             Server server = new Server("localhost", 4444);
 
