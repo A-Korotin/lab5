@@ -17,6 +17,7 @@ public final class Select extends Statement {
             "SELECT #fields# " +
             "FROM #table_name# " +
             "#criteria# ";
+
     @Override
     public PreparedStatement composePreparedStatement(StatementProperty property) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(concreteQuery(property));
@@ -27,9 +28,8 @@ public final class Select extends Statement {
     private String concreteQuery(StatementProperty property) {
         String query = QUERY_TEMPLATE;
         query = query.replace("#fields#", property.fields.size() > 0 ? join(",", property.fields): "*");
-        query = query.replace("#table_name#", property.tableName);
+        query = query.replace("#table_name#", join(",", property.tableName));
         query = query.replace("#criteria#", composeCriteria(property));
-
         return query;
     }
 

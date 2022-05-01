@@ -10,7 +10,10 @@ class SelectTest {
 
     @Test
     void composeStatement() {
-        StatementProperty p = new StatementProperty.Builder().tableName("dragons").fields("name").criteria("id", "character").build();
+        StatementProperty p = new StatementProperty.Builder().
+                tableName("dragons").
+                criteria("a").
+                build();
         try {
             PreparedStatement s = new Select(null).composePreparedStatement(p);
         } catch (NullPointerException | SQLException ignored) {}

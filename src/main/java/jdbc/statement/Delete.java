@@ -26,7 +26,7 @@ public final class Delete extends Statement {
 
     private String concreteQuery(StatementProperty property) {
         String query = QUERY_TEMPLATE;
-        query = query.replace("#table_name#", property.tableName);
+        query = query.replace("#table_name#", join(",", property.tableName));
         query = query.replace("#criteria#", composeCriteria(property));
         return query;
     }

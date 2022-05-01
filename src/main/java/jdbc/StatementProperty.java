@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public final class StatementProperty {
-    public String tableName = null;
+    public List<String> tableName = new ArrayList<>();
     public List<String> fields = new ArrayList<>();
     public List<String> criteria = new ArrayList<>();
     public SqlConsumer<PreparedStatement> valuesSetter;
@@ -22,8 +22,8 @@ public final class StatementProperty {
 
         private StatementProperty property = new StatementProperty();
 
-        public Builder tableName(String tableName) {
-            property.tableName = tableName;
+        public Builder tableName(String... tableName) {
+            property.tableName.addAll(List.of(tableName));
             return this;
         }
 

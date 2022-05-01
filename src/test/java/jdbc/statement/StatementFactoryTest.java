@@ -17,14 +17,15 @@ class StatementFactoryTest {
         try(Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
 
             StatementProperty property = new StatementProperty.Builder()
-                    .tableName("users")
+                    .tableName("users", "users_new")
+                    .fields()
                     .build();
 
             PreparedStatement statement = s.composePreparedStatement(property);
             ResultSet set = statement.executeQuery();
 
             while (set.next()) {
-                System.out.println(set.getInt(1) + " " + set.getString(2));
+                System.out.printf("%d %s %n", set.getInt(1), set.getString(2));
             }
 
         } catch (SQLException e) {

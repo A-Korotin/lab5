@@ -17,7 +17,7 @@ public final class Insert extends Statement {
     private final String QUERY_TEMPLATE =
             "INSERT INTO #table_name# " +
             "(#fields#) " +
-            "VALUES (#values#)";
+            "VALUES (#values#) RETURNING id";
 
     @Override
     public PreparedStatement composePreparedStatement(StatementProperty property) throws SQLException {
@@ -29,7 +29,7 @@ public final class Insert extends Statement {
 
     private String concreteQuery(StatementProperty property) {
         String query = QUERY_TEMPLATE;
-        query = query.replace("#table_name#", property.tableName);
+        query = query.replace("#table_name#", join(",", property.tableName));
         query = query.replace("#fields#", join(",", property.fields));
         query = query.replace("#values#", joinUnknownParams(",", property.fields.size()));
         return query;
