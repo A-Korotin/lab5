@@ -80,6 +80,21 @@ public final class SQLDragonDAO implements DAO<Dragon> {
     public int delete(int id) throws SQLException {
         StatementProperty property = new StatementProperty.Builder()
                 .tableName(TABLE_NAME)
+                .fields("coordinates_id", "cave_id")
+                .criteria("id")
+                .valuesSetter(s->s.setInt(1, id))
+                .build();
+
+        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
+        set.next();
+
+        int coord_id = set.getInt("coordinates_id");
+        int cave_id = set.getInt("cave_id");
+        caveDAO.delete(cave_id);
+        coordinatesDAO.delete(coord_id);
+
+        property = new StatementProperty.Builder()
+                .tableName(TABLE_NAME)
                 .criteria("id")
                 .valuesSetter(s -> s.setInt(1, id))
                 .build();
