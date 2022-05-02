@@ -20,6 +20,7 @@ public final class Properties {
     public DragonCharacter character;
     public double depth;
     public Integer numberOfTreasures;
+    public String userName;
 
     public static Properties parseProperties(List<String> input, int indexShift) throws InvalidValueException{
         Properties properties = new Properties();

@@ -64,6 +64,7 @@ public class Dragon implements Comparable<Dragon>, Describable {
         type = properties.type;
         character = properties.character;
         cave = new DragonCave(properties.depth, properties.numberOfTreasures);
+        creator = properties.userName;
     }
 
     public String description() throws JsonProcessingException {

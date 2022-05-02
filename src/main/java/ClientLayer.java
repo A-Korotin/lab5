@@ -10,6 +10,7 @@ import exceptions.ProgramExitException;
 import io.ConsoleOutput;
 import json.Json;
 import net.Client;
+import net.Request;
 
 import java.io.IOException;
 import java.net.PortUnreachableException;
@@ -21,6 +22,8 @@ public final class ClientLayer {
     private final Instances instances = new Instances();
     Scanner scanner = new Scanner(System.in);
     List<String> logins = new ArrayList<>();
+    String login;
+    String password;
 
     public ClientLayer() throws IOException {
         client = new Client("localhost", 4444);
@@ -149,6 +152,8 @@ public final class ClientLayer {
                 String responseAboutPassword = client.sendAndReceiveResponse("H" + Client.toMD5(password) + '\t' + login, 20);
                 if (Objects.equals(responseAboutPassword, "YES")){
                     instances.outPutter.output("Пароль введён успешно!" + System.lineSeparator());
+                    this.login = login;
+                    this.password = Client.toMD5(password);
                     break;
                 }
                 else{
@@ -223,7 +228,11 @@ public final class ClientLayer {
                 throw new ProgramExitException("Завершение программы...");
 
             try {
-                request = serialize(p);
+                Request r = new Request();
+                r.properties = p;
+                r.login = login;
+                r.password = password;
+                request = serialize(r);
             } catch (JsonProcessingException e) {
                 instances.outPutter.output("Ошибка сериализации json");
                 return;

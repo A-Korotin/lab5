@@ -22,6 +22,11 @@ public abstract class Command {
     protected String name;
     protected Properties properties = null;
     protected int indexShift = 0;
+    protected String userName;
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public void setAskForInput(boolean ask) {
         askForInput = ask;

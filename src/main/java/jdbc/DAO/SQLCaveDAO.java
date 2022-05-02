@@ -2,6 +2,7 @@ package jdbc.DAO;
 
 import dragon.DragonCave;
 import jdbc.StatementProperty;
+import jdbc.statement.Statement;
 import jdbc.statement.StatementFactory;
 import jdbc.statement.StatementType;
 
@@ -25,10 +26,12 @@ final class SQLCaveDAO implements DAO<DragonCave> {
                     s.setObject(2, element.getNumberOfTreasures());
                 })
                 .build();
-        var set = StatementFactory.getStatement(StatementType.INSERT).composePreparedStatement(property).executeQuery();
-        set.next();
+        try(Statement s = StatementFactory.getStatement(StatementType.INSERT)) {
+           var set = s.composePreparedStatement(property).executeQuery();
+           set.next();
+           return set.getInt("id");
+        }
 
-        return set.getInt("id");
     }
 
     @Override
@@ -44,7 +47,9 @@ final class SQLCaveDAO implements DAO<DragonCave> {
                 })
                 .build();
 
-        return StatementFactory.getStatement(StatementType.UPDATE).composePreparedStatement(property).executeUpdate();
+        try(Statement s = StatementFactory.getStatement(StatementType.UPDATE)) {
+            return s.composePreparedStatement(property).executeUpdate();
+        }
     }
 
     @Override
@@ -55,7 +60,9 @@ final class SQLCaveDAO implements DAO<DragonCave> {
                 .valuesSetter(s -> s.setInt(1, id))
                 .build();
 
-        return StatementFactory.getStatement(StatementType.DELETE).composePreparedStatement(property).executeUpdate();
+        try(Statement s = StatementFactory.getStatement(StatementType.DELETE)) {
+            return s.composePreparedStatement(property).executeUpdate();
+        }
     }
 
     @Override
@@ -66,9 +73,12 @@ final class SQLCaveDAO implements DAO<DragonCave> {
                 .valuesSetter(s -> s.setInt(1, id))
                 .build();
 
-        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
-        set.next();
-        return parse(set);
+        try(Statement s = StatementFactory.getStatement(StatementType.SELECT)){
+            var set = s.composePreparedStatement(property).executeQuery();
+            set.next();
+            return parse(set);
+        }
+
     }
 
     @Override
@@ -79,12 +89,14 @@ final class SQLCaveDAO implements DAO<DragonCave> {
                 .tableName(TABLE_NAME)
                 .build();
 
-        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
+        try(Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
 
-        while(set.next())
-            output.add(parse(set));
+            while (set.next())
+                output.add(parse(set));
 
-        return output;
+            return output;
+        }
     }
 
     @Override
@@ -92,7 +104,9 @@ final class SQLCaveDAO implements DAO<DragonCave> {
         StatementProperty property = new StatementProperty.Builder()
                 .tableName(TABLE_NAME)
                 .build();
-        return StatementFactory.getStatement(StatementType.DELETE).composePreparedStatement(property).executeUpdate();
+        try(Statement s = StatementFactory.getStatement(StatementType.DELETE)) {
+            return s.composePreparedStatement(property).executeUpdate();
+        }
     }
 
     private DragonCave parse(final ResultSet row) throws SQLException {

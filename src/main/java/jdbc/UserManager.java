@@ -1,58 +1,63 @@
 package jdbc;
 
-import exceptions.UserLoginAlreadyExistsException;
+import jdbc.statement.Statement;
 import jdbc.statement.StatementFactory;
 import jdbc.statement.StatementType;
-import net.auth.User;
+
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class UserManager {
     private static final String TABLE_NAME = "users";
 
-    public static boolean isValid(User user) throws SQLException {
+
+    public static List<String> getLogins() throws SQLException {
         StatementProperty property = new StatementProperty.Builder()
-                .fields("COUNT(*)")
                 .tableName(TABLE_NAME)
-                .criteria("login", "password")
-                .valuesSetter(s-> {
-                    s.setString(1, user.login);
-                    s.setString(2, user.password);
-                })
+                .fields("login")
                 .build();
-        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
-        set.next();
-        return 1 == set.getInt(1);
+
+        try(Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
+            List<String> out = new ArrayList<>();
+            while (set.next())
+                out.add(set.getString("login"));
+
+            return out;
+        }
     }
 
-    public static boolean registerUser(User user) throws SQLException {
-        if (loginExists(user))
-            throw new UserLoginAlreadyExistsException(user.login);
-
+    public static void registerUser(String login, String password) throws SQLException {
         StatementProperty property = new StatementProperty.Builder()
                 .tableName(TABLE_NAME)
                 .fields("login", "password")
-                .valuesSetter(s-> {
-                    s.setString(1, user.login);
-                    s.setString(2, user.password);
+                .valuesSetter(s -> {
+                    s.setString(1, login);
+                    s.setString(2, password);
                 })
                 .build();
 
-        int nRowsAffected = StatementFactory.getStatement(StatementType.INSERT).composePreparedStatement(property).executeUpdate();
-        return nRowsAffected == 1;
+        try(Statement s = StatementFactory.getStatement(StatementType.INSERT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
+            set.next();
+            int id = set.getInt("id");
+        }
     }
 
-
-    private static boolean loginExists(User user) throws SQLException {
+    public static String getPassword(String login) throws SQLException {
         StatementProperty property = new StatementProperty.Builder()
                 .tableName(TABLE_NAME)
-                .fields("COUNT(*)")
+                .fields("password")
                 .criteria("login")
-                .valuesSetter(s->s.setString(1, user.login))
+                .valuesSetter(s->s.setString(1, login))
                 .build();
 
-        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
-        set.next();
-        return set.getInt(1) != 0;
+        try(Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
+            set.next();
+            return set.getString("password");
+        }
     }
 }

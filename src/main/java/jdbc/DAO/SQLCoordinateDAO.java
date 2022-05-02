@@ -2,6 +2,7 @@ package jdbc.DAO;
 
 import dragon.Coordinates;
 import jdbc.StatementProperty;
+import jdbc.statement.Statement;
 import jdbc.statement.StatementFactory;
 import jdbc.statement.StatementType;
 
@@ -24,9 +25,11 @@ final class SQLCoordinateDAO implements DAO<Coordinates>{
                 })
                 .build();
 
-        var set = StatementFactory.getStatement(StatementType.INSERT).composePreparedStatement(property).executeQuery();
-        set.next();
-        return set.getInt("id");
+        try(Statement s = StatementFactory.getStatement(StatementType.INSERT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
+            set.next();
+            return set.getInt("id");
+        }
     }
 
     @Override
@@ -41,7 +44,9 @@ final class SQLCoordinateDAO implements DAO<Coordinates>{
                     s.setInt(3, id);
                 })
                 .build();
-        return StatementFactory.getStatement(StatementType.UPDATE).composePreparedStatement(property).executeUpdate();
+        try(Statement s = StatementFactory.getStatement(StatementType.UPDATE)) {
+            return s.composePreparedStatement(property).executeUpdate();
+        }
     }
 
     @Override
@@ -51,7 +56,9 @@ final class SQLCoordinateDAO implements DAO<Coordinates>{
                 .criteria("id")
                 .valuesSetter(s->s.setInt(1, id))
                 .build();
-        return StatementFactory.getStatement(StatementType.DELETE).composePreparedStatement(property).executeUpdate();
+        try (Statement s = StatementFactory.getStatement(StatementType.DELETE)) {
+            return s.composePreparedStatement(property).executeUpdate();
+        }
     }
 
     @Override
@@ -62,9 +69,11 @@ final class SQLCoordinateDAO implements DAO<Coordinates>{
                 .valuesSetter(s-> s.setInt(1, id))
                 .build();
 
-        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
-        set.next();
-        return parse(set);
+        try(Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
+            set.next();
+            return parse(set);
+        }
     }
 
     @Override
@@ -74,12 +83,14 @@ final class SQLCoordinateDAO implements DAO<Coordinates>{
                 .tableName(TABLE_NAME)
                 .build();
 
-        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
+        try(Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
 
-        while(set.next())
-            output.add(parse(set));
+            while (set.next())
+                output.add(parse(set));
 
-        return output;
+            return output;
+        }
     }
 
     @Override
@@ -88,7 +99,9 @@ final class SQLCoordinateDAO implements DAO<Coordinates>{
                 .tableName(TABLE_NAME)
                 .build();
 
-        return StatementFactory.getStatement(StatementType.DELETE).composePreparedStatement(property).executeUpdate();
+        try(Statement s = StatementFactory.getStatement(StatementType.DELETE)) {
+            return s.composePreparedStatement(property).executeUpdate();
+        }
     }
 
     private Coordinates parse(ResultSet row) throws SQLException {

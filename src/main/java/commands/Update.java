@@ -6,7 +6,9 @@ import commands.dependencies.PropertiesDependant;
 import dragon.Dragon;
 import exceptions.InvalidValueException;
 
+import java.awt.dnd.DropTarget;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Класс, предназначенный для обновления существующего элемента по его <b>ID</b> (<i>обязательный аргумент команды</i>)<br>
@@ -30,21 +32,19 @@ public final class Update extends Command implements PropertiesDependant {
             instances.outPutter.output("Нецелочисленный тип данных id");
             return -1;
         }
-        boolean found = false;
-//        for(Dragon d: instances.dao.getAll()) {
-//            if(d.getId() == id) {
-//                found = true;
-//                break;
-//            }
-//        }
 
-        found = instances.dao.getAll().stream().anyMatch(dragon -> dragon.getId() == id);
+        Optional<Dragon> dragon = instances.dao.getAll().stream().filter(d -> d.getId() == id).findFirst();
 
-        if (!found){
+
+
+        if (dragon.isEmpty()){
             instances.outPutter.output("Элемент с id %d не существует".formatted(id));
             return -1;
         }
-
+        if (!dragon.get().getCreatorName().equals(userName)) {
+            instances.outPutter.output("Невозможно обновить элемент с id %d, так как он не был создан пользователем %s".formatted(id, userName));
+            return -1;
+        }
         int exitCode = instances.dao.update(id, properties);
 
         if (exitCode == 0)

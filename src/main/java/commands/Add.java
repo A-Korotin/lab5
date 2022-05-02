@@ -20,6 +20,7 @@ public final class Add extends Command implements PropertiesDependant {
 
     @Override
     public int execute(Instances instances) {
+        properties.userName = userName;
         int exitCode;
         if ((exitCode = instances.dao.create(properties)) == 0)
             instances.outPutter.output("Элемент успешно добавлен");

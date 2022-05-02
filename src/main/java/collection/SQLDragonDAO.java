@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+//TODO implement Describable
 public final class SQLDragonDAO implements DAO {
 
     private final List<Dragon> collection = new LinkedList<>();
@@ -35,8 +36,10 @@ public final class SQLDragonDAO implements DAO {
             int databaseId = dragonDAO.create(dragon);
             dragon.setId(databaseId);
         } catch (DatabaseConnectionNotEstablishedException e) {
+            System.out.println(e.getMessage());
             return -1;
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             return -2;
         }
 

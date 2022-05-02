@@ -1,13 +1,16 @@
 package net;
 
 import collection.DragonDAO;
+import collection.SQLDragonDAO;
 import com.fasterxml.jackson.core.JsonParseException;
 import commands.Command;
 import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
 import io.Autosaver;
 import io.FileManipulator;
+import jdbc.UserManager;
 import json.Json;
+import net.auth.User;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -17,6 +20,7 @@ import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -26,12 +30,11 @@ public class Server {
     InetSocketAddress address;
     DatagramChannel channel;
     Instances instances;
-    Map<String, String> accounts = new HashMap<String, String>();
-    ArrayList<String> logins = new ArrayList<>();
+    List<String> logins;
     boolean rightPassword;
     boolean loginsSended;
 
-    public Server(String host, int port) throws IOException {
+    public Server(String host, int port) throws IOException, SQLException {
         selector = Selector.open();
         address = new InetSocketAddress(host, port);
         channel = DatagramChannel.open().bind(address);
@@ -39,10 +42,8 @@ public class Server {
         channel.register(selector, SelectionKey.OP_READ, new ClientClass());
         instances = new Instances();
         //Вспомогательные мапа и листик, чтобы отладить
-        accounts.put("11111", "b0baee9d279d34fa1dfd71aadb908c3f");
-        accounts.put("22222", "b0baee9d279d34fa1dfd71aadb908c3f");
-        logins.add("11111");
-        logins.add("22222");
+
+        logins = UserManager.getLogins();
         //....
         rightPassword = false;
         loginsSended = false;
@@ -51,10 +52,9 @@ public class Server {
     public void run() throws IOException, NullPointerException, InterruptedException {
 
         try {
-            instances.dao = FileManipulator.get();
+            instances.dao = new SQLDragonDAO();
         } catch (RuntimeException e) {
             instances.outPutter.output(e.getMessage());
-            instances.dao = new DragonDAO();
         }
 
 
@@ -72,17 +72,14 @@ public class Server {
                         list.clear();
                         loginsSended = true;
                     }
-
-
-                    else{
+                    else {
                         //Мы получили сообщение
                         // с флагом N (если это регистрация нового пользователя) или Н (если это просто авторизация),
                         // с логином в виде строки
                         // с хешированным паролем (MD5)
                         // В нижней строчке мы получаем листик с этими тремя элементами
 
-                        ArrayList<String> loginAndPassword = takeLoginAndPassword(request);
-
+                        List<String> loginAndPassword = takeLoginAndPassword(request);
                         if(loginAndPassword.get(0).equals("N")){
                             newAccount(loginAndPassword, k);
                         }
@@ -100,26 +97,31 @@ public class Server {
         }
     }
 
-    private boolean checkPassword(ArrayList<String> loginAndPassword, SelectionKey k){
+    private boolean checkPassword(List<String> loginAndPassword, SelectionKey k){
         boolean rightPassword = false;
-        if (accounts.get(loginAndPassword.get(1)).equals(loginAndPassword.get(2))){
-            rightPassword = true;
-            instances.outPutter.output("YES");
-            List<String> list = instances.outPutter.compound();
-            Server.writeLayer(k, list, instances);
-            list.clear();
-        }
-        else{
-            instances.outPutter.output("NO");
-            List<String> list = instances.outPutter.compound();
-            Server.writeLayer(k, list, instances);
-            list.clear();
+        try {
+            if (UserManager.getPassword(loginAndPassword.get(1)).equals(loginAndPassword.get(2))) {
+                rightPassword = true;
+                instances.outPutter.output("YES");
+                List<String> list = instances.outPutter.compound();
+                Server.writeLayer(k, list, instances);
+                list.clear();
+            } else {
+                instances.outPutter.output("NO");
+                List<String> list = instances.outPutter.compound();
+                Server.writeLayer(k, list, instances);
+                list.clear();
+            }
+        } catch (SQLException e) {
+            return false;
         }
         return rightPassword;
     }
 
-    private void newAccount(ArrayList<String> loginAndPassword, SelectionKey k){
-        accounts.put(loginAndPassword.get(1), loginAndPassword.get(2));
+    private void newAccount(List<String> loginAndPassword, SelectionKey k){
+        try {
+            UserManager.registerUser(loginAndPassword.get(1), loginAndPassword.get(2));
+        } catch (SQLException ignored) {return;}
         instances.outPutter.output("Новый пользователь создан" + System.lineSeparator());
         List<String> list = instances.outPutter.compound();
         Server.writeLayer(k, list, instances);
@@ -130,7 +132,9 @@ public class Server {
     private void commandExecution(String request, SelectionKey k) throws InterruptedException {
         Runnable requestHandling = () -> {
             try{
-                Command command = Command.restoreFromProperties(Json.fromJson(Json.parse(request), CommandProperties.class));
+                Request req = Json.fromJson(Json.parse(request), Request.class);
+                Command command = Command.restoreFromProperties(req.properties);
+                command.setUserName(req.login);
                 command.execute(instances);
 
             } catch (JsonParseException e) {
@@ -148,11 +152,10 @@ public class Server {
 
         List<String> list = instances.outPutter.compound();
         Server.writeLayer(k, list, instances);
-        Autosaver.autosave(instances);
         list.clear();
     }
 
-    private String loginsToString(ArrayList<String> logins){
+    private String loginsToString(List<String> logins){
         StringBuilder result = new StringBuilder();
         for(String login : logins){
             result.append(login).append('\t');
@@ -196,8 +199,8 @@ public class Server {
         forkJoinPool.shutdown();
         return request;
     }
-    private ArrayList<String> takeLoginAndPassword(String passwordAndLogin){
-        ArrayList<String> passwordAndLoginList = new ArrayList<>();
+    private List<String> takeLoginAndPassword(String passwordAndLogin){
+        List<String> passwordAndLoginList = new ArrayList<>();
         char sign = '\t';
         String login = "";
         String password = "";
