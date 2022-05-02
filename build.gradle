@@ -4,11 +4,11 @@ plugins {
 }
 
 application {
-    mainClass = "jdbc.Test"
+    mainClass = "Main"
 }
 
 group 'itmo'
-version '1.1-Client'
+version '1.12-Client'
 
 run.defaultCharacterEncoding='UTF-8'
 compileJava.options.encoding = 'UTF-8'

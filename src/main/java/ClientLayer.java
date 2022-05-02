@@ -1,13 +1,13 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
-import commands.*;
+import commands.Command;
+import commands.CommandCreator;
+import commands.ExecuteScript;
 import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
 import exceptions.InvalidArgsSizeException;
 import exceptions.InvalidValueException;
 import exceptions.ProgramExitException;
-import exceptions.ResponseTimeoutException;
 import io.ConsoleOutput;
-import io.request.UserDataRequester;
 import json.Json;
 import net.Client;
 import net.Request;
@@ -201,10 +201,12 @@ public final class ClientLayer {
         try {
             ClientLayer layer = new ClientLayer();
             layer.run();
-        } catch (IOException e) {
-            System.out.println("не удалось создать клиент");
+        } catch (PortUnreachableException e ) {
+            System.out.println("Сервер не запущен, попробуйте позже");
         }
-
+        catch (IOException e) {
+            System.out.printf("не удалось создать клиент(%s)%n", e.getCause());
+        }
     }
 
 }

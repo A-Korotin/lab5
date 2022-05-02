@@ -71,15 +71,16 @@ final class SQLCoordinateDAO implements DAO<Coordinates>{
                 .valuesSetter(s-> s.setInt(1, id))
                 .build();
 
-        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
-        set.next();
-        return parse(set);
+        try(Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
+            set.next();
+            return parse(set);
+        }
     }
 
     @Override
     public List<Coordinates> getAll() throws SQLException {
         List<Coordinates> output = new ArrayList<>();
-
         StatementProperty property = new StatementProperty.Builder()
                 .tableName(TABLE_NAME)
                 .build();

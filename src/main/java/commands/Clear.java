@@ -2,7 +2,10 @@ package commands;
 
 
 import commands.dependencies.Instances;
+import dragon.Dragon;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,8 +19,12 @@ public final class Clear extends Command {
 
     @Override
     public int execute(Instances instances) {
-        instances.dao.clear();
-        instances.outPutter.output("Коллекция успешно очищена");
+        int[] idsToDelete = instances.dao.getAll()
+                .stream()
+                .filter(d -> d.getCreatorName().equals(userName))
+                .mapToInt(Dragon::getId).toArray();
+        Arrays.stream(idsToDelete).forEach(instances.dao::delete);
+        instances.outPutter.output("Элементы, созданные пользователем '%s', были удалены".formatted(userName));
         return 0;
     }
 }

@@ -1,16 +1,15 @@
 package collection;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import dragon.Dragon;
 import exceptions.DatabaseConnectionNotEstablishedException;
 import io.Properties;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-public final class SQLDragonDAO implements DAO {
+
+public final class SQLDragonDAO implements DAO, Describable, Orderable {
 
     private final List<Dragon> collection = new LinkedList<>();
 
@@ -34,8 +33,12 @@ public final class SQLDragonDAO implements DAO {
         try {
             int databaseId = dragonDAO.create(dragon);
             dragon.setId(databaseId);
+        } catch (DatabaseConnectionNotEstablishedException e) {
+            System.out.println(e.getMessage());
+            return -1;
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+            System.out.println(e.getMessage());
+            return -2;
         }
 
         return 0;
@@ -99,6 +102,25 @@ public final class SQLDragonDAO implements DAO {
         } catch (SQLException e) {
             return -2;
         }
+        return 0;
+    }
+
+    @Override
+    public String description() throws JsonProcessingException {
+        return "SQL DAO";
+    }
+
+    @Override
+    public String info() {
+        return "SQL DAO {" + System.lineSeparator() +
+                "type = postgreSQL," + System.lineSeparator() +
+                "size = " + collection.size() + System.lineSeparator() +
+                "}";
+    }
+
+    @Override
+    public int sort() {
+        Collections.sort(collection);
         return 0;
     }
 }

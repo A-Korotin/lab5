@@ -23,6 +23,7 @@ public final class AddIfMax extends Command implements PropertiesDependant {
 
     @Override
     public int execute(Instances instances) {
+        properties.userName = userName;
         Optional<Dragon> maxDragon = instances.dao.getAll().stream().max((d1, d2) -> (int) (d1.getAge() - d2.getAge()));
 
         Long ageMax = maxDragon.isPresent() ? maxDragon.get().getAge() : -1L;

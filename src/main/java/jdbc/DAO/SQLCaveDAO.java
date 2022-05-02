@@ -93,8 +93,8 @@ final class SQLCaveDAO implements DAO<DragonCave> {
             while(set.next())
                 output.add(parse(set));
 
-            return output;
-        }
+        return output;
+    }
 
 
     }

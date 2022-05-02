@@ -5,5 +5,6 @@ import net.auth.User;
 
 public final class Request {
     public CommandProperties properties;
-    public User user;
+    public String login;
+    public String password;
 }

@@ -40,12 +40,11 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                     s.setString(9, element.getCreatorName());
                 }).build();
 
-        try (Statement s = StatementFactory.getStatement(StatementType.INSERT)){
+        try(Statement s = StatementFactory.getStatement(StatementType.INSERT)) {
             var set = s.composePreparedStatement(property).executeQuery();
             set.next();
             return set.getInt("id");
         }
-
 
     }
 
@@ -76,7 +75,6 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                     s.setInt(10, id);
                 })
                 .build();
-
         try(Statement s = StatementFactory.getStatement(StatementType.UPDATE)) {
             return s.composePreparedStatement(property).executeUpdate();
         }
@@ -95,7 +93,6 @@ public final class SQLDragonDAO implements DAO<Dragon> {
         int cave_id;
         try(Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
             var set = s.composePreparedStatement(property).executeQuery();
-
             set.next();
 
             coord_id = set.getInt("coordinates_id");
@@ -110,7 +107,7 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                 .valuesSetter(s -> s.setInt(1, id))
                 .build();
 
-        try (Statement s = StatementFactory.getStatement(StatementType.DELETE)){
+        try(Statement s = StatementFactory.getStatement(StatementType.DELETE)) {
             return s.composePreparedStatement(property).executeUpdate();
         }
     }
@@ -138,7 +135,7 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                 .tableName(TABLE_NAME)
                 .build();
 
-        try (Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
+        try(Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
             var set = s.composePreparedStatement(property).executeQuery();
 
             while (set.next())
