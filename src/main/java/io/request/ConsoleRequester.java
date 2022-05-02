@@ -3,16 +3,19 @@ package io.request;
 import dragon.Color;
 import dragon.DragonCharacter;
 import dragon.DragonType;
+import exceptions.ProgramExitException;
 import io.Properties;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Predicate;
 import java.util.function.Function;
 
 /**
- * Класс, запрашивающий данные от пользователя с консоли */
+ * Класс, запрашивающий данные от пользователя с консоли
+*/
 public final class ConsoleRequester {
 
     private InputStream inputStream = System.in;
@@ -43,7 +46,10 @@ public final class ConsoleRequester {
                 if(!(validInput = validationFunc.test(received)))
                     printStream.println("Неверный ввод");
 
-            } catch (RuntimeException e) {
+            } catch (NoSuchElementException e) {
+                throw new ProgramExitException("Завершение программы...");
+            }
+            catch (RuntimeException e) {
                 printStream.println("Неверный ввод");
             }
         }

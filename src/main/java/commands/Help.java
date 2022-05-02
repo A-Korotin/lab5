@@ -1,5 +1,7 @@
 package commands;
 
+import commands.dependencies.Instances;
+
 import java.util.List;
 
 /**
@@ -30,8 +32,6 @@ public final class Help extends Command {
                 
                 clear : очистить коллекцию
                 
-                save : сохранить коллекцию в файл
-                
                 execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.
                 
                 exit : завершить программу (без сохранения в файл)
@@ -47,9 +47,7 @@ public final class Help extends Command {
                 
                 count_by_age age : вывести количество элементов, значение поля age которых равно заданному
                 
-                filter_greater_than_character character : вывести элементы, значение поля character которых больше заданного
-                
-                ya_alex_egoshin_postavlu_12_balov : вывести прекрасную пасхалку""");
+                filter_greater_than_character character : вывести элементы, значение поля character которых больше заданного""");
         return 0;
     }
 

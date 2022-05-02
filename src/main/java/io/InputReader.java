@@ -14,6 +14,8 @@ public abstract class InputReader {
 
     public abstract List<String> getInput();
 
+    public abstract String getRawInput();
+
     public void addProperties(String... prop) {
         additionalProperties.clear();
         additionalProperties.addAll(List.of(prop));

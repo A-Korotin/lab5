@@ -27,7 +27,7 @@ public final class CommandCreator {
         availableCommands.put("update", Update::new);
         availableCommands.put("remove_by_id", RemoveById::new);
         availableCommands.put("clear", Clear::new);
-        availableCommands.put("save", Save::new);
+        // availableCommands.put("save", Save::new); Команда save недоступна в 6 лабораторной работе
         availableCommands.put("execute_script", ExecuteScript::new);
         availableCommands.put("exit", Exit::new);
         availableCommands.put("add_if_max", AddIfMax::new);
@@ -36,10 +36,13 @@ public final class CommandCreator {
         availableCommands.put("min_by_id", MinById::new);
         availableCommands.put("count_by_age", CountByAge::new);
         availableCommands.put("filter_greater_than_character", FilterGreaterThanCharacter::new);
-        availableCommands.put("ya_alex_egoshin_postavlu_12_balov", AlexEgoshin::new);
-
+        // availableCommands.put("ya_alex_egoshin_postavlu_12_balov", AlexEgoshin::new);
     }
 
+    public static Command getCommandDirect(List<String> args) {
+        String name = args.get(0);
+        return availableCommands.get(name).construct(args);
+    }
     /**
      * Метод для получения команд из пользовательского ввода
      * @param source Объект, считывающий пользовательский ввод

@@ -6,7 +6,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 
+/**
+ * Класс, содержащий в себе методы для работы с JSON
+ */
 public final class Json {
+
+    private Json() {}
+
     private static final ObjectMapper objectMapper = getDefaultObjectMapper();
 
     private static ObjectMapper getDefaultObjectMapper() {

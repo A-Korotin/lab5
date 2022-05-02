@@ -1,8 +1,15 @@
 package commands;
 
 
+import commands.dependencies.GetProperties;
+import commands.dependencies.Instances;
+import commands.dependencies.PropertiesDependant;
 import exceptions.InvalidArgsSizeException;
+import exceptions.InvalidValueException;
+import io.Properties;
+import commands.dependencies.CommandProperties;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,6 +20,8 @@ public abstract class Command {
     protected List<String> args;
     protected boolean askForInput;
     protected String name;
+    protected Properties properties = null;
+    protected int indexShift = 0;
 
     public void setAskForInput(boolean ask) {
         askForInput = ask;
@@ -22,12 +31,24 @@ public abstract class Command {
         return name;
     }
 
+    public final CommandProperties getProperties(Instances instances) throws InvalidValueException {
+        CommandProperties p = new CommandProperties();
+        p.args = args;
+        p.args.add(0, name);
+        if (this instanceof PropertiesDependant)
+            p.properties = GetProperties.getProperties(askForInput, args, instances, indexShift+1);
+        return p;
+    }
+
+    public static Command restoreFromProperties(CommandProperties properties) {
+        List<String> args = properties.args;
+        Command c = CommandCreator.getCommandDirect(args);
+        c.properties = properties.properties;
+        return c;
+    }
+
     private boolean validArgsSize(Integer[] expected) {
-        for(Integer i: expected) {
-            if (i == args.size())
-                return true;
-        }
-        return false;
+        return Arrays.stream(expected).anyMatch(i -> i == args.size());
     }
 
     public Command(List<String> args, Integer... nArgsExpected) {

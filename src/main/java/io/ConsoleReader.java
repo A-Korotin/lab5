@@ -11,15 +11,21 @@ public final class ConsoleReader extends InputReader {
     {
         askForInput = true;
     }
+
+    public String getRawInput() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine().trim();
+    }
     /**
      * Метод получения данных с консоли
      * @return out - Список списков, считанный с консоли
      * */
     @Override
     public List<String> getInput() {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine().trim();
-        return new ArrayList<>(List.of(input));
+       String line = getRawInput();
+        List<String> output = new ArrayList<>();
+        output.add(line);
+        return output;
     }
 }
 

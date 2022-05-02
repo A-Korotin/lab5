@@ -1,8 +1,8 @@
 package commands;
 
+import commands.dependencies.Instances;
 import dragon.Dragon;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,17 +30,17 @@ public final class MinById extends Command {
 
     @Override
     public int execute(Instances instances) {
+        Optional<Dragon> minDragon = instances.dao.getAll()
+                .stream()
+                .min((dragon1, dragon2) -> (int) dragon1.getId() - dragon2.getId());
 
-        Optional<Dragon> minDragon = instances.dao.getAll().stream().min(Comparator.comparingInt(Dragon::getId));
-
-        Integer minId = minDragon.isPresent() ? minDragon.get().getId() : null;
-
-        if (minId == null)
-            instances.outPutter.output("Коллекция пуста");
+        if (minDragon.isPresent()) {
+            instances.outPutter.output(minDragon.get().getId());
+        }
         else
-            instances.outPutter.output(minId);
-
-
+            instances.outPutter.output("Коллекция пуста");
         return 0;
+
     }
+
 }

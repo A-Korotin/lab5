@@ -1,10 +1,15 @@
 package commands;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import commands.dependencies.CommandProperties;
+import commands.dependencies.Instances;
+import exceptions.InfiniteLoopException;
 import exceptions.InvalidArgsSizeException;
 import exceptions.InvalidValueException;
 import io.InputReader;
-import log.Logger;
+import json.Json;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,20 +21,21 @@ public final class ExecuteScript extends Command {
         super(args, 1);
     }
 
-    @Override
-    public int execute(Instances instances) {
-        if(Instances.filePathChain.contains(args.get(0))){
-            instances.outPutter.output("Подумай головой сначала, а потом циклы скриптов пиши. Дурак.");
-            return -1;
-        }
+    private List<Command> readCommands(Instances instances) {
         String filePath = args.get(0);
         Instances.filePathChain.add(filePath);
         InputReader reader = instances.fileReader;
         reader.addProperties(filePath);
-        List<Command> commands;
+        return CommandCreator.getCommands(reader);
+    }
 
+    @Override
+    public int execute(Instances instances) {
+        if(Instances.filePathChain.contains(args.get(0)))
+            throw new InfiniteLoopException();
+        List<Command> commands;
         try{
-            commands = CommandCreator.getCommands(reader);
+            commands = readCommands(instances);
         }
         catch(InvalidArgsSizeException e) {
             instances.outPutter.output(e.getMessage());
@@ -46,5 +52,21 @@ public final class ExecuteScript extends Command {
             exitCode += c.execute(instances);
         }
         return exitCode;
+    }
+
+    public List<Command> getNestedCommands(Instances instances) {
+        List<Command> output = new ArrayList<>();
+        for (Command c : readCommands(instances)) {
+
+            if (c instanceof ExecuteScript script) {
+                if (Instances.filePathChain.contains(script.args.get(0)))
+                    throw new InfiniteLoopException();
+                output.addAll(script.getNestedCommands(instances));
+            } else
+                output.add(c);
+
+        }
+
+        return output;
     }
 }

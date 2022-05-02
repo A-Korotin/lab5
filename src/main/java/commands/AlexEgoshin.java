@@ -1,5 +1,7 @@
 package commands;
 
+import commands.dependencies.Instances;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;

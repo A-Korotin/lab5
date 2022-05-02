@@ -3,6 +3,8 @@ package io;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import dragon.Dragon;
 
+import java.util.List;
+
 /**
  Класс для вывода информации в консоль. Имплементируется от интерфейса io.OutPutter*/
 public final class ConsoleOutput implements OutPutter {
@@ -20,7 +22,12 @@ public final class ConsoleOutput implements OutPutter {
     }
 
     @Override
-    public <T extends Number> void output(T number) {
-        System.out.println(number);
+    public <T extends Number>void output(T t) {
+        System.out.println(t);
+    }
+
+    @Override
+    public List<String> compound() {
+        return null;
     }
 }

@@ -1,8 +1,10 @@
 package commands;
 
+import commands.dependencies.Instances;
 import dragon.Dragon;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Класс, предназначенный для вывода информации о всех элементах коллекции в формате <b>JSON</b><br>
@@ -27,13 +29,15 @@ public final class Show extends Command {
     }
 
     public int execute(Instances instances) {
-        List<Dragon> dragons = instances.dao.getAll();
-
-        if (dragons.isEmpty())
-            instances.outPutter.output("Пусто");
-        else
-            dragons.forEach(instances.outPutter::output);
-
+//        List<Dragon> dragons = instances.dao.getAll();
+//        if (dragons.size() == 0) {
+//            instances.outPutter.output("пусто");
+//            return 0;
+//        }
+//        for (Dragon d : dragons) {
+//            instances.outPutter.output(d);
+//        }
+        instances.dao.getAll().forEach(dragon -> instances.outPutter.output(dragon));
         return 0;
     }
 }
