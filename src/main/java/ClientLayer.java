@@ -10,6 +10,7 @@ import exceptions.ProgramExitException;
 import io.ConsoleOutput;
 import json.Json;
 import net.Client;
+import net.auth.User;
 
 import java.io.IOException;
 import java.net.PortUnreachableException;
@@ -21,6 +22,7 @@ public final class ClientLayer {
 
     private final Client client;
     private final Instances instances = new Instances();
+    private User user;
 
     public ClientLayer() throws IOException {
         client = new Client("localhost", 4444);
@@ -107,8 +109,12 @@ public final class ClientLayer {
         return properties;
     }
 
-    private String serialize(CommandProperties p) throws JsonProcessingException {
-        return Json.stringRepresentation(Json.toJson(p), false);
+    private <T>String serialize(T object) throws JsonProcessingException {
+        return Json.stringRepresentation(Json.toJson(object), false);
+    }
+
+    private void auth() {
+
     }
 
 

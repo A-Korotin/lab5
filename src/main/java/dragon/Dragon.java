@@ -38,7 +38,7 @@ public class Dragon implements Comparable<Dragon>, Describable {
 
     private DragonCave cave; //Поле не может быть null
 
-    private int creator;
+    private String creator;
 
     public Dragon() {}
 
@@ -143,11 +143,11 @@ public class Dragon implements Comparable<Dragon>, Describable {
         this.cave = cave;
     }
 
-    public int getCreatorId() {
+    public String getCreatorName() {
         return creator;
     }
 
-    public void setCreatorId(int creator) {
+    public void setCreatorName(String creator) {
         this.creator = creator;
     }
 

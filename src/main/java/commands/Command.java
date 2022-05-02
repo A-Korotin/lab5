@@ -8,6 +8,8 @@ import exceptions.InvalidArgsSizeException;
 import exceptions.InvalidValueException;
 import io.Properties;
 import commands.dependencies.CommandProperties;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,11 +48,7 @@ public abstract class Command {
     }
 
     private boolean validArgsSize(Integer[] expected) {
-        for(Integer i: expected) {
-            if (i == args.size())
-                return true;
-        }
-        return false;
+        return Arrays.stream(expected).anyMatch(i -> i == args.size());
     }
 
     public Command(List<String> args, Integer... nArgsExpected) {

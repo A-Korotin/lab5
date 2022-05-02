@@ -36,7 +36,7 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                     s.setString(7, element.getCharacter() == null ? null : element.getCharacter().getDescription());
 
                     s.setInt(8, caveId);
-                    s.setInt(9, element.getCreatorId());
+                    s.setString(9, element.getCreatorName());
                 }).build();
 
         var set = StatementFactory.getStatement(StatementType.INSERT).composePreparedStatement(property).executeQuery();
@@ -67,7 +67,7 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                     s.setString(7, element.getCharacter() == null ? null : element.getCharacter().getDescription());
 
                     s.setInt(8, caveId);
-                    s.setInt(9, element.getCreatorId());
+                    s.setString(9, element.getCreatorName());
 
                     s.setInt(10, id);
                 })
@@ -162,7 +162,7 @@ public final class SQLDragonDAO implements DAO<Dragon> {
 
         dragon.setCave(caveDAO.get(set.getInt("cave_id")));
 
-        dragon.setCreatorId(set.getInt("creator_id"));
+        dragon.setCreatorName(set.getString("creator_name"));
 
         return dragon;
     }
