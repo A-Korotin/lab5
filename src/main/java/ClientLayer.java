@@ -30,14 +30,13 @@ public final class ClientLayer {
 
 
     public void run() throws IOException {
-
+        //Отправка запроса на логины и получение их
         String stringLogins = client.sendAndReceiveResponse("send me logins", 20);
-
+        //Парсинг логинов
         logins = parseLogins(stringLogins);
-        //System.out.println(logins);
-
+        //Аутентификация полностью
         authentication();
-
+        //Если доступ получен, то начинаем главный цикл
         instances.outPutter.output("Введите команду. Для полного списка команд введите help");
         for(;;) {
             try {
@@ -131,7 +130,7 @@ public final class ClientLayer {
             if(password.length() >= 5){
                 String responseAboutPassword = client.sendAndReceiveResponse("H" + Client.toMD5(password) + '\t' + login, 20);
                 if (Objects.equals(responseAboutPassword, "YES")){
-                    instances.outPutter.output("Пароль введён успешно!");
+                    instances.outPutter.output("Пароль введён успешно!" + System.lineSeparator());
                     break;
                 }
                 else{

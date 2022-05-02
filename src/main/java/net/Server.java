@@ -38,10 +38,12 @@ public class Server {
         channel.configureBlocking(false);
         channel.register(selector, SelectionKey.OP_READ, new ClientClass());
         instances = new Instances();
+        //Вспомогательные мапа и листик, чтобы отладить
         accounts.put("11111", "b0baee9d279d34fa1dfd71aadb908c3f");
         accounts.put("22222", "b0baee9d279d34fa1dfd71aadb908c3f");
         logins.add("11111");
         logins.add("22222");
+        //....
         rightPassword = false;
         loginsSended = false;
     }
@@ -61,6 +63,8 @@ public class Server {
             for (SelectionKey k: selector.selectedKeys()) {
                 if(k.isReadable()) {
                     String request = read(k);
+                    //Отправка строки логинов на клиент. Она всегда будет первой отправкой,
+                    // потому что клиент при запуске отправляет запрос на логины
                     if (Objects.equals(request, "send me logins")){
                         instances.outPutter.output(loginsToString(logins));
                         List<String> list = instances.outPutter.compound();
@@ -69,7 +73,14 @@ public class Server {
                         loginsSended = true;
                     }
 
+
                     else{
+                        //Мы получили сообщение
+                        // с флагом N (если это регистрация нового пользователя) или Н (если это просто авторизация),
+                        // с логином в виде строки
+                        // с хешированным паролем (MD5)
+                        // В нижней строчке мы получаем листик с этими тремя элементами
+
                         ArrayList<String> loginAndPassword = takeLoginAndPassword(request);
 
                         if(loginAndPassword.get(0).equals("N")){
@@ -109,7 +120,7 @@ public class Server {
 
     private void newAccount(ArrayList<String> loginAndPassword, SelectionKey k){
         accounts.put(loginAndPassword.get(1), loginAndPassword.get(2));
-        instances.outPutter.output("Новый пользователь создан");
+        instances.outPutter.output("Новый пользователь создан" + System.lineSeparator());
         List<String> list = instances.outPutter.compound();
         Server.writeLayer(k, list, instances);
         list.clear();
