@@ -76,6 +76,9 @@ public final class ClientLayer {
             if (password.length() < 5){
                 instances.outPutter.output("Пароль должен состоять не менее, чем из 5 символов");
             }
+            else if (!unreliablePassword(password)){
+                instances.outPutter.output("Пароль ненадёжный. Попробуйте снова!)");
+            }
             else{
                 //instances.outPutter.output("Успешно! Вы зарегистрированы!");
                 String answer = client.sendAndReceiveResponse("N" + Client.toMD5(password) + '\t' + login, 20);
@@ -84,6 +87,21 @@ public final class ClientLayer {
             }
         }
     }
+
+    private boolean unreliablePassword(String password){
+        int count = 0;
+        boolean reliable = true;
+        for(int i = 1; i < password.length(); i++){
+            if (password.charAt(i) == password.charAt(i - 1)){
+                count++;
+            }
+        }
+        if (count == password.length() - 1){
+            reliable = false;
+        }
+        return reliable;
+    }
+
 
     private List<String> parseLogins(String response){
         char sign = '\t';
