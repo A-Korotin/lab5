@@ -38,7 +38,7 @@ public final class Select extends Statement {
             return "";
 
         String criteria = "WHERE ";
-        criteria += join(",", property.criteria.stream().map(s-> s += " = ?").collect(Collectors.toList()));
+        criteria += join(" AND ", property.criteria.stream().map(s-> s += " = ?").collect(Collectors.toList()));
         return criteria;
     }
 }

@@ -34,10 +34,8 @@ public final class SQLDragonDAO implements DAO {
         try {
             int databaseId = dragonDAO.create(dragon);
             dragon.setId(databaseId);
-        } catch (DatabaseConnectionNotEstablishedException e) {
-            return -1;
         } catch (SQLException e) {
-            return -2;
+            throw new RuntimeException(e.getMessage());
         }
 
         return 0;

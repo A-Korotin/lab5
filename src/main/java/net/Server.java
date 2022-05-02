@@ -1,6 +1,7 @@
 package net;
 
 import collection.DragonDAO;
+import collection.SQLDragonDAO;
 import com.fasterxml.jackson.core.JsonParseException;
 import commands.Command;
 import commands.dependencies.CommandProperties;
@@ -36,10 +37,10 @@ public class Server {
         instances = new Instances();
     }
 
-    public void run() throws IOException, NullPointerException{
+    public void run() throws IOException, NullPointerException {
 
         try {
-            instances.dao = FileManipulator.get();
+            instances.dao = new SQLDragonDAO();
         } catch (RuntimeException e) {
             instances.outPutter.output(e.getMessage());
             instances.dao = new DragonDAO();
@@ -50,8 +51,10 @@ public class Server {
             for (SelectionKey k: selector.selectedKeys()) {
                 if(k.isReadable()) {
                     String input = read(k);
-                    try{
-                        Command command = Command.restoreFromProperties(Json.fromJson(Json.parse(input),CommandProperties.class));
+                    try {
+                        System.out.println(input);
+                        Request request = Json.fromJson(Json.parse(input), Request.class);
+                        Command command = Command.restoreFromProperties(request.properties, request.user);
                         command.execute(instances);
 
                     } catch (JsonParseException e) {
@@ -62,10 +65,10 @@ public class Server {
                     }
 
                     List<String> list = instances.outPutter.compound();
-
+                    System.out.println(list);
                     Server.writeLayer(k, list, instances);
 
-                    Autosaver.autosave(instances);
+                    //Autosaver.autosave(instances);
 
                     list.clear();
 
@@ -73,6 +76,8 @@ public class Server {
             }
         }
     }
+
+
 
     private static String read(SelectionKey key) throws IOException {
         DatagramChannel channel = (DatagramChannel) key.channel();

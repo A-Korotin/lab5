@@ -2,6 +2,7 @@ package jdbc.DAO;
 
 import dragon.*;
 import jdbc.StatementProperty;
+import jdbc.statement.Statement;
 import jdbc.statement.StatementFactory;
 import jdbc.statement.StatementType;
 
@@ -22,7 +23,7 @@ public final class SQLDragonDAO implements DAO<Dragon> {
 
         StatementProperty property = new StatementProperty.Builder()
                 .tableName("dragon")
-                .fields("name", "coordinates_id", "creation_date", "age", "color", "type", "character", "cave_id", "creator_id")
+                .fields("name", "coordinates_id", "creation_date", "age", "color", "type", "character", "cave_id", "creator_name")
                 .valuesSetter(s -> {
                     s.setString(1, element.getName());
                     s.setInt(2, coordId);
@@ -39,9 +40,12 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                     s.setString(9, element.getCreatorName());
                 }).build();
 
-        var set = StatementFactory.getStatement(StatementType.INSERT).composePreparedStatement(property).executeQuery();
-        set.next();
-        return set.getInt("id");
+        try (Statement s = StatementFactory.getStatement(StatementType.INSERT)){
+            var set = s.composePreparedStatement(property).executeQuery();
+            set.next();
+            return set.getInt("id");
+        }
+
 
     }
 
@@ -52,7 +56,7 @@ public final class SQLDragonDAO implements DAO<Dragon> {
 
         StatementProperty property = new StatementProperty.Builder()
                 .tableName("dragon")
-                .fields("name", "coordinates_id", "creation_date", "age", "color", "type", "character", "cave_id", "creator_id")
+                .fields("name", "coordinates_id", "creation_date", "age", "color", "type", "character", "cave_id", "creator_name")
                 .criteria("id")
                 .valuesSetter(s -> {
                     s.setString(1, element.getName());
@@ -73,7 +77,9 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                 })
                 .build();
 
-        return StatementFactory.getStatement(StatementType.UPDATE).composePreparedStatement(property).executeUpdate();
+        try(Statement s = StatementFactory.getStatement(StatementType.UPDATE)) {
+            return s.composePreparedStatement(property).executeUpdate();
+        }
     }
 
     @Override
@@ -85,11 +91,16 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                 .valuesSetter(s->s.setInt(1, id))
                 .build();
 
-        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
-        set.next();
+        int coord_id;
+        int cave_id;
+        try(Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
 
-        int coord_id = set.getInt("coordinates_id");
-        int cave_id = set.getInt("cave_id");
+            set.next();
+
+            coord_id = set.getInt("coordinates_id");
+            cave_id = set.getInt("cave_id");
+        }
         caveDAO.delete(cave_id);
         coordinatesDAO.delete(coord_id);
 
@@ -99,7 +110,9 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                 .valuesSetter(s -> s.setInt(1, id))
                 .build();
 
-        return StatementFactory.getStatement(StatementType.DELETE).composePreparedStatement(property).executeUpdate();
+        try (Statement s = StatementFactory.getStatement(StatementType.DELETE)){
+            return s.composePreparedStatement(property).executeUpdate();
+        }
     }
 
     @Override
@@ -110,9 +123,11 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                 .valuesSetter(s -> s.setInt(1, id))
                 .build();
 
-        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
-        set.next();
-        return parse(set);
+        try(Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
+            set.next();
+            return parse(set);
+        }
     }
 
     @Override
@@ -123,12 +138,14 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                 .tableName(TABLE_NAME)
                 .build();
 
-        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
+        try (Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
 
-        while(set.next())
-            output.add(parse(set));
+            while (set.next())
+                output.add(parse(set));
 
-        return output;
+            return output;
+        }
     }
 
     @Override
@@ -138,7 +155,9 @@ public final class SQLDragonDAO implements DAO<Dragon> {
                 .tableName(TABLE_NAME)
                 .build();
 
-        return StatementFactory.getStatement(StatementType.DELETE).composePreparedStatement(property).executeUpdate();
+        try(Statement s = StatementFactory.getStatement(StatementType.DELETE)) {
+            return s.composePreparedStatement(property).executeUpdate();
+        }
     }
 
     private Dragon parse(ResultSet set) throws SQLException {

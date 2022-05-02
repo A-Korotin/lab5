@@ -31,6 +31,6 @@ public final class ConnectionPool {
     }
 
     private static String getPassDEBUG() {
-        return "PASSWORD";
+        return "12345";
     }
 }

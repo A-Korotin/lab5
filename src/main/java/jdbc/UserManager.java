@@ -1,6 +1,7 @@
 package jdbc;
 
 import exceptions.UserLoginAlreadyExistsException;
+import jdbc.statement.Statement;
 import jdbc.statement.StatementFactory;
 import jdbc.statement.StatementType;
 import net.auth.User;
@@ -20,9 +21,11 @@ public final class UserManager {
                     s.setString(2, user.password);
                 })
                 .build();
-        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
-        set.next();
-        return 1 == set.getInt(1);
+        try(Statement s = StatementFactory.getStatement(StatementType.SELECT)){
+            var set = s.composePreparedStatement(property).executeQuery();
+            set.next();
+            return 1 == set.getInt(1);
+        }
     }
 
     public static boolean registerUser(User user) throws SQLException {
@@ -38,8 +41,13 @@ public final class UserManager {
                 })
                 .build();
 
-        int nRowsAffected = StatementFactory.getStatement(StatementType.INSERT).composePreparedStatement(property).executeUpdate();
-        return nRowsAffected == 1;
+        try(Statement s = StatementFactory.getStatement(StatementType.INSERT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
+            set.next();
+            int id = set.getInt("id");
+            return id != 0;
+        }
+
     }
 
 
@@ -51,8 +59,12 @@ public final class UserManager {
                 .valuesSetter(s->s.setString(1, user.login))
                 .build();
 
-        var set = StatementFactory.getStatement(StatementType.SELECT).composePreparedStatement(property).executeQuery();
-        set.next();
-        return set.getInt(1) != 0;
+        try(Statement s = StatementFactory.getStatement(StatementType.SELECT)) {
+            var set = s.composePreparedStatement(property).executeQuery();
+            set.next();
+            return set.getInt(1) != 0;
+        }
+
     }
+
 }

@@ -1,13 +1,11 @@
 package commands;
 
 
-import commands.dependencies.GetProperties;
-import commands.dependencies.Instances;
-import commands.dependencies.PropertiesDependant;
+import commands.dependencies.*;
 import exceptions.InvalidArgsSizeException;
 import exceptions.InvalidValueException;
 import io.Properties;
-import commands.dependencies.CommandProperties;
+import net.auth.User;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +20,7 @@ public abstract class Command {
     protected String name;
     protected Properties properties = null;
     protected int indexShift = 0;
+    public User user;
 
     public void setAskForInput(boolean ask) {
         askForInput = ask;
@@ -40,9 +39,16 @@ public abstract class Command {
         return p;
     }
 
-    public static Command restoreFromProperties(CommandProperties properties) {
+    public static Command restoreFromProperties(CommandProperties properties, User user) {
         List<String> args = properties.args;
-        Command c = CommandCreator.getCommandDirect(args);
+
+        Command c;
+        try {
+            c = CommandCreator.getCommandDirect(args);
+        } catch (NullPointerException e) {
+            c = AuxiliaryCommandCreator.getCommand(args);
+        }
+        c.user = user;
         c.properties = properties.properties;
         return c;
     }
