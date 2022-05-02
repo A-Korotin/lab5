@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.BindException;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("HELLO!");
         try {
             Server server = new Server("localhost", 4444);

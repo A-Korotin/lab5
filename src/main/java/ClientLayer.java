@@ -13,21 +13,31 @@ import net.Client;
 
 import java.io.IOException;
 import java.net.PortUnreachableException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public final class ClientLayer {
 
     private final Client client;
     private final Instances instances = new Instances();
+    Scanner scanner = new Scanner(System.in);
+    List<String> logins = new ArrayList<>();
 
     public ClientLayer() throws IOException {
         client = new Client("localhost", 4444);
         instances.outPutter = new ConsoleOutput();
     }
 
-    public void run() {
+
+
+    public void run() throws IOException {
+
+        String stringLogins = client.sendAndReceiveResponse("send me logins", 20);
+
+        logins = parseLogins(stringLogins);
+        //System.out.println(logins);
+
+        authentication();
+
         instances.outPutter.output("Введите команду. Для полного списка команд введите help");
         for(;;) {
             try {
@@ -44,6 +54,117 @@ public final class ClientLayer {
         }
     }
 
+    private void registration() throws IOException {
+        instances.outPutter.output("Придумайте логин. Он должен состоять не менее, чем из 5 символов");
+        String login = "";
+        String password = "";
+        while(true){
+            login = scanner.nextLine().trim();
+            if (login.length() < 5){
+                instances.outPutter.output("Логин должен состоять не менее, чем из 5 символов");
+            }
+            else if(logins.contains(login)){
+                instances.outPutter.output("Такой логин уже существует! Попробуйте снова!)");
+            }
+            else{
+                instances.outPutter.output("Успешно! Теперь придумайте пароль");
+                logins.add(login);
+                break;
+            }
+        }
+        while (true){
+            password = scanner.nextLine().trim();
+            if (password.length() < 5){
+                instances.outPutter.output("Пароль должен состоять не менее, чем из 5 символов");
+            }
+            else{
+                //instances.outPutter.output("Успешно! Вы зарегистрированы!");
+                String answer = client.sendAndReceiveResponse("N" + Client.toMD5(password) + '\t' + login, 20);
+                instances.outPutter.output(answer);
+                break;
+            }
+        }
+    }
+
+    private List<String> parseLogins(String response){
+        char sign = '\t';
+        StringBuilder login = new StringBuilder();
+        ArrayList<String> logins = new ArrayList<>();
+        for(int i = 0; i < response.length(); i++){
+             if (response.charAt(i) == sign){
+                 logins.add(login.toString());
+                 login = new StringBuilder();
+             }
+             else{
+                 login.append(response.charAt(i));
+             }
+
+         }
+         return logins;
+    }
+
+
+    private void alreadyHaveAccount(List<String> logins) throws IOException {
+        String login = "";
+        String password;
+        instances.outPutter.output("Введите логин:  ");
+
+        while(true){
+            login = scanner.nextLine().trim();
+            if (login.length() < 5){
+                instances.outPutter.output("Логин должен состоять не менее, чем из 5 символов");
+            }
+
+            else{
+                if (logins.contains(login)) {
+                    instances.outPutter.output("Введите пароль:   ");
+                    break;
+                }
+
+
+                instances.outPutter.output("Такого логина не существует! Попробуйте снова!)");
+            }
+        }
+
+        while(true){
+            password = scanner.nextLine().trim();
+            if(password.length() >= 5){
+                String responseAboutPassword = client.sendAndReceiveResponse("H" + Client.toMD5(password) + '\t' + login, 20);
+                if (Objects.equals(responseAboutPassword, "YES")){
+                    instances.outPutter.output("Пароль введён успешно!");
+                    break;
+                }
+                else{
+                    instances.outPutter.output("Пароль введён неверно! Попробуйте снова!");
+                }
+            }
+            else{
+                instances.outPutter.output("Пароль должен состоять не менее чем из 5 символов! Попробуйте снова!)");
+            }
+        }
+    }
+
+    private void authentication() throws IOException {
+        instances.outPutter.output("Привет! Спасибо, что пришёл!)" + System.lineSeparator() +  System.lineSeparator() +
+                "Введите NEW , если Вы хотите зарегистрироваться" + System.lineSeparator() +
+                "Введите MYPROFILE , если у Вас уже есть профиль");
+        while(true){
+            String answer1 = scanner.nextLine().trim();
+            if (answer1.equals("NEW")){
+                registration();
+                instances.outPutter.output("Введите свои данные для входа");
+                alreadyHaveAccount(logins);
+                break;
+            }
+            if (answer1.equals("MYPROFILE")){
+                alreadyHaveAccount(logins);
+                break;
+            }
+            else{
+                instances.outPutter.output("Попробуйте снова");
+            }
+        }
+    }
     private void loopBody() throws InvalidValueException, IOException {
         List<Command> commands;
         try {
