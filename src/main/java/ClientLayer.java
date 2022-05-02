@@ -1,13 +1,12 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
-import commands.Command;
-import commands.CommandCreator;
-import commands.ExecuteScript;
+import commands.*;
 import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
 import exceptions.InvalidArgsSizeException;
 import exceptions.InvalidValueException;
 import exceptions.ProgramExitException;
 import io.ConsoleOutput;
+import io.request.UserDataRequester;
 import json.Json;
 import net.Client;
 import net.Request;
@@ -168,10 +167,9 @@ public final class ClientLayer {
         }
 
         try {
-
             String response = client.sendAndReceiveResponse(serialize(request), 20);
             System.out.println(response);
-            return response.contains("valid");
+            return response.split("\\.")[0].equals("valid");
         } catch (IOException e) {
             return false;
         }
@@ -189,7 +187,7 @@ public final class ClientLayer {
         try {
             String response = client.sendAndReceiveResponse(serialize(request), 20);
             System.out.println(response);
-            return response.contains("valid");
+            return response.split("\\.")[0].equals("valid");
         } catch (IOException e) {
             return false;
         }

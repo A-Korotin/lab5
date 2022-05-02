@@ -21,10 +21,10 @@ public final class Clear extends Command {
     public int execute(Instances instances) {
         int[] idsToDelete = instances.dao.getAll()
                 .stream()
-                .filter(d -> d.getCreatorName().equals(userName))
+                .filter(d -> d.getCreatorName().equals(user.login))
                 .mapToInt(Dragon::getId).toArray();
         Arrays.stream(idsToDelete).forEach(instances.dao::delete);
-        instances.outPutter.output("Элементы, созданные пользователем '%s', были удалены".formatted(userName));
+        instances.outPutter.output("Элементы, созданные пользователем '%s', были удалены".formatted(user.login));
         return 0;
     }
 }

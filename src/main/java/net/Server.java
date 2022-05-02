@@ -40,7 +40,7 @@ public class Server {
         instances = new Instances();
     }
 
-    public void run() throws IOException, NullPointerException{
+    public void run() throws IOException, NullPointerException, InterruptedException {
 
         try {
             instances.dao = new SQLDragonDAO();
@@ -50,87 +50,22 @@ public class Server {
 
         while (true) {
             selector.select();
-            for (SelectionKey k: selector.selectedKeys()) {
-                if(k.isReadable()) {
-                    String input = read(k);
-                    try {
-                        System.out.println(input);
-                        Request request = Json.fromJson(Json.parse(input), Request.class);
-                        Command command = Command.restoreFromProperties(request.properties, request.user);
-                        command.execute(instances);
+            for (SelectionKey k : selector.selectedKeys()) {
+                if (k.isReadable()) {
                     String request = read(k);
-                    //Отправка строки логинов на клиент. Она всегда будет первой отправкой,
-                    // потому что клиент при запуске отправляет запрос на логины
-                    if (Objects.equals(request, "send me logins")){
-                        instances.outPutter.output(loginsToString(logins));
-                        List<String> list = instances.outPutter.compound();
-                        Server.writeLayer(k, list, instances);
-                        list.clear();
-                        loginsSended = true;
-                    }
-                    else {
-                        //Мы получили сообщение
-                        // с флагом N (если это регистрация нового пользователя) или Н (если это просто авторизация),
-                        // с логином в виде строки
-                        // с хешированным паролем (MD5)
-                        // В нижней строчке мы получаем листик с этими тремя элементами
-
-                        List<String> loginAndPassword = takeLoginAndPassword(request);
-                        if(loginAndPassword.get(0).equals("N")){
-                            newAccount(loginAndPassword, k);
-                        }
-                        else{
-                            if (!rightPassword){
-                                rightPassword = checkPassword(loginAndPassword, k);
-                            }
-                            else{
-                                commandExecution(request, k);
-                            }
-                        }
-                    }
+                    commandExecution(request, k);
                 }
+
             }
         }
-    }
-
-    private boolean checkPassword(List<String> loginAndPassword, SelectionKey k){
-        boolean rightPassword = false;
-        try {
-            if (UserManager.getPassword(loginAndPassword.get(1)).equals(loginAndPassword.get(2))) {
-                rightPassword = true;
-                instances.outPutter.output("YES");
-                List<String> list = instances.outPutter.compound();
-                Server.writeLayer(k, list, instances);
-                list.clear();
-            } else {
-                instances.outPutter.output("NO");
-                List<String> list = instances.outPutter.compound();
-                Server.writeLayer(k, list, instances);
-                list.clear();
-            }
-        } catch (SQLException e) {
-            return false;
-        }
-        return rightPassword;
-    }
-
-    private void newAccount(List<String> loginAndPassword, SelectionKey k){
-        try {
-            UserManager.registerUser(loginAndPassword.get(1), loginAndPassword.get(2));
-        } catch (SQLException ignored) {return;}
-        instances.outPutter.output("Новый пользователь создан" + System.lineSeparator());
-        List<String> list = instances.outPutter.compound();
-        Server.writeLayer(k, list, instances);
-        list.clear();
     }
 
 
     private void commandExecution(String request, SelectionKey k) throws InterruptedException {
         Runnable requestHandling = () -> {
-            try{
+            try {
                 Request req = Json.fromJson(Json.parse(request), Request.class);
-                Command command = Command.restoreFromProperties(req.properties);
-                command.setUserName(req.login);
+                Command command = Command.restoreFromProperties(req.properties, req.user);
                 command.execute(instances);
 
             } catch (JsonParseException e) {
@@ -140,16 +75,6 @@ public class Server {
                 instances.outPutter.output("Ben запретил такое отправлять" + System.lineSeparator() + e.getMessage());
             }
 
-                    List<String> list = instances.outPutter.compound();
-                    System.out.println(list);
-                    Server.writeLayer(k, list, instances);
-
-                    //Autosaver.autosave(instances);
-
-                    list.clear();
-
-                }
-            }
         };
 
         Thread handlingThread = new Thread(requestHandling);
@@ -158,15 +83,8 @@ public class Server {
 
         List<String> list = instances.outPutter.compound();
         Server.writeLayer(k, list, instances);
-        list.clear();
-    }
 
-    private String loginsToString(List<String> logins){
-        StringBuilder result = new StringBuilder();
-        for(String login : logins){
-            result.append(login).append('\t');
-        }
-        return result.toString();
+        list.clear();
     }
 
 

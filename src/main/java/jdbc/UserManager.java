@@ -24,7 +24,7 @@ public final class UserManager {
         try(Statement s = StatementFactory.getStatement(StatementType.SELECT)){
             var set = s.composePreparedStatement(property).executeQuery();
             set.next();
-            return 1 == set.getInt(1);
+            return set.getInt(1) != 0;
         }
     }
 

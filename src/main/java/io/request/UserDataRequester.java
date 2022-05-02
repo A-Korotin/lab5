@@ -4,6 +4,7 @@ import commands.dependencies.Instances;
 import exceptions.ProgramExitException;
 import net.auth.User;
 
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -15,13 +16,29 @@ public final class UserDataRequester {
     public static User requestUser(Instances instances) {
         try {
             instances.outPutter.output("Введите логин");
-            String login = scanner.nextLine();
+            String login = scanner.nextLine().trim();
             instances.outPutter.output("Введите пароль");
-            String pass = scanner.nextLine();
+            String pass;
+            while(!reliablePassword((pass = scanner.nextLine().trim())))
+                instances.outPutter.output("Пароль ненадежный) Придумай новый");
             return new User(login, pass);
 
         } catch (NoSuchElementException e) {
             throw new ProgramExitException("Завершение работы");
         }
+    }
+
+    private static boolean reliablePassword(String password){
+        int count = 0;
+        boolean reliable = true;
+        for(int i = 1; i < password.length(); i++){
+            if (password.charAt(i) == password.charAt(i - 1)){
+                count++;
+            }
+        }
+        if (count == password.length() - 1){
+            reliable = false;
+        }
+        return reliable;
     }
 }

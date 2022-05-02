@@ -41,8 +41,8 @@ public final class Update extends Command implements PropertiesDependant {
             instances.outPutter.output("Элемент с id %d не существует".formatted(id));
             return -1;
         }
-        if (!dragon.get().getCreatorName().equals(userName)) {
-            instances.outPutter.output("Невозможно обновить элемент с id %d, так как он не был создан пользователем %s".formatted(id, userName));
+        if (!dragon.get().getCreatorName().equals(user.login)) {
+            instances.outPutter.output("Невозможно обновить элемент с id %d, так как он не был создан пользователем %s".formatted(id, user.login));
             return -1;
         }
         int exitCode = instances.dao.update(id, properties);

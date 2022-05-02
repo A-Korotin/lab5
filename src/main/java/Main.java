@@ -12,8 +12,6 @@ public class Main {
             server.run();
         } catch (BindException e) {
             System.out.printf("Не удалось запустить сервер (%s)", e.getMessage());
-        } catch (SQLException e ) {
-            System.out.printf("Ошибка SQL:%s%n", e.getMessage());
         }
 
     }

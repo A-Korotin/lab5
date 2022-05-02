@@ -21,8 +21,8 @@ public final class RemoveById extends Command {
         try{
             int id = Integer.parseInt(args.get(0));
             Dragon toRemove = instances.dao.get(id);
-            if(toRemove != null && !toRemove.getCreatorName().equals(userName)) {
-                instances.outPutter.output("Элемент с id %d не был создан пользователем %s. Удаление невозможно".formatted(id, userName));
+            if(toRemove != null && !toRemove.getCreatorName().equals(user.login)) {
+                instances.outPutter.output("Элемент с id %d не был создан пользователем %s. Удаление невозможно".formatted(id, user.login));
                 return -1;
             }
 

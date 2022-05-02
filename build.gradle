@@ -8,7 +8,7 @@ application {
 }
 
 group 'itmo'
-version '1.12-Client'
+version '1.12-Server'
 
 run.defaultCharacterEncoding='UTF-8'
 compileJava.options.encoding = 'UTF-8'
@@ -41,7 +41,7 @@ test {
 
 jar {
     manifest {
-        attributes "Main-Class": "ClientLayer"
+        attributes "Main-Class": "Main"
     }
     from {
         configurations.compileClasspath.collect {it.isDirectory() ? it : zipTree(it)}
