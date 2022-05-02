@@ -223,9 +223,6 @@ public class Server {
         passwordAndLoginList.add(info);
         passwordAndLoginList.add(login);
         passwordAndLoginList.add(password);
-        System.out.println(info);
-        System.out.println(login);
-        System.out.println(password);
         return passwordAndLoginList;
     }
 

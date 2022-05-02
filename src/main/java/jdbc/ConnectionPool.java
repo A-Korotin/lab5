@@ -14,7 +14,7 @@ public final class ConnectionPool {
     static {
         pool.setUrl("jdbc:postgresql://localhost:2222/postgres");
         pool.setUsername("postgres");
-        pool.setPassword(getPassDEBUG());
+        pool.setPassword(getPass());
         pool.setMinIdle(5);
         pool.setMaxIdle(10);
         pool.setMaxOpenPreparedStatements(10);
@@ -31,6 +31,6 @@ public final class ConnectionPool {
     }
 
     private static String getPassDEBUG() {
-        return "12345";
+        return "pass";
     }
 }

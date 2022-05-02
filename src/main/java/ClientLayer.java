@@ -38,7 +38,12 @@ public final class ClientLayer {
         //Парсинг логинов
         logins = parseLogins(stringLogins);
         //Аутентификация полностью
-        authentication();
+        try {
+            authentication();
+        } catch (NoSuchElementException e) {
+            instances.outPutter.output("Завершение программы...");
+            return;
+        }
         //Если доступ получен, то начинаем главный цикл
         instances.outPutter.output("Введите команду. Для полного списка команд введите help");
         for(;;) {
@@ -169,7 +174,9 @@ public final class ClientLayer {
     private void authentication() throws IOException {
         instances.outPutter.output("Привет! Спасибо, что пришёл!)" + System.lineSeparator() +  System.lineSeparator() +
                 "Введите NEW , если Вы хотите зарегистрироваться" + System.lineSeparator() +
-                "Введите MYPROFILE , если у Вас уже есть профиль");
+                "Введите MYPROFILE , если у Вас уже есть профиль" + System.lineSeparator() +
+                "Введите CTRL + D для выхода (CTRL + Z еще попробуй если не получится)"
+                );
         while(true){
             String answer1 = scanner.nextLine().trim();
             if (answer1.equals("NEW")){
@@ -264,10 +271,12 @@ public final class ClientLayer {
         try {
             ClientLayer layer = new ClientLayer();
             layer.run();
-        } catch (IOException e) {
-            System.out.println("не удалось создать клиент");
+        } catch (PortUnreachableException e ) {
+            System.out.println("Сервер не запущен, попробуйте позже");
         }
-
+        catch (IOException e) {
+            System.out.printf("не удалось создать клиент(%s)%n", e.getCause());
+        }
     }
 
 }

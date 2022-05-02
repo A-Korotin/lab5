@@ -24,7 +24,7 @@ public final class Clear extends Command {
                 .filter(d -> d.getCreatorName().equals(userName))
                 .mapToInt(Dragon::getId).toArray();
         Arrays.stream(idsToDelete).forEach(instances.dao::delete);
-        instances.outPutter.output("Элементы, созданные %s были удалены".formatted(userName));
+        instances.outPutter.output("Элементы, созданные пользователем '%s', были удалены".formatted(userName));
         return 0;
     }
 }
