@@ -16,3 +16,16 @@ public class Main {
 
     }
 }
+
+class Main1 {
+    public static void main(String[] args) {
+        try {
+            ClientLayer layer1 = new ClientLayer();
+            layer1.run();
+        } catch (IOException e) {
+            System.out.println("не удалось создать клиент");
+        }
+
+    }
+}
+

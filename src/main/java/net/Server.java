@@ -55,13 +55,43 @@ public class Server {
                     String request = read(k);
                     commandExecution(request, k);
                 }
-
             }
         }
     }
 
+    private boolean checkPassword(List<String> loginAndPassword, SelectionKey k){
+        boolean rightPassword = false;
+        try {
+            if (UserManager.getPassword(loginAndPassword.get(1)).equals(loginAndPassword.get(2))) {
+                rightPassword = true;
+                instances.outPutter.output("YES");
+                List<String> list = instances.outPutter.compound();
+                Server.writeLayer(k, list, instances);
+                list.clear();
+            } else {
+                instances.outPutter.output("NO");
+                List<String> list = instances.outPutter.compound();
+                Server.writeLayer(k, list, instances);
+                list.clear();
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+        return rightPassword;
+    }
 
-    private void commandExecution(String request, SelectionKey k) throws InterruptedException {
+//    private void newAccount(List<String> loginAndPassword, SelectionKey k){
+//        try {
+//            UserManager.registerUser(loginAndPassword.get(1), loginAndPassword.get(2));
+//        } catch (SQLException ignored) {return;}
+//        instances.outPutter.output("Новый пользователь создан" + System.lineSeparator());
+//        List<String> list = instances.outPutter.compound();
+//        Server.writeLayer(k, list, instances);
+//        list.clear();
+//    }
+
+
+    private synchronized void commandExecution(String request, SelectionKey k) {
         Runnable requestHandling = () -> {
             try {
                 Request req = Json.fromJson(Json.parse(request), Request.class);
@@ -79,7 +109,6 @@ public class Server {
 
         Thread handlingThread = new Thread(requestHandling);
         handlingThread.start();
-        handlingThread.join();
 
         List<String> list = instances.outPutter.compound();
         Server.writeLayer(k, list, instances);
@@ -107,7 +136,6 @@ public class Server {
             }
         };
         forkJoinPool.invoke(task1);
-        task1.join();
 
         RecursiveTask<String> task = new RecursiveTask<String>() {
             @Override
@@ -119,12 +147,11 @@ public class Server {
                 return null;
             }
         };
-        String request = forkJoinPool.invoke(task);
-        forkJoinPool.shutdown();
-        return request;
+
+        return forkJoinPool.invoke(task);
     }
 
-    private static void writeLayer(SelectionKey k, List<String> list, Instances instances){
+    private synchronized static void writeLayer(SelectionKey k, List<String> list, Instances instances){
             try{
                 for (String msg : list) {
                     write(k, msg);
@@ -150,7 +177,6 @@ public class Server {
             }
         };
         service.execute(task);
-        service.shutdown();
     }
 
     static class ClientClass {
