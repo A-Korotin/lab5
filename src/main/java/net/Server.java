@@ -30,6 +30,9 @@ public class Server {
     InetSocketAddress address;
     DatagramChannel channel;
     Instances instances;
+    ExecutorService service;
+    ForkJoinPool forkJoinPool;
+
 
     public Server(String host, int port) throws IOException {
         selector = Selector.open();
@@ -38,6 +41,9 @@ public class Server {
         channel.configureBlocking(false);
         channel.register(selector, SelectionKey.OP_READ, new ClientClass());
         instances = new Instances();
+        service = Executors.newFixedThreadPool(2);
+        forkJoinPool = ForkJoinPool.commonPool();
+
     }
 
     public void run() throws IOException, NullPointerException, InterruptedException {
@@ -111,18 +117,17 @@ public class Server {
         handlingThread.start();
 
         List<String> list = instances.outPutter.compound();
-        Server.writeLayer(k, list, instances);
+        writeLayer(k, list, instances);
 
         list.clear();
     }
 
 
 
-    private synchronized static String read(SelectionKey key) throws IOException {
+    private synchronized String read(SelectionKey key) throws IOException {
 
         DatagramChannel channel = (DatagramChannel) key.channel();
         ClientClass client = (ClientClass) key.attachment();
-        ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
 
         RecursiveAction task1 = new RecursiveAction() {
             @Override
@@ -151,7 +156,7 @@ public class Server {
         return forkJoinPool.invoke(task);
     }
 
-    private synchronized static void writeLayer(SelectionKey k, List<String> list, Instances instances){
+    private synchronized void writeLayer(SelectionKey k, List<String> list, Instances instances){
             try{
                 for (String msg : list) {
                     write(k, msg);
@@ -165,10 +170,9 @@ public class Server {
             }
     }
 
-    private synchronized static void write(SelectionKey key, String msg) throws IOException {
+    private synchronized void write(SelectionKey key, String msg) throws IOException {
         DatagramChannel channel = (DatagramChannel) key.channel();
         ClientClass client = (ClientClass) key.attachment();
-        ExecutorService service = Executors.newFixedThreadPool(2);
         Runnable task = () -> {
             try {
                 channel.send(StandardCharsets.UTF_16.encode(msg), client.clientAddress);
