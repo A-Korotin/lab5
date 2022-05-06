@@ -128,15 +128,25 @@ public class Server {
         DatagramChannel channel = (DatagramChannel) key.channel();
         ClientClass client = (ClientClass) key.attachment();
 
-        RecursiveTask<String> task = new RecursiveTask<>() {
+        RecursiveAction task1 = new RecursiveAction() {
             @Override
-            protected String compute() {
+            protected void compute() {
+                client.buffer.clear();
                 try {
                     client.clientAddress = channel.receive(client.buffer);
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        };
+        forkJoinPool.invoke(task1);
+        task1.join();
+
+
+        RecursiveTask<String> task = new RecursiveTask<>() {
+            @Override
+            protected String compute() {
                 if(client.clientAddress != null){
                     client.buffer.flip();
                     return StandardCharsets.UTF_16.decode(client.buffer).toString();
