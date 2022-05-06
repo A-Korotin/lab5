@@ -72,12 +72,12 @@ public class Server {
                 rightPassword = true;
                 instances.outPutter.output("YES");
                 List<String> list = instances.outPutter.compound();
-                Server.writeLayer(k, list, instances);
+                writeLayer(k, list, instances);
                 list.clear();
             } else {
                 instances.outPutter.output("NO");
                 List<String> list = instances.outPutter.compound();
-                Server.writeLayer(k, list, instances);
+                writeLayer(k, list, instances);
                 list.clear();
             }
         } catch (SQLException e) {
@@ -103,6 +103,9 @@ public class Server {
                 Request req = Json.fromJson(Json.parse(request), Request.class);
                 Command command = Command.restoreFromProperties(req.properties, req.user);
                 command.execute(instances);
+                List<String> list = instances.outPutter.compound();
+                writeLayer(k, list, instances);
+                list.clear();
 
             } catch (JsonParseException e) {
                 instances.outPutter.output("Ben запретил такое отправлять" + System.lineSeparator() + e.getMessage());
@@ -116,10 +119,6 @@ public class Server {
         Thread handlingThread = new Thread(requestHandling);
         handlingThread.start();
 
-        List<String> list = instances.outPutter.compound();
-        writeLayer(k, list, instances);
-
-        list.clear();
     }
 
 
@@ -135,14 +134,17 @@ public class Server {
                 client.buffer.clear();
                 try {
                     client.clientAddress = channel.receive(client.buffer);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         };
         forkJoinPool.invoke(task1);
+        task1.join();
 
-        RecursiveTask<String> task = new RecursiveTask<String>() {
+
+        RecursiveTask<String> task = new RecursiveTask<>() {
             @Override
             protected String compute() {
                 if(client.clientAddress != null){
