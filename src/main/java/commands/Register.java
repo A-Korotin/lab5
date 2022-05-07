@@ -19,13 +19,13 @@ public final class Register extends Command {
     public int execute(Instances instances) {
         try {
             instances.outPutter.output(UserManager.registerUser(user) ?
-                    "valid. Пользователь успешно зарегистрирован":
-                    "invalid");
+                    " valid. Пользователь успешно зарегистрирован":
+                    " invalid");
         } catch (UserLoginAlreadyExistsException e) {
-            instances.outPutter.output("invalid. Пользователь с таким логином уже существует");
+            instances.outPutter.output(" invalid. Пользователь с таким логином уже существует");
         }
         catch (SQLException e) {
-            instances.outPutter.output("invalid. Ошибка сервера");
+            instances.outPutter.output(" invalid. Ошибка сервера");
         }
 
         return 0;

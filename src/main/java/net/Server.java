@@ -6,11 +6,12 @@ import com.fasterxml.jackson.core.JsonParseException;
 import commands.Command;
 import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
+import exceptions.DatabaseException;
 import io.Autosaver;
 import io.FileManipulator;
 import jdbc.UserManager;
 import json.Json;
-import net.auth.User;
+
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -20,7 +21,6 @@ import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -51,7 +51,8 @@ public class Server {
         try {
             instances.dao = new SQLDragonDAO();
         } catch (RuntimeException e) {
-            instances.outPutter.output(e.getMessage());
+            System.out.printf("Не удалось инициализировать коллекцию. (%s)%n", e.getMessage());
+            return;
         }
 
         while (true) {
@@ -65,37 +66,6 @@ public class Server {
         }
     }
 
-    private boolean checkPassword(List<String> loginAndPassword, SelectionKey k){
-        boolean rightPassword = false;
-        try {
-            if (UserManager.getPassword(loginAndPassword.get(1)).equals(loginAndPassword.get(2))) {
-                rightPassword = true;
-                instances.outPutter.output("YES");
-                List<String> list = instances.outPutter.compound();
-                writeLayer(k, list, instances);
-                list.clear();
-            } else {
-                instances.outPutter.output("NO");
-                List<String> list = instances.outPutter.compound();
-                writeLayer(k, list, instances);
-                list.clear();
-            }
-        } catch (SQLException e) {
-            return false;
-        }
-        return rightPassword;
-    }
-
-//    private void newAccount(List<String> loginAndPassword, SelectionKey k){
-//        try {
-//            UserManager.registerUser(loginAndPassword.get(1), loginAndPassword.get(2));
-//        } catch (SQLException ignored) {return;}
-//        instances.outPutter.output("Новый пользователь создан" + System.lineSeparator());
-//        List<String> list = instances.outPutter.compound();
-//        Server.writeLayer(k, list, instances);
-//        list.clear();
-//    }
-
 
     private synchronized void commandExecution(String request, SelectionKey k) {
         Runnable requestHandling = () -> {
@@ -103,22 +73,24 @@ public class Server {
                 Request req = Json.fromJson(Json.parse(request), Request.class);
                 Command command = Command.restoreFromProperties(req.properties, req.user);
                 command.execute(instances);
-                List<String> list = instances.outPutter.compound();
-                writeLayer(k, list, instances);
-                list.clear();
 
-            } catch (JsonParseException e) {
+            } catch (DatabaseException e) {
+                instances.outPutter.output(e.getMessage() + ". ");
+            }
+            catch (JsonParseException e) {
                 instances.outPutter.output("Ben запретил такое отправлять" + System.lineSeparator() + e.getMessage());
 
             } catch (IOException e) {
                 instances.outPutter.output("Ben запретил такое отправлять" + System.lineSeparator() + e.getMessage());
             }
 
+            List<String> list = instances.outPutter.compound();
+            writeLayer(k, list, instances);
+            list.clear();
         };
 
         Thread handlingThread = new Thread(requestHandling);
         handlingThread.start();
-
     }
 
 
@@ -135,9 +107,8 @@ public class Server {
                 try {
                     client.clientAddress = channel.receive(client.buffer);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                } catch (IOException ignored) {}
+
             }
         };
         forkJoinPool.invoke(task1);
@@ -178,9 +149,7 @@ public class Server {
         Runnable task = () -> {
             try {
                 channel.send(StandardCharsets.UTF_16.encode(msg), client.clientAddress);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            } catch (IOException ignored) {}
         };
         service.execute(task);
     }

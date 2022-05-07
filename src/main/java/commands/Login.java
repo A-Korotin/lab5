@@ -21,10 +21,10 @@ public final class Login extends Command {
 
         try {
             instances.outPutter.output(UserManager.isValid(user) ?
-                    "valid. Добро пожаловать в систему"
-                    : "invalid. Неверный логин или пароль");
+                    " valid. Добро пожаловать в систему"
+                    : " invalid. Неверный логин или пароль");
         } catch (SQLException e) {
-            instances.outPutter.output("invalid. Ошибка сервера, повторите попытку позже");
+            instances.outPutter.output(" invalid. Ошибка сервера, повторите попытку позже");
             return -1;
         }
         return 0;

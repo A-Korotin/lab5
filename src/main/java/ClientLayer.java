@@ -169,7 +169,7 @@ public final class ClientLayer {
         try {
             String response = client.sendAndReceiveResponse(serialize(request), 20);
             System.out.println(response);
-            return response.split("\\.")[0].equals("valid");
+            return response.split("\\.")[0].trim().equals("valid");
         } catch (IOException e) {
             return false;
         }
@@ -187,7 +187,7 @@ public final class ClientLayer {
         try {
             String response = client.sendAndReceiveResponse(serialize(request), 20);
             System.out.println(response);
-            return response.split("\\.")[0].equals("valid");
+            return response.split("\\.")[0].trim().equals("valid");
         } catch (IOException e) {
             return false;
         }
