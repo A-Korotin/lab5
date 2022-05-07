@@ -4,6 +4,7 @@ package commands;
 import commands.dependencies.*;
 import exceptions.InvalidArgsSizeException;
 import exceptions.InvalidValueException;
+import io.OutPutter;
 import io.Properties;
 import net.auth.User;
 
@@ -77,5 +78,5 @@ public abstract class Command {
      * </table>
      *
      */
-    public abstract int execute(Instances instances);
+    public abstract int execute(Instances instances, OutPutter outPutter);
 }

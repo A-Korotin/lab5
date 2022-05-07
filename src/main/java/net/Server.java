@@ -1,15 +1,12 @@
 package net;
 
-import collection.DragonDAO;
 import collection.SQLDragonDAO;
 import com.fasterxml.jackson.core.JsonParseException;
 import commands.Command;
-import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
 import exceptions.DatabaseException;
-import io.Autosaver;
-import io.FileManipulator;
-import jdbc.UserManager;
+import io.OutPutter;
+import io.ServerOutput;
 import json.Json;
 
 
@@ -23,6 +20,7 @@ import java.nio.channels.Selector;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.zip.InflaterOutputStream;
 
 
 public class Server {
@@ -39,14 +37,14 @@ public class Server {
         address = new InetSocketAddress(host, port);
         channel = DatagramChannel.open().bind(address);
         channel.configureBlocking(false);
-        channel.register(selector, SelectionKey.OP_READ, new ClientClass());
+        channel.register(selector, SelectionKey.OP_READ);
         instances = new Instances();
-        service = Executors.newFixedThreadPool(2);
+        service = Executors.newFixedThreadPool(3);
         forkJoinPool = ForkJoinPool.commonPool();
 
     }
 
-    public void run() throws IOException, NullPointerException, InterruptedException {
+    public void run() throws IOException, NullPointerException {
 
         try {
             instances.dao = new SQLDragonDAO();
@@ -59,34 +57,27 @@ public class Server {
             selector.select();
             for (SelectionKey k : selector.selectedKeys()) {
                 if (k.isReadable()) {
-                    String request = read(k);
-                    commandExecution(request, k);
+                    OutPutter outPutter = new ServerOutput();
+                    read(k, outPutter);
                 }
             }
         }
     }
 
 
-    private synchronized void commandExecution(String request, SelectionKey k) {
+    private synchronized void commandExecution(String request, SelectionKey k, SocketAddress address, OutPutter outPutter) {
         Runnable requestHandling = () -> {
             try {
                 Request req = Json.fromJson(Json.parse(request), Request.class);
                 Command command = Command.restoreFromProperties(req.properties, req.user);
-                command.execute(instances);
+                command.execute(instances, outPutter);
 
-            } catch (DatabaseException e) {
-                instances.outPutter.output(e.getMessage() + ". ");
-            }
-            catch (JsonParseException e) {
-                instances.outPutter.output("Ben запретил такое отправлять" + System.lineSeparator() + e.getMessage());
-
-            } catch (IOException e) {
-                instances.outPutter.output("Ben запретил такое отправлять" + System.lineSeparator() + e.getMessage());
+            } catch (DatabaseException | IOException ignored) {
+                //instances.outPutter.output(e.getMessage() + ". ");
             }
 
-            List<String> list = instances.outPutter.compound();
-            writeLayer(k, list, instances);
-            list.clear();
+            writeLayer(k, outPutter, instances, address);
+
         };
 
         Thread handlingThread = new Thread(requestHandling);
@@ -95,68 +86,53 @@ public class Server {
 
 
 
-    private synchronized String read(SelectionKey key) throws IOException {
+    private void read(SelectionKey key, OutPutter outPutter) throws IOException {
 
-        DatagramChannel channel = (DatagramChannel) key.channel();
-        ClientClass client = (ClientClass) key.attachment();
-
-        RecursiveAction task1 = new RecursiveAction() {
+        RecursiveAction task = new RecursiveAction() {
             @Override
             protected void compute() {
-                client.buffer.clear();
+                String request;
+                DatagramChannel channel = (DatagramChannel) key.channel();
+                ByteBuffer buffer = ByteBuffer.allocate(10000);
+                SocketAddress address;
                 try {
-                    client.clientAddress = channel.receive(client.buffer);
-
+                    address = channel.receive(buffer);
+                    if(address != null){
+                        buffer.flip();
+                        request = StandardCharsets.UTF_16.decode(buffer).toString();
+                        commandExecution(request, key, address, outPutter);
+                    }
                 } catch (IOException ignored) {}
-
-            }
-        };
-        forkJoinPool.invoke(task1);
-        task1.join();
-
-
-        RecursiveTask<String> task = new RecursiveTask<>() {
-            @Override
-            protected String compute() {
-                if(client.clientAddress != null){
-                    client.buffer.flip();
-                    return StandardCharsets.UTF_16.decode(client.buffer).toString();
-                }
-                return null;
             }
         };
 
-        return forkJoinPool.invoke(task);
+        forkJoinPool.execute(task);
     }
 
-    private synchronized void writeLayer(SelectionKey k, List<String> list, Instances instances){
-            try{
+    private void writeLayer(SelectionKey k, OutPutter outPutter, Instances instances, SocketAddress address){
+
+        List<String> list = outPutter.compound();
+
+        try{
                 for (String msg : list) {
-                    write(k, msg);
+                    write(k, msg, address);
 
                     TimeUnit.MILLISECONDS.sleep(10);
                 }
-                write(k, "END");
+                write(k, "END", address);
             }
-            catch(NullPointerException | IOException | InterruptedException e){
-                instances.outPutter.output(e.getMessage());
-            }
+            catch(NullPointerException | IOException | InterruptedException ignored) {}
     }
 
-    private synchronized void write(SelectionKey key, String msg) throws IOException {
+    private void write(SelectionKey key, String msg, SocketAddress address) throws IOException {
         DatagramChannel channel = (DatagramChannel) key.channel();
-        ClientClass client = (ClientClass) key.attachment();
         Runnable task = () -> {
             try {
-                channel.send(StandardCharsets.UTF_16.encode(msg), client.clientAddress);
+                channel.send(StandardCharsets.UTF_16.encode(msg), address);
             } catch (IOException ignored) {}
         };
         service.execute(task);
     }
 
-    static class ClientClass {
-        public SocketAddress clientAddress;
-        public ByteBuffer buffer = ByteBuffer.allocate(1024);
-    }
 }
 

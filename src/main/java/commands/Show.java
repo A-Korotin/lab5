@@ -2,6 +2,7 @@ package commands;
 
 import commands.dependencies.Instances;
 import dragon.Dragon;
+import io.OutPutter;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public final class Show extends Command {
         super(args, 0);
     }
 
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
 //        List<Dragon> dragons = instances.dao.getAll();
 //        if (dragons.size() == 0) {
 //            instances.outPutter.output("пусто");
@@ -37,7 +38,7 @@ public final class Show extends Command {
 //        for (Dragon d : dragons) {
 //            instances.outPutter.output(d);
 //        }
-        instances.dao.getAll().forEach(dragon -> instances.outPutter.output(dragon));
+        instances.dao.getAll().forEach(outPutter::output);
         return 0;
     }
 }

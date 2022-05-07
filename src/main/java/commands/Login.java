@@ -2,6 +2,7 @@ package commands;
 
 import commands.dependencies.Instances;
 import exceptions.UserLoginAlreadyExistsException;
+import io.OutPutter;
 import jdbc.UserManager;
 import net.auth.User;
 
@@ -17,14 +18,14 @@ public final class Login extends Command {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
 
         try {
-            instances.outPutter.output(UserManager.isValid(user) ?
+            outPutter.output(UserManager.isValid(user) ?
                     " valid. Добро пожаловать в систему"
                     : " invalid. Неверный логин или пароль");
         } catch (SQLException e) {
-            instances.outPutter.output(" invalid. Ошибка сервера, повторите попытку позже");
+            outPutter.output(" invalid. Ошибка сервера, повторите попытку позже");
             return -1;
         }
         return 0;

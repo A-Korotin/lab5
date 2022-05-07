@@ -1,5 +1,6 @@
-package commands;
+package commands.dependencies;
 
+import commands.*;
 import io.InputReader;
 import log.Logger;
 

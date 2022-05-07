@@ -2,6 +2,7 @@ package commands;
 
 import commands.dependencies.Instances;
 import exceptions.UserLoginAlreadyExistsException;
+import io.OutPutter;
 import jdbc.UserManager;
 import net.auth.User;
 
@@ -16,16 +17,16 @@ public final class Register extends Command {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
         try {
-            instances.outPutter.output(UserManager.registerUser(user) ?
+            outPutter.output(UserManager.registerUser(user) ?
                     " valid. Пользователь успешно зарегистрирован":
                     " invalid");
         } catch (UserLoginAlreadyExistsException e) {
-            instances.outPutter.output(" invalid. Пользователь с таким логином уже существует");
+            outPutter.output(" invalid. Пользователь с таким логином уже существует");
         }
         catch (SQLException e) {
-            instances.outPutter.output(" invalid. Ошибка сервера");
+            outPutter.output(" invalid. Ошибка сервера");
         }
 
         return 0;

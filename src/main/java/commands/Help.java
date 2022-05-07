@@ -1,6 +1,7 @@
 package commands;
 
 import commands.dependencies.Instances;
+import io.OutPutter;
 
 import java.util.List;
 
@@ -14,8 +15,8 @@ public final class Help extends Command {
     }
 
     @Override
-    public int execute(Instances instances) {
-        instances.outPutter.output("""
+    public int execute(Instances instances, OutPutter outPutter) {
+        outPutter.output("""
                 help : вывести справку по доступным командам
                 
                 info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)

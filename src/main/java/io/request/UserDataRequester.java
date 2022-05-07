@@ -2,6 +2,7 @@ package io.request;
 
 import commands.dependencies.Instances;
 import exceptions.ProgramExitException;
+import io.OutPutter;
 import net.auth.User;
 
 import java.util.Locale;
@@ -13,14 +14,14 @@ public final class UserDataRequester {
     private static final Scanner scanner = new Scanner(System.in);
 
 
-    public static User requestUser(Instances instances) {
+    public static User requestUser(Instances instances, OutPutter outPutter) {
         try {
-            instances.outPutter.output("Введите логин");
+            outPutter.output("Введите логин");
             String login = scanner.nextLine().trim();
-            instances.outPutter.output("Введите пароль");
+            outPutter.output("Введите пароль");
             String pass;
             while(!reliablePassword((pass = scanner.nextLine().trim())))
-                instances.outPutter.output("Пароль ненадежный) Придумай новый");
+                outPutter.output("Пароль ненадежный) Придумай новый");
             return new User(login, pass);
 
         } catch (NoSuchElementException e) {

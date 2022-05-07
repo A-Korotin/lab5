@@ -2,6 +2,7 @@ package commands;
 
 import collection.Orderable;
 import commands.dependencies.Instances;
+import io.OutPutter;
 
 import java.util.List;
 
@@ -15,9 +16,9 @@ public final class Sort extends Command {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
         int exitCode = ((Orderable)instances.dao).sort();
-        instances.outPutter.output("Коллекция успешно отсортирована");
+        outPutter.output("Коллекция успешно отсортирована");
         return exitCode;
     }
 }

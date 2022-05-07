@@ -1,13 +1,11 @@
 package commands;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import commands.dependencies.CommandProperties;
+import commands.dependencies.CommandCreator;
 import commands.dependencies.Instances;
 import exceptions.InfiniteLoopException;
 import exceptions.InvalidArgsSizeException;
-import exceptions.InvalidValueException;
 import io.InputReader;
-import json.Json;
+import io.OutPutter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +28,7 @@ public final class ExecuteScript extends Command {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
         if(Instances.filePathChain.contains(args.get(0)))
             throw new InfiniteLoopException();
         List<Command> commands;
@@ -38,18 +36,18 @@ public final class ExecuteScript extends Command {
             commands = readCommands(instances);
         }
         catch(InvalidArgsSizeException e) {
-            instances.outPutter.output(e.getMessage());
+            outPutter.output(e.getMessage());
             return -1;
         }
         catch (RuntimeException e) {
-            instances.outPutter.output("Одна или несколько команд не были распознаны");
+            outPutter.output("Одна или несколько команд не были распознаны");
             return -1;
         }
-        instances.outPutter.output("Все команды были распознаны и поданы на выполнение");
+        outPutter.output("Все команды были распознаны и поданы на выполнение");
 
         int exitCode = 0;
         for (Command c : commands) {
-            exitCode += c.execute(instances);
+            exitCode += c.execute(instances, outPutter);
         }
         return exitCode;
     }

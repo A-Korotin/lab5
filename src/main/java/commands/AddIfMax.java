@@ -5,6 +5,7 @@ import commands.dependencies.Instances;
 import commands.dependencies.PropertiesDependant;
 import dragon.Dragon;
 import exceptions.InvalidValueException;
+import io.OutPutter;
 import io.Properties;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public final class AddIfMax extends Command implements PropertiesDependant {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
         properties.creator_name = user.login;
         Optional<Dragon> maxDragon = instances.dao.getAll().stream().max((d1, d2) -> (int) (d1.getAge() - d2.getAge()));
 
@@ -32,10 +33,10 @@ public final class AddIfMax extends Command implements PropertiesDependant {
 
         if (properties.age > ageMax){
             exitCode = instances.dao.create(properties);
-            instances.outPutter.output("Элемент успешно добавлен");
+            outPutter.output("Элемент успешно добавлен");
         }
         else {
-            instances.outPutter.output("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
+            outPutter.output("Значение этого элемента меньше максимального в коллекции. Элемент не добавлен");
             return 0;
         }
         return exitCode;

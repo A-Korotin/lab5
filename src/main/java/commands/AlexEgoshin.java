@@ -1,6 +1,7 @@
 package commands;
 
 import commands.dependencies.Instances;
+import io.OutPutter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,7 @@ public final class AlexEgoshin extends Command {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
         class AlexEgoshinPostavMaxBall extends JFrame {
 
             public AlexEgoshinPostavMaxBall() {
@@ -31,7 +32,7 @@ public final class AlexEgoshin extends Command {
                     add(label2);
                 }
                 catch (NullPointerException e){
-                    instances.outPutter.output("Неверно указан путь до файла");
+                    outPutter.output("Неверно указан путь до файла");
                 }
             }
 
@@ -44,7 +45,7 @@ public final class AlexEgoshin extends Command {
         }
         AlexEgoshinPostavMaxBall alexEgoshinPostavMaxBall = new AlexEgoshinPostavMaxBall();
         alexEgoshinPostavMaxBall.createAndShowGUI();
-        instances.outPutter.output("Команда успешно выполнена -> надо максимальный балл для Алексея Коротина и Дуль Яна");
+        outPutter.output("Команда успешно выполнена -> надо максимальный балл для Алексея Коротина и Дуль Яна");
         return 0;
     }
 

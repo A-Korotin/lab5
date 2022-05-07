@@ -4,6 +4,7 @@ package commands;
 import commands.dependencies.Instances;
 import dragon.Dragon;
 import dragon.DragonCharacter;
+import io.OutPutter;
 
 import java.util.List;
 
@@ -19,25 +20,25 @@ public final class FilterGreaterThanCharacter extends Command {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
         DragonCharacter character;
         try {
 
             character = args.get(0).equalsIgnoreCase("null")? null : DragonCharacter.valueOf(args.get(0).toUpperCase());
         }
         catch (RuntimeException e){
-            instances.outPutter.output("Характер не определён");
+            outPutter.output("Характер не определён");
             return -1;
         }
         long count = 0;
         count = instances.dao.getAll().stream()
                 .filter(dragon -> DragonCharacter.compareBoolean(dragon.getCharacter(), character)).count();
         if (count == 0) {
-            instances.outPutter.output("Нет подходящих элементов");
+            outPutter.output("Нет подходящих элементов");
         } else {
             instances.dao.getAll().stream()
                     .filter(dragon -> DragonCharacter.compareBoolean(dragon.getCharacter(), character))
-                    .forEach(instances.outPutter::output);
+                    .forEach(outPutter::output);
         }
 
         return 0;

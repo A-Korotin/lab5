@@ -1,11 +1,13 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import commands.*;
+import commands.dependencies.CommandCreator;
 import commands.dependencies.CommandProperties;
 import commands.dependencies.Instances;
 import exceptions.InvalidArgsSizeException;
 import exceptions.InvalidValueException;
 import exceptions.ProgramExitException;
 import io.ConsoleOutput;
+import io.OutPutter;
 import io.request.UserDataRequester;
 import json.Json;
 import net.Client;
@@ -24,31 +26,32 @@ public final class ClientLayer {
     private final Client client;
     private final Instances instances = new Instances();
     private User user;
+    private OutPutter outPutter;
 
     public ClientLayer() throws IOException {
         client = new Client("localhost", 4444);
-        instances.outPutter = new ConsoleOutput();
+        outPutter = new ConsoleOutput();
     }
 
     public void run() {
         try {
             auth();
         } catch (ProgramExitException e) {
-            instances.outPutter.output(e.getMessage());
+            outPutter.output(e.getMessage());
             return;
         }
-        instances.outPutter.output("Введите команду. Для полного списка команд введите help");
+        outPutter.output("Введите команду. Для полного списка команд введите help");
         for(;;) {
             try {
                 loopBody();
             } catch (ProgramExitException e) {
-                instances.outPutter.output(e.getMessage());
+                outPutter.output(e.getMessage());
                 break;
             } catch (PortUnreachableException e) {
-                instances.outPutter.output("Сервер не работает в данный момент. Повторите попытку позже");
+                outPutter.output("Сервер не работает в данный момент. Повторите попытку позже");
             }
             catch (InvalidValueException | IOException e) {
-                instances.outPutter.output(e.getMessage());
+                outPutter.output(e.getMessage());
             }
         }
     }
@@ -58,12 +61,12 @@ public final class ClientLayer {
         try {
             commands = CommandCreator.getCommands(instances.consoleReader);
         } catch (InvalidArgsSizeException e) {
-            instances.outPutter.output(e.getMessage());
+            outPutter.output(e.getMessage());
             return;
         } catch (NoSuchElementException e) {
             throw new ProgramExitException("Завершение программы...");
         } catch (NullPointerException e) {
-            instances.outPutter.output("Такой команды не существует. Введите help для подробной информации");
+            outPutter.output("Такой команды не существует. Введите help для подробной информации");
             return;
         }
 
@@ -78,10 +81,10 @@ public final class ClientLayer {
                 else
                     commandProperties.add(c.getProperties(instances));
             } catch (NullPointerException e) {
-                instances.outPutter.output("Одна или несколько команд не были распознаны");
+                outPutter.output("Одна или несколько команд не были распознаны");
                 return;
             } catch (RuntimeException e) {
-                instances.outPutter.output(e.getMessage());
+                outPutter.output(e.getMessage());
                 return;
             }
         }
@@ -101,13 +104,13 @@ public final class ClientLayer {
                 r.user = user;
                 request = serialize(r);
             } catch (JsonProcessingException e) {
-                instances.outPutter.output("Ошибка сериализации json");
+                outPutter.output("Ошибка сериализации json");
                 return;
             }
 
             String response = client.sendAndReceiveResponse(request, 20);
 
-            instances.outPutter.output(response);
+            outPutter.output(response);
         }
 
     }
@@ -129,18 +132,18 @@ public final class ClientLayer {
         Scanner scanner = new Scanner(System.in);
                 try {
             while (true) {
-                instances.outPutter.output("Войти [l] или зарегистрироваться [r]? [exit] для выхода");
+                outPutter.output("Войти [l] или зарегистрироваться [r]? [exit] для выхода");
                 User user;
                 switch (scanner.nextLine()){
                     case "l":
-                         user = UserDataRequester.requestUser(instances);
+                         user = UserDataRequester.requestUser(instances, outPutter);
                         if(validateUser(user)) {
                             this.user = user;
                             return;
                         }
                         continue;
                     case "r":
-                        user = UserDataRequester.requestUser(instances);
+                        user = UserDataRequester.requestUser(instances, outPutter);
                         if (registerUser(user)) {
                             this.user = user;
                             return;

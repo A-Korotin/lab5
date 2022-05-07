@@ -4,6 +4,7 @@ import commands.dependencies.GetProperties;
 import commands.dependencies.Instances;
 import commands.dependencies.PropertiesDependant;
 import exceptions.InvalidValueException;
+import io.OutPutter;
 import io.Properties;
 
 import java.util.List;
@@ -19,11 +20,11 @@ public final class Add extends Command implements PropertiesDependant {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
         properties.creator_name = user.login;
         int exitCode;
         if ((exitCode = instances.dao.create(properties)) == 0)
-            instances.outPutter.output("Элемент успешно добавлен");
+            outPutter.output("Элемент успешно добавлен");
         return exitCode;
     }
 }

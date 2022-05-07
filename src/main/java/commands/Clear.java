@@ -3,6 +3,7 @@ package commands;
 
 import commands.dependencies.Instances;
 import dragon.Dragon;
+import io.OutPutter;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,13 +19,13 @@ public final class Clear extends Command {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
         int[] idsToDelete = instances.dao.getAll()
                 .stream()
                 .filter(d -> d.getCreatorName().equals(user.login))
                 .mapToInt(Dragon::getId).toArray();
         Arrays.stream(idsToDelete).forEach(instances.dao::delete);
-        instances.outPutter.output("Элементы, созданные пользователем '%s', были удалены".formatted(user.login));
+        outPutter.output("Элементы, созданные пользователем '%s', были удалены".formatted(user.login));
         return 0;
     }
 }

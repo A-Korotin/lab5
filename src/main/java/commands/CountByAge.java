@@ -3,6 +3,7 @@ package commands;
 
 import commands.dependencies.Instances;
 import dragon.Dragon;
+import io.OutPutter;
 
 import java.util.List;
 
@@ -16,18 +17,18 @@ public final class CountByAge extends Command {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
         Long age;
         try{
             age = Long.parseLong(args.get(0));
         }
         catch(RuntimeException e){
-            instances.outPutter.output("Типы данных не совпали");
+            outPutter.output("Типы данных не совпали");
             return -1;
         }
         Long ageCount = instances.dao.getAll().stream().filter(dragon -> dragon.getAge().equals(age)).count();
 
-        instances.outPutter.output(ageCount);
+        outPutter.output(ageCount);
         return 0;
     }
 }

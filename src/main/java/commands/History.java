@@ -1,6 +1,7 @@
 package commands;
 
 import commands.dependencies.Instances;
+import io.OutPutter;
 import log.Logger;
 
 import java.util.List;
@@ -12,8 +13,8 @@ public final class History extends Command {
     }
 
     @Override
-    public int execute(Instances instances) {
-        Logger.getAll().forEach(instances.outPutter::output);
+    public int execute(Instances instances, OutPutter outPutter) {
+        Logger.getAll().forEach(outPutter::output);
 
         return 0;
     }

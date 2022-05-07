@@ -2,6 +2,7 @@ package commands;
 
 import commands.dependencies.Instances;
 import dragon.Dragon;
+import io.OutPutter;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,16 +30,16 @@ public final class MinById extends Command {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
         Optional<Dragon> minDragon = instances.dao.getAll()
                 .stream()
                 .min((dragon1, dragon2) -> (int) dragon1.getId() - dragon2.getId());
 
         if (minDragon.isPresent()) {
-            instances.outPutter.output(minDragon.get().getId());
+            outPutter.output(minDragon.get().getId());
         }
         else
-            instances.outPutter.output("Коллекция пуста");
+            outPutter.output("Коллекция пуста");
         return 0;
 
     }

@@ -4,6 +4,7 @@ import collection.Describable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import commands.dependencies.Instances;
 import exceptions.NotImplementedException;
+import io.OutPutter;
 
 import java.util.List;
 
@@ -26,12 +27,12 @@ public final class Info extends Command {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
         try{
-            instances.outPutter.output(((Describable)instances.dao).info());
+            outPutter.output(((Describable)instances.dao).info());
         }
         catch (NotImplementedException e){
-            instances.outPutter.output(e.getMessage());
+            outPutter.output(e.getMessage());
             return -1;
         }
         return 0;

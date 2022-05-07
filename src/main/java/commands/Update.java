@@ -5,6 +5,7 @@ import commands.dependencies.Instances;
 import commands.dependencies.PropertiesDependant;
 import dragon.Dragon;
 import exceptions.InvalidValueException;
+import io.OutPutter;
 
 import java.awt.dnd.DropTarget;
 import java.util.List;
@@ -23,13 +24,13 @@ public final class Update extends Command implements PropertiesDependant {
     }
 
     @Override
-    public int execute(Instances instances) {
+    public int execute(Instances instances, OutPutter outPutter) {
         int id;
         try{
             id = Integer.parseInt(args.get(0));
         }
         catch (RuntimeException e){
-            instances.outPutter.output("Нецелочисленный тип данных id");
+            outPutter.output("Нецелочисленный тип данных id");
             return -1;
         }
 
@@ -38,17 +39,17 @@ public final class Update extends Command implements PropertiesDependant {
 
 
         if (dragon.isEmpty()){
-            instances.outPutter.output("Элемент с id %d не существует".formatted(id));
+            outPutter.output("Элемент с id %d не существует".formatted(id));
             return -1;
         }
         if (!dragon.get().getCreatorName().equals(user.login)) {
-            instances.outPutter.output("Невозможно обновить элемент с id %d, так как он не был создан пользователем %s".formatted(id, user.login));
+            outPutter.output("Невозможно обновить элемент с id %d, так как он не был создан пользователем %s".formatted(id, user.login));
             return -1;
         }
         int exitCode = instances.dao.update(id, properties);
 
         if (exitCode == 0)
-            instances.outPutter.output("Элемент успешно обновлён");
+            outPutter.output("Элемент успешно обновлён");
         return exitCode;
     }
 }
